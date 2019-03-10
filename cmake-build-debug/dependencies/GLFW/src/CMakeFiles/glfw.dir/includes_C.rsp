@@ -1,0 +1,1 @@
+-IC:/Users/Sean/CLionProjects/SEangine/dependencies/include -IC:/Users/Sean/CLionProjects/SEangine/GLAD/include -IC:/Users/Sean/CLionProjects/SEangine/glm/include -IC:/Users/Sean/CLionProjects/SEangine/dependencies/GLFW/include -IC:/Users/Sean/CLionProjects/SEangine/dependencies/GLFW/src -IC:/Users/Sean/CLionProjects/SEangine/cmake-build-debug/dependencies/GLFW/src 
