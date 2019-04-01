@@ -7,7 +7,7 @@
 
 
 /* Constructor */
-Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector <Texture> textures)
+Mesh::Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices, std::vector <Texture> textures)
 {
     this->vertices = vertices;
     this->indices = indices;
@@ -18,7 +18,7 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std:
 }
 
 /* Constructor */
-Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices)
+Mesh::Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices)
 {
     this->vertices = vertices;
     this->indices = indices;
@@ -26,6 +26,16 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices)
     // Now that we have all of the required data, set the vertex buffers and its attribute pointers
     setupMesh();
 }
+
+Mesh::Mesh(Primitive *primitive)
+{
+    this->vertices = primitive->getVertices();
+    this->indices = primitive->getIndices();
+    this->textures = {};
+    // Now that we have all of the required data, set the vertex buffers and its attribute pointers
+    setupMesh();
+}
+
 
 void Mesh::setupMesh()
 {
@@ -39,7 +49,7 @@ void Mesh::setupMesh()
     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), &indices[0], GL_STATIC_DRAW);
 
     // set the vertex attribute pointers
     // vertex Positions
@@ -69,12 +79,12 @@ void Mesh::Draw(Shader shader)
     if(textures.size())
     {
         // bind appropriate textures
-        unsigned int diffuseNr = 1;
-        unsigned int specularNr = 1;
-        unsigned int normalNr = 1;
-        unsigned int heightNr = 1;
+        GLuint diffuseNr = 1;
+        GLuint specularNr = 1;
+        GLuint normalNr = 1;
+        GLuint heightNr = 1;
 
-        for (unsigned int i = 0; i < textures.size(); i++)
+        for (GLuint i = 0; i < textures.size(); i++)
         {
             glActiveTexture(GL_TEXTURE0 + i); //activate proper texture unit before binding
             // retreive texture number (the N in diffuse_textureN)
@@ -83,11 +93,11 @@ void Mesh::Draw(Shader shader)
             if (name == "texture_diffuse")
                 number = std::to_string(diffuseNr++);
             else if (name == "texture_specular")
-                number = std::to_string(specularNr++); // transfer unsigned int to stream
+                number = std::to_string(specularNr++); // transfer GLuint to stream
             else if (name == "texture_normal")
-                number = std::to_string(normalNr++); // transfer unsigned int to stream
+                number = std::to_string(normalNr++); // transfer GLuint to stream
             else if (name == "texture_height")
-                number = std::to_string(heightNr++); // transfer unsigned int to stream
+                number = std::to_string(heightNr++); // transfer GLuint to stream
 
             // Set the sampler
             shader.setFloat(("material." + name + number).c_str(), i);
@@ -99,7 +109,7 @@ void Mesh::Draw(Shader shader)
     else
     {
         // If there are no textures, use default texture
-        unsigned int DEFAULT_TEXTURE = loadTexture("../resources/life_has_many_doors.png");
+        GLuint DEFAULT_TEXTURE = loadTexture("../resources/life_has_many_doors.png");
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, DEFAULT_TEXTURE);
         glActiveTexture(GL_TEXTURE0);
@@ -111,7 +121,7 @@ void Mesh::Draw(Shader shader)
 
 }
 
-unsigned int Mesh::getVAO(void)
+GLuint Mesh::getVAO(void)
 {
     return this->VAO;
 }

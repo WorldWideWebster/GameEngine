@@ -66,9 +66,9 @@ int main()
     Shader instanceShader("../shaders/instance.vert", "../shaders/instance.frag");
 
 
-    unsigned int uniformBlockIndexLighting   =  glGetUniformBlockIndex(lightingShader.ID, "Matrices");
-    unsigned int uniformBlockIndexLamp   =      glGetUniformBlockIndex(lampShader.ID, "Matrices");
-    unsigned int uniformBlockIndexInstance   =      glGetUniformBlockIndex(instanceShader.ID, "Matrices");
+    GLuint uniformBlockIndexLighting   =  glGetUniformBlockIndex(lightingShader.ID, "Matrices");
+    GLuint uniformBlockIndexLamp   =      glGetUniformBlockIndex(lampShader.ID, "Matrices");
+    GLuint uniformBlockIndexInstance   =      glGetUniformBlockIndex(instanceShader.ID, "Matrices");
 
 
     glUniformBlockBinding(lightingShader.ID,    uniformBlockIndexLighting, 0);
@@ -76,7 +76,7 @@ int main()
     glUniformBlockBinding(instanceShader.ID,    uniformBlockIndexInstance, 0);
 
 
-    unsigned int VBO, cubeVAO;
+    GLuint VBO, cubeVAO;
     glGenVertexArrays(1, &cubeVAO);
     glGenBuffers(1, &VBO);
 
@@ -95,7 +95,7 @@ int main()
     glEnableVertexAttribArray(2);
 
     // plane VAO
-    unsigned int planeVAO, planeVBO;
+    GLuint planeVAO, planeVBO;
     glGenVertexArrays(1, &planeVAO);
     glGenBuffers(1, &planeVBO);
     glBindVertexArray(planeVAO);
@@ -107,7 +107,7 @@ int main()
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 
     // screen quad VAO
-    unsigned int quadVAO, quadVBO;
+    GLuint quadVAO, quadVBO;
     glGenVertexArrays(1, &quadVAO);
     glGenBuffers(1, &quadVBO);
     glBindVertexArray(quadVAO);
@@ -119,7 +119,7 @@ int main()
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 
     // skybox VAO
-    unsigned int skyboxVAO, skyboxVBO;
+    GLuint skyboxVAO, skyboxVBO;
     glGenVertexArrays(1, &skyboxVAO);
     glGenBuffers(1, &skyboxVBO);
     glBindVertexArray(skyboxVAO);
@@ -129,7 +129,7 @@ int main()
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 
     // light Cube cubeVAO
-    unsigned int lightVAO;
+    GLuint lightVAO;
     glGenVertexArrays(1, &lightVAO);
     glBindVertexArray(lightVAO);
     // we only need to bind to the VBO, the container's VBO's data already contains the correct data
@@ -138,16 +138,16 @@ int main()
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
-    unsigned int diffuseMap = loadTexture("../resources/container2.png");
-    unsigned int specularMap = loadTexture("../resources/container2_specular.png");
-    unsigned int emissionMap = loadTexture("../resources/matrix.jpg");
-    unsigned int floorTexture = loadTexture("../resources/metal.png");
-    unsigned int cubeTexture = loadTexture("../resources/container2.png");
-    unsigned int transparentTexture = loadTexture("../resources/window.png");
+    GLuint diffuseMap = loadTexture("../resources/container2.png");
+    GLuint specularMap = loadTexture("../resources/container2_specular.png");
+    GLuint emissionMap = loadTexture("../resources/matrix.jpg");
+    GLuint floorTexture = loadTexture("../resources/metal.png");
+    GLuint cubeTexture = loadTexture("../resources/container2.png");
+    GLuint transparentTexture = loadTexture("../resources/window.png");
 
 
 
-    unsigned int cubemapTexture = loadCubemap(faces);
+    GLuint cubemapTexture = loadCubemap(faces);
 
 
 
@@ -168,11 +168,11 @@ int main()
 
     // framebuffer configuration
     // -------------------------
-    unsigned int framebuffer;
+    GLuint framebuffer;
     glGenFramebuffers(1, &framebuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
     // create a color attachment texture
-    unsigned int textureColorbuffer;
+    GLuint textureColorbuffer;
     glGenTextures(1, &textureColorbuffer);
     glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, SCR_WIDTH, SCR_HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
@@ -180,7 +180,7 @@ int main()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorbuffer, 0);
     // create a renderbuffer object for depth and stencil attachment (we won't be sampling these)
-    unsigned int rbo;
+    GLuint rbo;
     glGenRenderbuffers(1, &rbo);
     glBindRenderbuffer(GL_RENDERBUFFER, rbo);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, SCR_WIDTH, SCR_HEIGHT); // use a single renderbuffer object for both a depth AND stencil buffer.
@@ -195,7 +195,7 @@ int main()
 
 
 
-    unsigned int uboMatrices;
+    GLuint uboMatrices;
     glGenBuffers(1, &uboMatrices);
     glBindBuffer(GL_UNIFORM_BUFFER, uboMatrices);
     glBufferData(GL_UNIFORM_BUFFER, 2 * sizeof(glm::mat4), NULL, GL_STATIC_DRAW);
@@ -217,13 +217,13 @@ int main()
     Model theCube((char*)"resources/objects/cube/cube.obj");
     // generate a large list of semi-random model transformation matrices
     // ------------------------------------------------------------------
-    unsigned int amount = 100000;
+    GLuint amount = 100000;
     glm::mat4* modelMatrices;
     modelMatrices = new glm::mat4[amount];
     srand(glfwGetTime()); // initialize random seed
     float radius = 100.0;
     float offset = 50.5f;
-    for (unsigned int i = 0; i < amount; i++)
+    for (GLuint i = 0; i < amount; i++)
     {
         glm::mat4 model;
         // 1. translation: displace along circle with 'radius' in range [-offset, offset]
@@ -249,14 +249,14 @@ int main()
     }
 
     // vertex Buffer Object
-    unsigned int buffer;
+    GLuint buffer;
     glGenBuffers(1, &buffer);
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
     glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
 
-    for(unsigned int i = 0; i < rock.meshes.size(); i++)
+    for(GLuint i = 0; i < rock.meshes.size(); i++)
     {
-        unsigned int VAO = rock.meshes[i].getVAO();
+        GLuint VAO = rock.meshes[i].getVAO();
         glBindVertexArray(VAO);
         // vertex Attributes
         GLsizei vec4Size = sizeof(glm::vec4);
@@ -300,11 +300,13 @@ int main()
     ImGui_ImplOpenGL3_Init(glsl_version);
 
     bool show_demo_window = true;
-    bool show_another_window = false;
+    bool show_render_window = false;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
+    float lightx = 1.0f, lighty = 1.0f, lightz = 1.0f;
 
-    Cube cube;
+    Cube tri;
+    Mesh m(&tri);
     // render loop
     // -----------
     while (!window.shouldClose())
@@ -336,6 +338,7 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
+
         // TODO: Move lighting stuff to a separate file
 
         // Time based variables
@@ -351,7 +354,7 @@ int main()
         lightingShader.setInt("num_spot_lights", 1);
         // directional light
         lightingShader.setVec3("dirLights[0].direction", -0.2f, -1.0f, -0.3f);
-        lightingShader.setVec3("dirLights[0].ambient", 0.05f, 0.05f, 0.05f);
+        lightingShader.setVec3("dirLights[0].ambient", lightx, lighty, lightz);
         lightingShader.setVec3("dirLights[0].diffuse", 0.4f, 0.4f, 0.4f);
         lightingShader.setVec3("dirLights[0].specular", 0.5f, 0.5f, 0.5f);
         // point light 1
@@ -426,14 +429,14 @@ int main()
 
         // draw planet
         lightingShader.setMat4("model", model);
-        cube.Draw(lightingShader);
+        m.Draw(lightingShader);
 
         // draw meteorites
         instanceShader.use();
         instanceShader.setMat4("model", model);
 
         glBindTexture(GL_TEXTURE_2D, rock.textures_loaded[0].id); // note: we also made the textures_loaded vector public (instead of private) from the model class.
-        for (unsigned int i = 0; i < rock.meshes.size(); i++)
+        for (GLuint i = 0; i < rock.meshes.size(); i++)
         {
             glBindVertexArray(rock.meshes[i].getVAO());
             glDrawElementsInstanced(GL_TRIANGLES, rock.meshes[i].indices.size(), GL_UNSIGNED_INT, 0, amount);
@@ -501,7 +504,7 @@ int main()
 
             ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
             ImGui::Checkbox("Stupid Toby", &show_demo_window);      // Edit bools storing our window open/close state
-            ImGui::Checkbox("Another Window", &show_another_window);
+            ImGui::Checkbox("Render Window", &show_render_window);
 
             ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
             ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
@@ -516,27 +519,34 @@ int main()
         }
 
         // 3. Show another simple window.
-        if (show_another_window)
+        if (show_render_window)
         {
-            ImGui::Begin("Wow! Amaze!", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+            // tell GLFW to capture our mouse
+            glfwSetInputMode(window.m_glfwWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+            // Set render window position
+            ImGui::SetWindowPos("Render Window", ImVec2(0, 0), ImGuiCond_FirstUseEver);
+            // Set render window size
+            ImGui::SetWindowSize("Render Window", ImVec2(RENDER_WINDOW_DEFAULT_X, RENDER_WINDOW_DEFAULT_Y), ImGuiCond_FirstUseEver);
+            ImGui::SetNextWindowSize(ImVec2(RENDER_WINDOW_DEFAULT_X, RENDER_WINDOW_DEFAULT_Y), ImGuiCond_FirstUseEver);
+            ImGui::Begin("Wow! Amaze!", &show_render_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
             ImGui::Text("Such Window!");
+            // Window for rendering scene
+            ImGui::GetWindowDrawList()->AddImage(
+                    (void *)textureColorbuffer, ImVec2(ImGui::GetItemRectMin().x,
+                                                       ImGui::GetItemRectMin().y),
+                    ImVec2(RENDER_WINDOW_DEFAULT_X,RENDER_WINDOW_DEFAULT_Y), ImVec2(0, 1), ImVec2(1, 0));
             if (ImGui::Button("Much Closing!"))
-                show_another_window = false;
+                show_render_window = false;
+            if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Escape)))
+            {
+                glfwSetInputMode(window.m_glfwWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+                //show_render_window = false;
+            }
+
             ImGui::End();
         }
 
         ImVec2 pos = ImGui::GetCursorScreenPos();
-
-        // Set render window position
-        ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_FirstUseEver);
-        // Set render window size
-        ImGui::SetNextWindowSize(ImVec2(1920*2, 1080), ImGuiCond_FirstUseEver);
-
-        // Window for rendering scene
-        ImGui::GetWindowDrawList()->AddImage(
-                (void *)textureColorbuffer, ImVec2(ImGui::GetItemRectMin().x,
-                                                   ImGui::GetItemRectMin().y),
-                ImVec2(1920,1080), ImVec2(0, 1), ImVec2(1, 0));
 
         // Rendering
         ImGui::Render();
@@ -548,12 +558,9 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-        glfwMakeContextCurrent(window.m_glfwWindow);
-        glfwSwapBuffers(window.m_glfwWindow);
-
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
-        //window.update();
+        window.update();
         glfwPollEvents();
     }
 

@@ -5,20 +5,24 @@
 #ifndef OPENGLSETUP_MESH_H
 #define OPENGLSETUP_MESH_H
 
-#include <glad/glad.h> // holds all OpenGL type declarations
+// STD Library Includes
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <vector>
 
+// OpenGL includes
+#include <glad/glad.h> // holds all OpenGL type declarations
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "shader.h"
-
-#include <string>
-#include <fstream>
-#include <sstream>
-#include <iostream>
-#include <vector>
-#include "vertex.h"
+// Engine Includes
 #include "texture.h"
+#include "Primitive.h"
+#include "shader.h"
+#include "vertex.h"
+
 
 class Mesh {
 public:
@@ -29,6 +33,7 @@ public:
     /* Functions */
     Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures);
     Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
+    Mesh(Primitive *primitive);
     void Draw(Shader shader);
     unsigned int getVAO(void);
 private:
