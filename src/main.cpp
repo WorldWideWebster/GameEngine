@@ -17,12 +17,12 @@
 #include "shader.h"
 #include "camera.h"
 #include "model.h"
+#include "cube.h"
 #include "window.h"
 #include "mesh.h"
 #include "vertices.h"
 #include "texture.h"
-#include "cube.h"
-#include "triangle.h"
+#include "Terrain.h"
 #include "main_defs.h"
 #include <iostream>
 
@@ -305,12 +305,16 @@ int main()
 
     float lightx = 1.0f, lighty = 1.0f, lightz = 1.0f;
 
-    Cube tri;
+    bool flashlight = false;
+
+    Terrain tri;
     Mesh m(&tri);
     // render loop
     // -----------
     while (!window.shouldClose())
     {
+        // TODO: move render loop to separate file
+
         // per-frame time logic
         // --------------------
         float currentFrame = glfwGetTime();
@@ -336,8 +340,6 @@ int main()
 
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-
 
         // TODO: Move lighting stuff to a separate file
 
@@ -365,18 +367,33 @@ int main()
         lightingShader.setFloat("pointLights[0].constant", 1.0f);
         lightingShader.setFloat("pointLights[0].linear", 0.09);
         lightingShader.setFloat("pointLights[0].quadratic", 0.032);
-        // spotLight
-        lightingShader.setVec3("spotLights[0].position", camera.Position);
-        lightingShader.setVec3("spotLights[0].direction", camera.Front);
-        lightingShader.setVec3("spotLights[0].ambient", 0.0f, 0.0f, 0.0f);
-        lightingShader.setVec3("spotLights[0].diffuse", 1.0f, 1.0f, 1.0f);
-        lightingShader.setVec3("spotLights[0].specular", 1.0f, 1.0f, 1.0f);
-        lightingShader.setFloat("spotLights[0].constant", 1.0f);
-        lightingShader.setFloat("spotLights[0].linear", 0.09);
-        lightingShader.setFloat("spotLights[0].quadratic", 0.032);
-        lightingShader.setFloat("spotLights[0].cutOff", glm::cos(glm::radians(12.5f)));
-        lightingShader.setFloat("spotLights[0].outerCutOff", glm::cos(glm::radians(15.0f)));
-
+        if(flashlight)
+        {
+            // spotLight
+            lightingShader.setVec3("spotLights[0].position", camera.Position);
+            lightingShader.setVec3("spotLights[0].direction", camera.Front);
+            lightingShader.setVec3("spotLights[0].ambient", 0.0f, 0.0f, 0.0f);
+            lightingShader.setVec3("spotLights[0].diffuse", 1.0f, 1.0f, 1.0f);
+            lightingShader.setVec3("spotLights[0].specular", 1.0f, 1.0f, 1.0f);
+            lightingShader.setFloat("spotLights[0].constant", 1.0f);
+            lightingShader.setFloat("spotLights[0].linear", 0.09);
+            lightingShader.setFloat("spotLights[0].quadratic", 0.032);
+            lightingShader.setFloat("spotLights[0].cutOff", glm::cos(glm::radians(12.5f)));
+            lightingShader.setFloat("spotLights[0].outerCutOff", glm::cos(glm::radians(15.0f)));
+        }
+        else
+        {
+            lightingShader.setVec3("spotLights[0].position", camera.Position);
+            lightingShader.setVec3("spotLights[0].direction", camera.Front);
+            lightingShader.setVec3("spotLights[0].ambient", 0.0f, 0.0f, 0.0f);
+            lightingShader.setVec3("spotLights[0].diffuse", 0.0f, 0.0f, 0.0f);
+            lightingShader.setVec3("spotLights[0].specular", 0.0f, 0.0f, 0.0f);
+            lightingShader.setFloat("spotLights[0].constant", 1.0f);
+            lightingShader.setFloat("spotLights[0].linear", 0.09);
+            lightingShader.setFloat("spotLights[0].quadratic", 0.032);
+            lightingShader.setFloat("spotLights[0].cutOff", glm::cos(glm::radians(12.5f)));
+            lightingShader.setFloat("spotLights[0].outerCutOff", glm::cos(glm::radians(15.0f)));
+        }
         // be sure to activate shader when setting uniforms/drawing objects
         instanceShader.use();
         instanceShader.setVec3("viewPos", camera.Position);
@@ -384,7 +401,6 @@ int main()
         instanceShader.setInt("num_point_lights", 1);
         instanceShader.setInt("num_dir_lights", 1);
         instanceShader.setInt("num_spot_lights", 1);
-        // directional light
         instanceShader.setVec3("dirLights[0].direction", -0.2f, -1.0f, -0.3f);
         instanceShader.setVec3("dirLights[0].ambient", 0.05f, 0.05f, 0.05f);
         instanceShader.setVec3("dirLights[0].diffuse", 0.4f, 0.4f, 0.4f);
@@ -398,17 +414,33 @@ int main()
         instanceShader.setFloat("pointLights[0].linear", 0.09);
         instanceShader.setFloat("pointLights[0].quadratic", 0.032);
         // spotLight
-        instanceShader.setVec3("spotLights[0].position", camera.Position);
-        instanceShader.setVec3("spotLights[0].direction", camera.Front);
-        instanceShader.setVec3("spotLights[0].ambient", 0.0f, 0.0f, 0.0f);
-        instanceShader.setVec3("spotLights[0].diffuse", 1.0f, 1.0f, 1.0f);
-        instanceShader.setVec3("spotLights[0].specular", 1.0f, 1.0f, 1.0f);
-        instanceShader.setFloat("spotLights[0].constant", 1.0f);
-        instanceShader.setFloat("spotLights[0].linear", 0.09);
-        instanceShader.setFloat("spotLights[0].quadratic", 0.032);
-        instanceShader.setFloat("spotLights[0].cutOff", glm::cos(glm::radians(12.5f)));
-        instanceShader.setFloat("spotLights[0].outerCutOff", glm::cos(glm::radians(15.0f)));
-
+        if(flashlight)
+        {
+            // directional light
+            instanceShader.setVec3("spotLights[0].position", camera.Position);
+            instanceShader.setVec3("spotLights[0].direction", camera.Front);
+            instanceShader.setVec3("spotLights[0].ambient", 0.0f, 0.0f, 0.0f);
+            instanceShader.setVec3("spotLights[0].diffuse", 1.0f, 1.0f, 1.0f);
+            instanceShader.setVec3("spotLights[0].specular", 1.0f, 1.0f, 1.0f);
+            instanceShader.setFloat("spotLights[0].constant", 1.0f);
+            instanceShader.setFloat("spotLights[0].linear", 0.09);
+            instanceShader.setFloat("spotLights[0].quadratic", 0.032);
+            instanceShader.setFloat("spotLights[0].cutOff", glm::cos(glm::radians(12.5f)));
+            instanceShader.setFloat("spotLights[0].outerCutOff", glm::cos(glm::radians(15.0f)));
+        }
+        else
+        {
+            instanceShader.setVec3("spotLights[0].position", camera.Position);
+            instanceShader.setVec3("spotLights[0].direction", camera.Front);
+            instanceShader.setVec3("spotLights[0].ambient", 0.0f, 0.0f, 0.0f);
+            instanceShader.setVec3("spotLights[0].diffuse", 0.0f, 0.0f, 0.0f);
+            instanceShader.setVec3("spotLights[0].specular", 0.0f, 0.0f, 0.0f);
+            instanceShader.setFloat("spotLights[0].constant", 1.0f);
+            instanceShader.setFloat("spotLights[0].linear", 0.09);
+            instanceShader.setFloat("spotLights[0].quadratic", 0.032);
+            instanceShader.setFloat("spotLights[0].cutOff", glm::cos(glm::radians(12.5f)));
+            instanceShader.setFloat("spotLights[0].outerCutOff", glm::cos(glm::radians(15.0f)));
+        }
         glm::mat4 model;
         lightingShader.use();
 
@@ -452,6 +484,8 @@ int main()
         // Draw the lamp object
         glBindVertexArray(lightVAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
+        //m.Draw(lampShader);
+        // WHY: Why does this slow down so much?
 
 
 
@@ -464,7 +498,7 @@ int main()
 
         // skybox cube
         glBindVertexArray(skyboxVAO);
-        glActiveTexture(GL_TEXTURE0);
+        glActiveTexture(GL_TEXTURE);
         glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         glBindVertexArray(0);
@@ -540,10 +574,14 @@ int main()
             if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Escape)))
             {
                 glfwSetInputMode(window.m_glfwWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-                //show_render_window = false;
+                show_render_window = false;
+            }
+            if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_F)))
+            {
+                flashlight = !flashlight;
             }
 
-            ImGui::End();
+                ImGui::End();
         }
 
         ImVec2 pos = ImGui::GetCursorScreenPos();

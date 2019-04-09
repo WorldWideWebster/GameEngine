@@ -36,6 +36,15 @@ Mesh::Mesh(Primitive *primitive)
     setupMesh();
 }
 
+Mesh::Mesh(Primitive *primitive, std::vector <Texture> textures)
+{
+    this->vertices = primitive->getVertices();
+    this->indices = primitive->getIndices();
+    this->textures = textures;
+    // Now that we have all of the required data, set the vertex buffers and its attribute pointers
+    setupMesh();
+}
+
 
 void Mesh::setupMesh()
 {
@@ -108,6 +117,7 @@ void Mesh::Draw(Shader shader)
     }
     else
     {
+        // FIXME: Have file load somewhere else
         // If there are no textures, use default texture
         GLuint DEFAULT_TEXTURE = loadTexture("../resources/life_has_many_doors.png");
         glActiveTexture(GL_TEXTURE0);
