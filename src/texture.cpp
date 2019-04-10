@@ -127,3 +127,23 @@ unsigned int TextureFromFile(const char *path, const std::string &directory, boo
 
     return textureID;
 }
+
+// utility function for loading a Heightmap from file
+// ---------------------------------------------------
+unsigned char *loadHeightMap(char const * path, int *width, int *height)
+{
+
+    int nrComponents;
+    unsigned char *data = stbi_load(path, width, height, &nrComponents, 0);
+    if (data)
+    {
+
+    }
+    else
+    {
+        std::cout << "Texture failed to load at path: " << path << std::endl;
+        stbi_image_free(data);
+    }
+
+    return data;
+}

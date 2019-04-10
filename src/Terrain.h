@@ -21,6 +21,7 @@ class Terrain : public Primitive
 public:
     Terrain() : Primitive()
     {
+        size = 200;
         vertex_count = 32;
         int count = vertex_count * vertex_count;
         Vertex vertices[count];
