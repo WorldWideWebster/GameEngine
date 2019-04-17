@@ -46,6 +46,7 @@ Mesh::Mesh(Primitive *primitive, std::vector <Texture> textures)
 }
 
 
+
 void Mesh::setupMesh()
 {
     glGenVertexArrays(1, &VAO);
@@ -78,6 +79,12 @@ void Mesh::setupMesh()
     glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Bitangent));
 
     glBindVertexArray(0);
+
+    if(!textures.size())
+    {
+        DEFAULT_TEXTURE = loadTexture("../resources/life_has_many_doors.png");
+    }
+
 }
 
 // Render the mesh
@@ -117,12 +124,11 @@ void Mesh::Draw(Shader shader)
     }
     else
     {
-        // FIXME: Have file load somewhere else
         // If there are no textures, use default texture
-        GLuint DEFAULT_TEXTURE = loadTexture("../resources/life_has_many_doors.png");
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, DEFAULT_TEXTURE);
         glActiveTexture(GL_TEXTURE0);
+
     }
     // Draw Mesh
     glBindVertexArray(VAO);

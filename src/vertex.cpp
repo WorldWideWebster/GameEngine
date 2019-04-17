@@ -148,3 +148,21 @@ std::vector<Vertex> vertexFromVertices(std::vector<float> vertexIn)
     }
     return outVert;
 }
+
+void VertNormCalc(Vertex *verticesIn, GLuint nrOfVertices)
+{
+    for(int i = 0; i < nrOfVertices; i++)
+    {
+        if (i == 0)
+        {
+
+        }
+        else if (i == (nrOfVertices - 1))
+        {
+
+        }
+        else
+        {
+        }
+    }
+}

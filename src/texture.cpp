@@ -130,14 +130,22 @@ unsigned int TextureFromFile(const char *path, const std::string &directory, boo
 
 // utility function for loading a Heightmap from file
 // ---------------------------------------------------
-unsigned char *loadHeightMap(char const * path, int *width, int *height)
+unsigned char **loadXYHeightMap(char const * path, int *width, int *height)
 {
 
     int nrComponents;
     unsigned char *data = stbi_load(path, width, height, &nrComponents, 0);
+    unsigned char heightMap[*height][*width];
     if (data)
     {
-
+        int count = 0;
+        for(int i = 0; i < *height; i++)
+        {
+            for(int j = 0; j < *width; j++)
+            {
+                heightMap[i][j] = data[count++];
+            }
+        }
     }
     else
     {
@@ -145,5 +153,6 @@ unsigned char *loadHeightMap(char const * path, int *width, int *height)
         stbi_image_free(data);
     }
 
-    return data;
+    unsigned char **hM = (unsigned char**)heightMap;
+    return hM;
 }

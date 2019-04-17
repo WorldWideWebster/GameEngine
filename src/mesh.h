@@ -35,6 +35,12 @@ public:
     Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
     Mesh(Primitive *primitive);
     Mesh(Primitive *primitive, std::vector <Texture> textures);
+    ~Mesh()
+    {
+        vertices.clear();
+        indices.clear();
+        textures.clear();
+    }
     void Draw(Shader shader);
     unsigned int getVAO(void);
 private:
@@ -42,6 +48,7 @@ private:
     unsigned int VAO, VBO, EBO;
     /* Functions */
     void setupMesh();
+    GLuint DEFAULT_TEXTURE;
 };
 
 

@@ -37,5 +37,6 @@ std::vector<Vertex> vertexFromVertices(std::vector<float> vertexIn);
 
 std::vector<Vertex> fillVertexVector(std::vector<float> verticesIn, std::vector<float> normsIn, std::vector<float> texcIn);
 void VertTanCalc(Vertex *verticesIn, GLuint nrOfVertices);
+void VertNormCalc(Vertex *verticesIn, GLuint nrOfVertices);
 
 #endif //VERTEX_H
