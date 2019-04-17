@@ -22,7 +22,7 @@ enum Camera_Movement {
 // Default camera values
 const float YAW         = -90.0f;
 const float PITCH       =  0.0f;
-const float SPEED       =  2.5f;
+const float SPEED       =  50.5f;
 const float SENSITIVITY =  0.1f;
 const float ZOOM        =  45.0f;
 
@@ -72,7 +72,8 @@ public:
     void ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true);
     // Process input received rom a mouse scroll-wheel event. Only requires input on the vertical wheel-axis
     void ProcessMouseScroll(float yoffset);
-
+    // Set camera movement speed
+    void setSpeed(float speed)   {this->MovementSpeed = speed;}
 private:
     // Calculates the front vector from the Camera's (updated) Euler Angles
     void updateCameraVectors()

@@ -23,6 +23,7 @@ struct Texture {
 unsigned int loadTexture(char const * path);
 unsigned int loadCubemap(std::vector<std::string> faces);
 
+unsigned char **loadXYHeightMap(char const * path, int *width, int *height);
 
 
 #endif //TEXTURE_H

@@ -22,8 +22,8 @@ Window::Window()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    m_glfwWindow = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
-    if (m_glfwWindow == NULL)
+    this->m_glfwWindow = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
+    if (this->m_glfwWindow == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
@@ -32,16 +32,16 @@ Window::Window()
 
     // glfw m_glfwWindow creation
     // --------------------
-    glfwMakeContextCurrent(m_glfwWindow);
+    glfwMakeContextCurrent(this->m_glfwWindow);
 
-    glfwSetWindowUserPointer(m_glfwWindow, this);
+    glfwSetWindowUserPointer(this->m_glfwWindow, this);
 
-    glfwSetFramebufferSizeCallback(m_glfwWindow, framebuffer_size_callback);
-    glfwSetCursorPosCallback(m_glfwWindow, mouse_callback_wrapper);
-    glfwSetScrollCallback(m_glfwWindow, scroll_callback_wrapper);
+    glfwSetFramebufferSizeCallback(this->m_glfwWindow, framebuffer_size_callback);
+    glfwSetCursorPosCallback(this->m_glfwWindow, mouse_callback_wrapper);
+    glfwSetScrollCallback(this->m_glfwWindow, scroll_callback_wrapper);
 
     // tell GLFW to capture our mouse
-    glfwSetInputMode(m_glfwWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetInputMode(this->m_glfwWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 }
 
 Window::Window(std::string t, int w, int h)
@@ -61,8 +61,8 @@ Window::Window(std::string t, int w, int h)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    m_glfwWindow = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
-    if (m_glfwWindow == NULL)
+    this->m_glfwWindow = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
+    if (this->m_glfwWindow == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
@@ -71,21 +71,21 @@ Window::Window(std::string t, int w, int h)
 
     // glfw m_glfwWindow creation
     // --------------------
-    glfwMakeContextCurrent(m_glfwWindow);
+    glfwMakeContextCurrent(this->m_glfwWindow);
 
-    glfwSetWindowUserPointer(m_glfwWindow, this);
+    glfwSetWindowUserPointer(this->m_glfwWindow, this);
 
-    glfwSetFramebufferSizeCallback(m_glfwWindow, framebuffer_size_callback);
-    glfwSetCursorPosCallback(m_glfwWindow, mouse_callback_wrapper);
-    glfwSetScrollCallback(m_glfwWindow, scroll_callback_wrapper);
+    glfwSetFramebufferSizeCallback(this->m_glfwWindow, framebuffer_size_callback);
+    glfwSetCursorPosCallback(this->m_glfwWindow, mouse_callback_wrapper);
+    glfwSetScrollCallback(this->m_glfwWindow, scroll_callback_wrapper);
 
     // tell GLFW to capture our mouse
-    glfwSetInputMode(m_glfwWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetInputMode(this->m_glfwWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 }
 
 Window::~Window()
 {
-    glfwDestroyWindow(m_glfwWindow);
+    glfwDestroyWindow(this->m_glfwWindow);
 }
 
 
@@ -93,27 +93,29 @@ Window::~Window()
 // ---------------------------------------------------------------------------------------------------------
 void Window::processInput(float deltaTime)
 {
-    if (glfwGetKey(m_glfwWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+    /*
+    if (glfwGetKey(this->m_glfwWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS)
     {
-        // glfwSetWindowShouldClose(m_glfwWindow, true);
-        if (glfwGetInputMode(m_glfwWindow, GLFW_CURSOR) == GLFW_CURSOR_NORMAL)
+        // glfwSetWindowShouldClose(this->m_glfwWindow, true);
+        if (glfwGetInputMode(this->m_glfwWindow, GLFW_CURSOR) == GLFW_CURSOR_NORMAL)
         {
-            glfwSetInputMode(m_glfwWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+            glfwSetInputMode(this->m_glfwWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         }
         else
         {
-            glfwSetInputMode(m_glfwWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+            glfwSetInputMode(this->m_glfwWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
         }
     }
-    if (glfwGetKey(m_glfwWindow, GLFW_KEY_W) == GLFW_PRESS)
+     */
+    if (glfwGetKey(this->m_glfwWindow, GLFW_KEY_W) == GLFW_PRESS)
         camera->ProcessKeyboard(FORWARD, deltaTime);
-    if (glfwGetKey(m_glfwWindow, GLFW_KEY_S) == GLFW_PRESS)
+    if (glfwGetKey(this->m_glfwWindow, GLFW_KEY_S) == GLFW_PRESS)
         camera->ProcessKeyboard(BACKWARD, deltaTime);
-    if (glfwGetKey(m_glfwWindow, GLFW_KEY_A) == GLFW_PRESS)
+    if (glfwGetKey(this->m_glfwWindow, GLFW_KEY_A) == GLFW_PRESS)
         camera->ProcessKeyboard(LEFT, deltaTime);
-    if (glfwGetKey(m_glfwWindow, GLFW_KEY_D) == GLFW_PRESS)
+    if (glfwGetKey(this->m_glfwWindow, GLFW_KEY_D) == GLFW_PRESS)
         camera->ProcessKeyboard(RIGHT, deltaTime);
-    if (glfwGetKey(m_glfwWindow, GLFW_KEY_P) == GLFW_PRESS)
+    if (glfwGetKey(this->m_glfwWindow, GLFW_KEY_P) == GLFW_PRESS)
     {
         if (polyMode)
         {
@@ -132,7 +134,7 @@ void Window::processInput(float deltaTime)
 
 int Window::shouldClose()
 {
-    return glfwWindowShouldClose(m_glfwWindow);
+    return glfwWindowShouldClose(this->m_glfwWindow);
 }
 
 void Window::update()
@@ -142,18 +144,19 @@ void Window::update()
 
 void Window::swapBuffers()
 {
-    glfwSwapBuffers(m_glfwWindow);
+    glfwMakeContextCurrent(this->m_glfwWindow);
+    glfwSwapBuffers(this->m_glfwWindow);
 }
 
 int Window::getWidth()
 {
-    glfwGetFramebufferSize(m_glfwWindow, &width, &height);
+    glfwGetFramebufferSize(this->m_glfwWindow, &width, &height);
     return width;
 }
 
 int Window::getHeight()
 {
-    glfwGetFramebufferSize(m_glfwWindow, &width, &height);
+    glfwGetFramebufferSize(this->m_glfwWindow, &width, &height);
     return height;
 }
 
@@ -180,7 +183,7 @@ void Window::mouse_callback(double xpos, double ypos)
     lastX = xpos;
     lastY = ypos;
 
-    if (glfwGetInputMode(m_glfwWindow, GLFW_CURSOR) != GLFW_CURSOR_NORMAL)
+    if (glfwGetInputMode(this->m_glfwWindow, GLFW_CURSOR) != GLFW_CURSOR_NORMAL)
     {
         camera->ProcessMouseMovement(xoffset, yoffset);
     }

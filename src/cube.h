@@ -261,7 +261,7 @@ const std::vector<unsigned int> CubeIndices = {
     6, 7, 3
 };
 
-
+/*
 
 class Cube : public Mesh
 {
@@ -270,6 +270,6 @@ public:
 private:
 
 };
-
+*/
 
 #endif //OPENGLSETUP_CUBE_H
