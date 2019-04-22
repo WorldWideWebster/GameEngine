@@ -6,8 +6,8 @@
 #define OPENGLSETUP_CUBE_H
 
 #include <vector>
-#include "vertex.h"
-#include "mesh.h"
+#include "../../vertex.h"
+#include "../../mesh.h"
 
 
 // set up vertex data and buffer(s)) and configure vertex attributes

@@ -3,4 +3,5 @@ set(HEADER_FILES shader.cpp shader.h stb_image.h camera.cpp camera.h mesh.cpp me
 
 
 add_subdirectory(imgui)
+add_subdirectory(primitives)
 

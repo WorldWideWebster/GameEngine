@@ -19,7 +19,7 @@
 
 // Engine Includes
 #include "texture.h"
-#include "Primitive.h"
+#include "primitives/Primitive.h"
 #include "shader.h"
 #include "vertex.h"
 

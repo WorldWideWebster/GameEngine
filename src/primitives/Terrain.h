@@ -14,9 +14,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 // Engine Includes
-#include "vertex.h"
+#include "../vertex.h"
 #include "Primitive.h"
-#include "texture.h"
+#include "../texture.h"
+#include "../HeightMap.h"
 
 
 
@@ -26,12 +27,15 @@ public:
     Terrain();
 
     virtual ~Terrain();
-
+    void calculateNormals(std::vector< std::vector<unsigned char>> heightMap, Vertex *vertices);
+    void calculateIndices(GLuint *indices, int width, int height);
 private:
     GLuint size;
     GLuint vertex_count;
     float x, y;
-
+    float scale = 1;
+   // HeightMap heightMap;
+    int width, height;
 };
 
 

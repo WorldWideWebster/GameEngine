@@ -23,14 +23,14 @@
 
 // Engine Includes
 #include "camera.h"
-#include "cube.h"
+#include "primitives/depreciated/cube.h"
 #include "main_defs.h"
 #include "mesh.h"
 #include "model.h"
-#include "Primitive.h"
+#include "primitives/Primitive.h"
 #include "RenderBuffer.h"
 #include "shader.h"
-#include "Terrain.h"
+#include "primitives/Terrain.h"
 #include "texture.h"
 #include "vertex.h"
 #include "vertices.h"

@@ -12,6 +12,6 @@ set(imgui_source_files
         imgui_impl_glfw.h
         imstb_rectpack.h
         imstb_textedit.h
-        imstb_truetype.h ../Primitive.cpp ../Primitive.h)
+        imstb_truetype.h)
 
 add_library(imgui ${imgui_source_files})
