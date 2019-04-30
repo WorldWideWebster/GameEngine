@@ -57,4 +57,4 @@ add_subdirectory(src)
 
 
 add_executable(OpenGLSetup ${SOURCE_FILES} ${HEADER_FILES})
-target_link_libraries(OpenGLSetup glfw primitives imgui ${dir}/build/libassimpd.dll.a)
+target_link_libraries(OpenGLSetup glfw primitives imgui ${dir}/dependencies/libs/libassimpd.dll.a)
