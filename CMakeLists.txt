@@ -57,4 +57,10 @@ add_subdirectory(src)
 
 
 add_executable(OpenGLSetup ${SOURCE_FILES} ${HEADER_FILES})
+
+add_custom_command(TARGET OpenGLSetup PRE_BUILD         # Adds a post-build event to OpenGLSetup
+        COMMAND ${CMAKE_COMMAND} -E copy_directory      # which executes "cmake - E copy_directory..."
+        "${PROJECT_SOURCE_DIR}/dependencies/libs"       # <--this is in-file
+        ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})              # <--this is out-file path
+        
 target_link_libraries(OpenGLSetup glfw primitives imgui ${dir}/build/libassimpd.dll.a)
