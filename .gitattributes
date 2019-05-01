@@ -2,3 +2,5 @@ build/libassimpd.dll filter=lfs diff=lfs merge=lfs -text
 build/libassimpd.dll.a filter=lfs diff=lfs merge=lfs -text
 dependencies/include/assimp/libassimpd.dll filter=lfs diff=lfs merge=lfs -text
 dependencies/include/assimp/libassimpd.dll.a filter=lfs diff=lfs merge=lfs -text
+*.dll filter=lfs diff=lfs merge=lfs -text
+*.dll.a filter=lfs diff=lfs merge=lfs -text
