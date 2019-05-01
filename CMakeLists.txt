@@ -57,4 +57,18 @@ add_subdirectory(src)
 
 
 add_executable(OpenGLSetup ${SOURCE_FILES} ${HEADER_FILES})
+
+#Copy libs to build folder
+add_custom_command(TARGET OpenGLSetup PRE_BUILD         # Adds a post-build event to OpenGLSetup
+        COMMAND ${CMAKE_COMMAND} -E copy_directory      # which executes "cmake - E copy_directory..."
+        "${PROJECT_SOURCE_DIR}/dependencies/libs"       # <--this is in-file
+        ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})              # <--this is out-file path
+
+#Copy resources folder to build folder
+add_custom_command(TARGET OpenGLSetup PRE_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${PROJECT_SOURCE_DIR}/resources"
+        ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/resources)
+
+#FIXME: There must be a better way to add the assimp library
 target_link_libraries(OpenGLSetup glfw primitives imgui ${dir}/dependencies/libs/libassimpd.dll.a)
