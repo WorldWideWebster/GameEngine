@@ -7,34 +7,25 @@
 
 #include "../stb_image.h"
 
+#include <string>
+
+
+
 // Default Terrain constructor
 Terrain::Terrain() : Primitive()
 {
     // Default terrain generation values
-    scale = 1;
+    scale = 0.25;
     size = 512;
 
-    int nrComponents;
-    // TODO: move heightmap loading to separate function
-    stbi_uc *image = stbi_load("../resources/heightmap.png", &width, &height, &nrComponents, 1);
-    std::vector< std::vector<unsigned char>> heightMap;
-    if (image)
-    {
-        for(int gy = 0; gy < height; gy++)
-        {
-            std::vector<unsigned char> heightMapRow;
-            for(int gx = 0; gx < width; gx++)
-            {
-                heightMapRow.push_back(image[width * gy + gx]);
-            }
-            heightMap.push_back(heightMapRow);
-        }
-    }
+    std::string filename = "../resources/heightmap3.png";
+
+    setImageAsHeightMap(filename);
+
 
     vertex_count = height;
     int count = vertex_count * vertex_count;
-    // FIXME: fix stack overflow on larger heightmaps
-    Vertex vertices[count];
+    Vertex *vertices = new Vertex[count];
     int vertexPointer = 0;
     for(int gy=0;gy<vertex_count;gy++)
     {
@@ -42,50 +33,32 @@ Terrain::Terrain() : Primitive()
         {
             // Fill vertices
             vertices[vertexPointer] =
-                    {glm::vec3(((float)gx/((float)vertex_count - 1) * size), (float)heightMap[gy][gx]/scale, ((float)gy/((float)vertex_count - 1) * size)),
+                    {glm::vec3(((float)gx/((float)vertex_count - 1) * size), (float)heightMap[gy][gx]*scale, ((float)gy/((float)vertex_count - 1) * size)),
                      glm::vec3(0, 1, 0),
                      glm::vec2((float)gx/((float)vertex_count - 1), (float)gy/((float)vertex_count - 1))};
             vertexPointer++;
         }
     }
 
-    // Generate Normals
-    vertexPointer = 0;
-    for(int gy=0;gy<vertex_count;gy++)
-    {
-        for (int gx = 0; gx < vertex_count; gx++)
-        {
-            float heightL = heightMap[gy][gx ? gx - 1 : gx];
-            float heightR = heightMap[gy][gx < vertex_count-1 ? gx + 1 : gx];
-            float heightD = heightMap[gy ? gy - 1 : gy][gx];
-            float heightU = heightMap[gy < vertex_count-1 ? gy + 1 : gy][gx];
-            glm::vec3 norm = glm::vec3((heightR - heightL), 2.0f,heightU - heightD );
-            norm = glm::normalize(norm);
-            vertices[vertexPointer].Normal = norm;
-            vertexPointer++;
-        }
-    }
-
-     calculateNormals(heightMap, vertices);
-
-    GLuint indices[6*(vertex_count-1)*(vertex_count-1)];
+    calculateNormals(heightMap, vertices);
+    GLuint *indices = new GLuint[6*(vertex_count-1)*(vertex_count-1)];
     calculateIndices(indices, width, height);
 
-    unsigned nrOfVertices = sizeof(vertices) / sizeof(Vertex);
+    unsigned nrOfVertices = (vertex_count)*(vertex_count);
 
     VertTanCalc(vertices, nrOfVertices);
 
-    unsigned nrOfIndices = sizeof(indices) / sizeof(GLuint);
+    unsigned nrOfIndices = 6*(vertex_count-1)*(vertex_count-1);
 
     this->set(vertices, nrOfVertices, indices, nrOfIndices);
 }
 
 Terrain::~Terrain()
 {
-
 }
 
-// FIXME: function causes crash
+// FIXME: Normal x-y directions are backwards
+// Switch D-U/ L-R?
 void Terrain::calculateNormals(std::vector< std::vector<unsigned char>> heightMap, Vertex *vertices)
 {
     // Generate Normals
@@ -96,8 +69,8 @@ void Terrain::calculateNormals(std::vector< std::vector<unsigned char>> heightMa
         {
             float heightL = heightMap[gy][gx ? gx - 1 : gx];
             float heightR = heightMap[gy][gx < vertex_count-1 ? gx + 1 : gx];
-            float heightD = heightMap[gy ? gy - 1 : gy][gx];
-            float heightU = heightMap[gy < vertex_count-1 ? gy + 1 : gy][gx];
+            float heightU = heightMap[gy ? gy - 1 : gy][gx];
+            float heightD = heightMap[gy < vertex_count-1 ? gy + 1 : gy][gx];
             glm::vec3 norm = glm::vec3((heightR - heightL), 2.0f,heightU - heightD );
             norm = glm::normalize(norm);
             vertices[vertexPointer].Normal = norm;
@@ -126,4 +99,31 @@ void Terrain::calculateIndices(GLuint *indices, int width, int height)
             indices[pointer++] = bottomRight;
         }
     }
+}
+
+void Terrain::setImageAsHeightMap(std::string filename)
+{
+    // Load heightmap
+    stbi_uc *image = stbi_load(filename.c_str(), &width, &height, &nrComponents, 1);
+    if (image)
+        std::clog << "Read \"" << filename << "\": " << width << "x" << height << "x" << nrComponents << std::endl;
+    else
+        std::clog << stbi_failure_reason() << std::endl;
+
+
+
+    if (image)
+    {
+        for(int gy = 0; gy < height; gy++)
+        {
+            std::vector<unsigned char> heightMapRow;
+            for(int gx = 0; gx < width; gx++)
+            {
+                heightMapRow.push_back(image[width * gy + gx]);
+            }
+            heightMap.push_back(heightMapRow);
+        }
+    }
+
+    stbi_image_free(image);
 }

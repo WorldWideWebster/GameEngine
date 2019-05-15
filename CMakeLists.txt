@@ -36,7 +36,7 @@ set(HEADER_FILES
         src/Lighting.cpp
         src/Lighting.h
         src/RenderBuffer.cpp
-        src/RenderBuffer.h)
+        src/RenderBuffer.h src/Noise.cpp)
 
 set(dir ${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${dir}/build)

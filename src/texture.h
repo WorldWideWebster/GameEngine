@@ -13,11 +13,20 @@
 #include <iostream>
 #include <vector>
 
+// TODO: add width/height to struct
+/*
+ * Return the id of the texture, use the struct when loading from file
+ * create generic image loader -> texture, heightmap etc?
+ * create loaded texture list
+ */
 
 struct Texture {
     unsigned int id;
     std::string type;
     std::string path;
+    int width;
+    int height;
+    int nrComponents;
 };
 
 unsigned int loadTexture(char const * path);
