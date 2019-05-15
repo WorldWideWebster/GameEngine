@@ -34,6 +34,7 @@ int main()
     // build and compile our shader program
     // ------------------------------------
     Shader lightingShader("../shaders/colors.vert", "../shaders/colors.frag");
+    Shader terrainColorShader("../shaders/terrain_colors.vert", "../shaders/terrain_colors.frag");
     Shader lampShader("../shaders/lamp.vert", "../shaders/lamp.frag");
     Shader screenShader("../shaders/framebuffer.vert", "../shaders/framebuffer.frag");
     Shader skyboxShader("../shaders/skybox.vert", "../shaders/skybox.frag");
@@ -145,7 +146,6 @@ int main()
     Model ourModel((char *) "resources/objects/nanosuit/nanosuit.obj");
     Model rock((char *) "resources/objects/rock/rock.obj");
     Model planet((char *) "resources/objects/planet/planet.obj");
-    Model theCube((char *) "resources/objects/cube/cube.obj");
     // generate a large list of semi-random model transformation matrices
     // ------------------------------------------------------------------
     GLuint amount = 1000;
@@ -228,14 +228,16 @@ int main()
 
     bool show_demo_window = true;
     bool show_render_window = false;
+    bool show_image_viewer = false;
+    bool render_input = true;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
     float lightx = 0.5f, lighty = 0.5f, lightz = 0.50f;
 
     bool flashlight = false;
 
-    Terrain tri;
-    Mesh m(&tri);
+    Terrain *tri = new Terrain();
+    Mesh *m = new Mesh(tri);
     // render loop
     // -----------
     while (!window.shouldClose())
@@ -261,56 +263,58 @@ int main()
 
         // TODO: Move lighting stuff to a separate file
 
+        // TODO: Figure out how to have a single light effect multiple shaders
+
         // Time based variables
         lightPos = glm::vec3(50 * cos(glfwGetTime()), 0, 50 * sin(glfwGetTime()));
-        lightDir = glm::vec3(2 * cos(glfwGetTime()), 0, 2 * sin(glfwGetTime()));
+        lightDir = glm::vec3(2 , 0, 2 );
 
         // be sure to activate shader when setting uniforms/drawing objects
-        lightingShader.use();
-        lightingShader.setVec3("viewPos", camera.Position);
-        lightingShader.setFloat("material.shininess", 32.0f);
-        lightingShader.setInt("num_point_lights", 1);
-        lightingShader.setInt("num_dir_lights", 1);
-        lightingShader.setInt("num_spot_lights", 1);
+        terrainColorShader.use();
+        terrainColorShader.setVec3("viewPos", camera.Position);
+        terrainColorShader.setFloat("material.shininess", 1.0f);
+        terrainColorShader.setInt("num_point_lights", 1);
+        terrainColorShader.setInt("num_dir_lights", 1);
+        terrainColorShader.setInt("num_spot_lights", 1);
         // directional light
-        lightingShader.setVec3("dirLights[0].direction", lightDir);
-        lightingShader.setVec3("dirLights[0].ambient", lightx, lighty, lightz);
-        lightingShader.setVec3("dirLights[0].diffuse", 0.4f, 0.4f, 0.4f);
-        lightingShader.setVec3("dirLights[0].specular", 0.5f, 0.5f, 0.5f);
+        terrainColorShader.setVec3("dirLights[0].direction", lightDir);
+        terrainColorShader.setVec3("dirLights[0].ambient", lightx, lighty, lightz);
+        terrainColorShader.setVec3("dirLights[0].diffuse", 0.4f, 0.4f, 0.4f);
+        terrainColorShader.setVec3("dirLights[0].specular", 0.5f, 0.5f, 0.5f);
         // point light 1
-        lightingShader.setVec3("pointLights[0].position", lightPos);
-        lightingShader.setVec3("pointLights[0].ambient", 0.05f, 0.05f, 0.05f);
-        lightingShader.setVec3("pointLights[0].diffuse", 0.8f, 0.8f, 0.8f);
-        lightingShader.setVec3("pointLights[0].specular", 1.0f, 1.0f, 1.0f);
-        lightingShader.setFloat("pointLights[0].constant", 1.0f);
-        lightingShader.setFloat("pointLights[0].linear", 0.09);
-        lightingShader.setFloat("pointLights[0].quadratic", 0.032);
+        terrainColorShader.setVec3("pointLights[0].position", lightPos);
+        terrainColorShader.setVec3("pointLights[0].ambient", 0.05f, 0.05f, 0.05f);
+        terrainColorShader.setVec3("pointLights[0].diffuse", 0.8f, 0.8f, 0.8f);
+        terrainColorShader.setVec3("pointLights[0].specular", 1.0f, 1.0f, 1.0f);
+        terrainColorShader.setFloat("pointLights[0].constant", 1.0f);
+        terrainColorShader.setFloat("pointLights[0].linear", 0.09);
+        terrainColorShader.setFloat("pointLights[0].quadratic", 0.032);
         if (flashlight)
         {
             // spotLight
-            lightingShader.setVec3("spotLights[0].position", camera.Position);
-            lightingShader.setVec3("spotLights[0].direction", camera.Front);
-            lightingShader.setVec3("spotLights[0].ambient", 0.0f, 0.0f, 0.0f);
-            lightingShader.setVec3("spotLights[0].diffuse", 1.0f, 1.0f, 1.0f);
-            lightingShader.setVec3("spotLights[0].specular", 1.0f, 1.0f, 1.0f);
-            lightingShader.setFloat("spotLights[0].constant", 1.0f);
-            lightingShader.setFloat("spotLights[0].linear", 0.09);
-            lightingShader.setFloat("spotLights[0].quadratic", 0.032);
-            lightingShader.setFloat("spotLights[0].cutOff", glm::cos(glm::radians(12.5f)));
-            lightingShader.setFloat("spotLights[0].outerCutOff", glm::cos(glm::radians(15.0f)));
+            terrainColorShader.setVec3("spotLights[0].position", camera.Position);
+            terrainColorShader.setVec3("spotLights[0].direction", camera.Front);
+            terrainColorShader.setVec3("spotLights[0].ambient", 0.0f, 0.0f, 0.0f);
+            terrainColorShader.setVec3("spotLights[0].diffuse", 1.0f, 1.0f, 1.0f);
+            terrainColorShader.setVec3("spotLights[0].specular", 1.0f, 1.0f, 1.0f);
+            terrainColorShader.setFloat("spotLights[0].constant", 1.0f);
+            terrainColorShader.setFloat("spotLights[0].linear", 0.09);
+            terrainColorShader.setFloat("spotLights[0].quadratic", 0.032);
+            terrainColorShader.setFloat("spotLights[0].cutOff", glm::cos(glm::radians(12.5f)));
+            terrainColorShader.setFloat("spotLights[0].outerCutOff", glm::cos(glm::radians(15.0f)));
         }
         else
         {
-            lightingShader.setVec3("spotLights[0].position", camera.Position);
-            lightingShader.setVec3("spotLights[0].direction", camera.Front);
-            lightingShader.setVec3("spotLights[0].ambient", 0.0f, 0.0f, 0.0f);
-            lightingShader.setVec3("spotLights[0].diffuse", 0.0f, 0.0f, 0.0f);
-            lightingShader.setVec3("spotLights[0].specular", 0.0f, 0.0f, 0.0f);
-            lightingShader.setFloat("spotLights[0].constant", 1.0f);
-            lightingShader.setFloat("spotLights[0].linear", 0.09);
-            lightingShader.setFloat("spotLights[0].quadratic", 0.032);
-            lightingShader.setFloat("spotLights[0].cutOff", glm::cos(glm::radians(12.5f)));
-            lightingShader.setFloat("spotLights[0].outerCutOff", glm::cos(glm::radians(15.0f)));
+            terrainColorShader.setVec3("spotLights[0].position", camera.Position);
+            terrainColorShader.setVec3("spotLights[0].direction", camera.Front);
+            terrainColorShader.setVec3("spotLights[0].ambient", 0.0f, 0.0f, 0.0f);
+            terrainColorShader.setVec3("spotLights[0].diffuse", 0.0f, 0.0f, 0.0f);
+            terrainColorShader.setVec3("spotLights[0].specular", 0.0f, 0.0f, 0.0f);
+            terrainColorShader.setFloat("spotLights[0].constant", 1.0f);
+            terrainColorShader.setFloat("spotLights[0].linear", 0.09);
+            terrainColorShader.setFloat("spotLights[0].quadratic", 0.032);
+            terrainColorShader.setFloat("spotLights[0].cutOff", glm::cos(glm::radians(12.5f)));
+            terrainColorShader.setFloat("spotLights[0].outerCutOff", glm::cos(glm::radians(15.0f)));
         }
         // be sure to activate shader when setting uniforms/drawing objects
         instanceShader.use();
@@ -360,25 +364,25 @@ int main()
             instanceShader.setFloat("spotLights[0].outerCutOff", glm::cos(glm::radians(15.0f)));
         }
         glm::mat4 model;
-        lightingShader.use();
+        terrainColorShader.use();
 
         // floor
         glBindVertexArray(planeVAO);
         glBindTexture(GL_TEXTURE_2D, floorTexture);
-        lightingShader.setMat4("model", glm::mat4());
+        terrainColorShader.setMat4("model", glm::mat4());
         //glDrawArrays(GL_TRIANGLES, 0, 6);
         glBindVertexArray(0);
 
         /*
         model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f)); // translate it down so it's at the center of the scene
         model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));	// it's a bit too big for our scene, so scale it down
-        lightingShader.setMat4("model", model);
-        theCube.Draw(lightingShader);
+        terrainColorShader.setMat4("model", model);
+        theCube.Draw(terrainColorShader);
         */
 
         // draw planet
-        lightingShader.setMat4("model", model);
-        m.Draw(lightingShader);
+        terrainColorShader.setMat4("model", model);
+        m->Draw(terrainColorShader);
 
         // then draw model with normal visualizing geometry shader
         normalDisplayShader.use();
@@ -386,7 +390,7 @@ int main()
         normalDisplayShader.setMat4("view", view);
         normalDisplayShader.setMat4("model", model);
 
-        m.Draw(normalDisplayShader);
+        m->Draw(normalDisplayShader);
 
 
         // draw meteorites
@@ -469,6 +473,7 @@ int main()
                     "This is some useful text.");               // Display some text (you can use a format strings too)
             ImGui::Checkbox("Stupid Toby", &show_demo_window);      // Edit bools storing our window open/close state
             ImGui::Checkbox("Render Window", &show_render_window);
+            ImGui::Checkbox("Image Viewer", &show_image_viewer);
 
             ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
             ImGui::ColorEdit3("clear color", (float *) &clear_color); // Edit 3 floats representing a color
@@ -482,12 +487,10 @@ int main()
                         ImGui::GetIO().Framerate);
             ImGui::End();
         }
-
+        // FIXME: renderbuffer doesn't move with window
         // 3. Show another simple window.
         if (show_render_window)
         {
-            // tell GLFW to capture our mouse
-            glfwSetInputMode(window.m_glfwWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
             // Set render window position
             ImGui::SetWindowPos("Render Window", ImVec2(0, 0), ImGuiCond_FirstUseEver);
             // Set render window size
@@ -495,18 +498,22 @@ int main()
                                  ImGuiCond_FirstUseEver);
             ImGui::SetNextWindowSize(ImVec2(RENDER_WINDOW_DEFAULT_X, RENDER_WINDOW_DEFAULT_Y), ImGuiCond_FirstUseEver);
             ImGui::Begin("Wow! Amaze!", &show_render_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-            ImGui::Text("Such Window!");
             // Window for rendering scene
-            ImGui::GetWindowDrawList()->AddImage(
-                    (void *) renderBuffer.getTextureColorbuffer(), ImVec2(ImGui::GetItemRectMin().x,
-                                                                          ImGui::GetItemRectMin().y),
-                    ImVec2(RENDER_WINDOW_DEFAULT_X, RENDER_WINDOW_DEFAULT_Y), ImVec2(0, 1), ImVec2(1, 0));
-            if (ImGui::Button("Much Closing!"))
-                show_render_window = false;
+            ImGui::Image(
+                    (void *) renderBuffer.getTextureColorbuffer(), ImVec2(RENDER_WINDOW_DEFAULT_X, RENDER_WINDOW_DEFAULT_Y),
+                    ImVec2(0,1), ImVec2(1,0), ImColor(255,255,255,255), ImColor(255,255,255,128));
             if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Escape)))
             {
+                render_input = !render_input;
+            }
+            if(render_input)
+            {
+                glfwSetInputMode(window.m_glfwWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+            }
+            else
+            {
                 glfwSetInputMode(window.m_glfwWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-                show_render_window = false;
             }
             if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_F)))
             {
@@ -515,6 +522,27 @@ int main()
 
             ImGui::End();
         }
+
+        // 3. Show another simple window.
+        if (show_image_viewer)
+        {
+            // Set render window position
+            ImGui::SetWindowPos("Image Viewer", ImVec2(RENDER_WINDOW_DEFAULT_X, 0), ImGuiCond_FirstUseEver);
+            // Set render window size
+            ImGui::SetWindowSize("Image Viewer", ImVec2(RENDER_WINDOW_DEFAULT_X, RENDER_WINDOW_DEFAULT_Y),
+                                 ImGuiCond_FirstUseEver);
+            ImGui::SetNextWindowSize(ImVec2(RENDER_WINDOW_DEFAULT_X, RENDER_WINDOW_DEFAULT_Y), ImGuiCond_FirstUseEver);
+            ImGui::Begin("Image Viewer", &show_image_viewer);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+            // Window for rendering scene
+            // FIXME: texture doesn't move with window
+            ImGui::Image(
+                    (void *) floorTexture, ImVec2(RENDER_WINDOW_DEFAULT_X, RENDER_WINDOW_DEFAULT_Y),
+                    ImVec2(0,1), ImVec2(1,0), ImColor(255,255,255,255), ImColor(255,255,255,128));
+
+
+            ImGui::End();
+        }
+
 
         ImVec2 pos = ImGui::GetCursorScreenPos();
 

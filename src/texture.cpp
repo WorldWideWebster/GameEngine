@@ -88,28 +88,29 @@ unsigned int loadCubemap(std::vector<std::string> faces)
 }
 
 
-unsigned int TextureFromFile(const char *path, const std::string &directory, bool gamma)
+Texture TextureFromFile(const char *path, const std::string &directory, bool gamma)
 {
     std::string filename = std::string(path);
     filename = directory + '/' + filename;
 
-    unsigned int textureID;
-    glGenTextures(1, &textureID);
+    Texture texture;
+    texture.path = filename;
+    texture.type = "";
+    glGenTextures(1, &texture.id);
 
-    int width, height, nrComponents;
-    unsigned char *data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
+    unsigned char *data = stbi_load(filename.c_str(), &texture.width, &texture.height, &texture.nrComponents, 0);
     if (data)
     {
         GLenum format;
-        if (nrComponents == 1)
+        if (texture.nrComponents == 1)
             format = GL_RED;
-        else if (nrComponents == 3)
+        else if (texture.nrComponents == 3)
             format = GL_RGB;
-        else if (nrComponents == 4)
+        else if (texture.nrComponents == 4)
             format = GL_RGBA;
 
-        glBindTexture(GL_TEXTURE_2D, textureID);
-        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+        glBindTexture(GL_TEXTURE_2D, texture.id);
+        glTexImage2D(GL_TEXTURE_2D, 0, format, texture.width, texture.height, 0, format, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -125,7 +126,7 @@ unsigned int TextureFromFile(const char *path, const std::string &directory, boo
         stbi_image_free(data);
     }
 
-    return textureID;
+    return texture;
 }
 
 // utility function for loading a Heightmap from file

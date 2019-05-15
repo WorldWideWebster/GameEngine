@@ -7,7 +7,7 @@
 #include "model.h"
 #include "stb_image.h"
 
-unsigned int TextureFromFile(const char *path, const std::string &directory, bool gamma = false);
+Texture TextureFromFile(const char *path, const std::string &directory, bool gamma = false);
 
 Model::Model(char *path)
 {
@@ -123,10 +123,8 @@ std::vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType 
         }
         if (!skip) // If texture is not already loaded, load it
         {
-            Texture texture;
-            texture.id = TextureFromFile(str.C_Str(), directory);
+            Texture texture = TextureFromFile(str.C_Str(), directory);
             texture.type = typeName;
-            texture.path = str.C_Str();
             textures.push_back(texture);
             textures_loaded.push_back(texture); // add to loaded textures
         }
