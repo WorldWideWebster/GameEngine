@@ -18,7 +18,7 @@ Terrain::Terrain() : Primitive()
     scale = 0.25;
     size = 512;
 
-    std::string filename = "../resources/heightmap3.png";
+    std::string filename = "../resources/heightmap.png";
 
     setImageAsHeightMap(filename);
 
@@ -57,7 +57,7 @@ Terrain::~Terrain()
 {
 }
 
-// FIXME: Normal x-y directions are backwards
+// FIXME: Normal x-y directions are backwards?
 // Switch D-U/ L-R?
 void Terrain::calculateNormals(std::vector< std::vector<unsigned char>> heightMap, Vertex *vertices)
 {
@@ -71,7 +71,7 @@ void Terrain::calculateNormals(std::vector< std::vector<unsigned char>> heightMa
             float heightR = heightMap[gy][gx < vertex_count-1 ? gx + 1 : gx];
             float heightU = heightMap[gy ? gy - 1 : gy][gx];
             float heightD = heightMap[gy < vertex_count-1 ? gy + 1 : gy][gx];
-            glm::vec3 norm = glm::vec3((heightR - heightL), 2.0f,heightU - heightD );
+            glm::vec3 norm = glm::vec3((heightL - heightR), 2.0f, heightU - heightD);
             norm = glm::normalize(norm);
             vertices[vertexPointer].Normal = norm;
             vertexPointer++;

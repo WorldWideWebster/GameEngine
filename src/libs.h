@@ -21,21 +21,30 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <GLFW/glfw3.h>
 
-// Engine Includes
+/************** Engine Includes *****************/
+/** Main **/
 #include "camera.h"
-#include "primitives/depreciated/cube.h"
 #include "main_defs.h"
 #include "mesh.h"
 #include "model.h"
-#include "primitives/Primitive.h"
 #include "RenderBuffer.h"
 #include "shader.h"
-#include "primitives/Terrain.h"
 #include "texture.h"
 #include "vertex.h"
 #include "vertices.h"
 #include "window.h"
 
+
+/** Primitives **/
+#include "primitives/depreciated/cube.h"
+#include "primitives/Primitive.h"
+#include "primitives/Sphere.h"
+#include "primitives/Terrain.h"
+
+
+/** Noise **/
+#include "noise/NoiseMap.h"
+#include "noise/PerlinNoise.h"
 
 /******* EXTERNAL LIBRARIES ********/
 // STBI

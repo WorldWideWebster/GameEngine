@@ -70,18 +70,6 @@ int main()
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *) (6 * sizeof(float)));
     glEnableVertexAttribArray(2);
 
-    // plane VAO
-    GLuint planeVAO, planeVBO;
-    glGenVertexArrays(1, &planeVAO);
-    glGenBuffers(1, &planeVBO);
-    glBindVertexArray(planeVAO);
-    glBindBuffer(GL_ARRAY_BUFFER, planeVBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(planeVertices), &planeVertices, GL_STATIC_DRAW);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *) 0);
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *) (3 * sizeof(float)));
-
     // screen quad VAO
     GLuint quadVAO, quadVBO;
     glGenVertexArrays(1, &quadVAO);
@@ -237,9 +225,25 @@ int main()
     bool flashlight = false;
 
     Terrain *tri = new Terrain();
+    Sphere *sphe = new Sphere(100, 100, 100);
     Mesh *m = new Mesh(tri);
+    Mesh *s = new Mesh(sphe);
     // render loop
     // -----------
+
+
+	int width = 450;
+	int height = 450;
+	NoiseMap *nm = new NoiseMap;
+	//Image im(width, height);
+
+	// FIXME issue with texture from data
+	//Texture tx = TextureFromData(image, width, height);
+	//Texture tx = TextureFromData(nm->getData(), nm->getWidth(), nm->getHeight());
+	//Texture tx = TextureFromImage(im);
+	Texture tx = TextureFromNoiseMap(*nm);
+
+
     while (!window.shouldClose())
     {
         // TODO: move render loop to separate file
@@ -267,7 +271,7 @@ int main()
 
         // Time based variables
         lightPos = glm::vec3(50 * cos(glfwGetTime()), 0, 50 * sin(glfwGetTime()));
-        lightDir = glm::vec3(2 , 0, 2 );
+        lightDir = glm::vec3(cos(glfwGetTime()) , sin(glfwGetTime()), 2 );
 
         // be sure to activate shader when setting uniforms/drawing objects
         terrainColorShader.use();
@@ -366,13 +370,6 @@ int main()
         glm::mat4 model;
         terrainColorShader.use();
 
-        // floor
-        glBindVertexArray(planeVAO);
-        glBindTexture(GL_TEXTURE_2D, floorTexture);
-        terrainColorShader.setMat4("model", glm::mat4());
-        //glDrawArrays(GL_TRIANGLES, 0, 6);
-        glBindVertexArray(0);
-
         /*
         model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f)); // translate it down so it's at the center of the scene
         model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));	// it's a bit too big for our scene, so scale it down
@@ -383,6 +380,7 @@ int main()
         // draw planet
         terrainColorShader.setMat4("model", model);
         m->Draw(terrainColorShader);
+        s->Draw(terrainColorShader);
 
         // then draw model with normal visualizing geometry shader
         normalDisplayShader.use();
@@ -466,8 +464,7 @@ int main()
             static float f = 0.0f;
             static int counter = 0;
 
-            ImGui::Begin(
-                    "Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+            ImGui::Begin("Hello, world!");       // Create a window called "Hello, world!" and append into it.
 
             ImGui::Text(
                     "This is some useful text.");               // Display some text (you can use a format strings too)
@@ -489,15 +486,16 @@ int main()
         }
         // FIXME: renderbuffer doesn't move with window
         // 3. Show another simple window.
+		// TODO: move to separate file
         if (show_render_window)
         {
-            // Set render window position
+			ImGui::Begin("Render Window",  &show_render_window);       // Create a window called "Hello, world!" and append into it.
+			// Set render window position
             ImGui::SetWindowPos("Render Window", ImVec2(0, 0), ImGuiCond_FirstUseEver);
             // Set render window size
             ImGui::SetWindowSize("Render Window", ImVec2(RENDER_WINDOW_DEFAULT_X, RENDER_WINDOW_DEFAULT_Y),
                                  ImGuiCond_FirstUseEver);
             ImGui::SetNextWindowSize(ImVec2(RENDER_WINDOW_DEFAULT_X, RENDER_WINDOW_DEFAULT_Y), ImGuiCond_FirstUseEver);
-            ImGui::Begin("Wow! Amaze!", &show_render_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
             // Window for rendering scene
             ImGui::Image(
                     (void *) renderBuffer.getTextureColorbuffer(), ImVec2(RENDER_WINDOW_DEFAULT_X, RENDER_WINDOW_DEFAULT_Y),
@@ -524,19 +522,28 @@ int main()
         }
 
         // 3. Show another simple window.
+		// TODO move to separate file
         if (show_image_viewer)
         {
+
+			ImGui::Begin("Image Viewer", &show_image_viewer);       // Create a window called "Hello, world!" and append into it.
+
+            if (ImGui::Button("GenNoise"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
+            {
+				int rando = rand()%100;
+				nm->reSeed(rando);
+				std::cout << rando << std::endl;
+			}
             // Set render window position
             ImGui::SetWindowPos("Image Viewer", ImVec2(RENDER_WINDOW_DEFAULT_X, 0), ImGuiCond_FirstUseEver);
             // Set render window size
             ImGui::SetWindowSize("Image Viewer", ImVec2(RENDER_WINDOW_DEFAULT_X, RENDER_WINDOW_DEFAULT_Y),
                                  ImGuiCond_FirstUseEver);
             ImGui::SetNextWindowSize(ImVec2(RENDER_WINDOW_DEFAULT_X, RENDER_WINDOW_DEFAULT_Y), ImGuiCond_FirstUseEver);
-            ImGui::Begin("Image Viewer", &show_image_viewer);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
             // Window for rendering scene
             // FIXME: texture doesn't move with window
             ImGui::Image(
-                    (void *) floorTexture, ImVec2(RENDER_WINDOW_DEFAULT_X, RENDER_WINDOW_DEFAULT_Y),
+                    (void *) nm->getTexID(), ImVec2(nm->getWidth(), nm->getHeight()),
                     ImVec2(0,1), ImVec2(1,0), ImColor(255,255,255,255), ImColor(255,255,255,128));
 
 
@@ -565,10 +572,8 @@ int main()
     // optional: de-allocate all resources once they've outlived their purpose:
     // ------------------------------------------------------------------------
     glDeleteVertexArrays(1, &cubeVAO);
-    glDeleteVertexArrays(1, &planeVAO);
     glDeleteVertexArrays(1, &quadVAO);
     glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &planeVBO);
     glDeleteBuffers(1, &quadVBO);
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------

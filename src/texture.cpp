@@ -5,7 +5,6 @@
 #include "texture.h"
 #include "stb_image.h"
 
-
 // utility function for loading a 2D texture from file
 // ---------------------------------------------------
 unsigned int loadTexture(char const * path)
@@ -127,6 +126,81 @@ Texture TextureFromFile(const char *path, const std::string &directory, bool gam
     }
 
     return texture;
+}
+
+// Allows texture object to be created from unsigned char data array with dimensions
+Texture TextureFromData(unsigned char *data, int width, int length)
+{
+    Texture texture;
+	texture.width = width;
+	texture.height = length;
+    glGenTextures(1, &texture.id);
+
+    if (data)
+    {
+        GLenum format = GL_RED;
+
+        glBindTexture(GL_TEXTURE_2D, texture.id);
+        glTexImage2D(GL_TEXTURE_2D, 0, format, texture.width, texture.height, 0, format, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    }
+
+    return texture;
+}
+
+// Allows texture object to be created from image class
+Texture TextureFromImage(Image image)
+{
+	Texture texture;
+	texture.width = image.getWidth();
+	texture.height = image.getLength();
+	glGenTextures(1, &texture.id);
+
+	if (image.getData())
+	{
+		GLenum format = GL_RGB;
+
+		glBindTexture(GL_TEXTURE_2D, texture.id);
+		glTexImage2D(GL_TEXTURE_2D, 0, format, texture.width, texture.height, 0, format, GL_UNSIGNED_BYTE, image.getData());
+		glGenerateMipmap(GL_TEXTURE_2D);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	}
+
+	return texture;
+}
+
+// Allows texture object to be created from image class
+Texture TextureFromNoiseMap(NoiseMap nm)
+{
+	Texture texture;
+	texture.width = nm.getWidth();
+	texture.height = nm.getHeight();
+	glGenTextures(1, &texture.id);
+
+	if (nm.getData())
+	{
+		GLenum format = GL_RGB;
+
+		glBindTexture(GL_TEXTURE_2D, texture.id);
+		glTexImage2D(GL_TEXTURE_2D, 0, format, texture.width, texture.height, 0, format, GL_UNSIGNED_BYTE, nm.getData());
+		glGenerateMipmap(GL_TEXTURE_2D);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	}
+
+	return texture;
 }
 
 // utility function for loading a Heightmap from file

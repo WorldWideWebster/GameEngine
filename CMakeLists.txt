@@ -36,7 +36,7 @@ set(HEADER_FILES
         src/Lighting.cpp
         src/Lighting.h
         src/RenderBuffer.cpp
-        src/RenderBuffer.h src/Noise.cpp)
+        src/RenderBuffer.h src/noise/Noise.cpp src/image/Image.cpp src/image/Image.h)
 
 set(dir ${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${dir}/build)
@@ -71,4 +71,4 @@ add_custom_command(TARGET OpenGLSetup PRE_BUILD
         ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/resources)
 
 #FIXME: There must be a better way to add the assimp library
-target_link_libraries(OpenGLSetup glfw primitives imgui ${dir}/dependencies/libs/libassimpd.dll.a)
+target_link_libraries(OpenGLSetup glfw noise primitives imgui ${dir}/dependencies/libs/libassimpd.dll.a)
