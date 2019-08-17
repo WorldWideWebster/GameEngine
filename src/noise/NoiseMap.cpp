@@ -14,36 +14,13 @@ NoiseMap::NoiseMap()
 {
 
 	// FIXME: large image causes crash, artifacts at beginning
-	this->width = 1200;
-	this->height = 1200;
+	this->width = 200;
+	this->height = 200;
 	this->data = new unsigned char[this->width * this->height * 3];
 	// TODO: Move all of this into the perlin noise class
-	PerlinNoise pn(10);
+	PerlinNoise pn(rand());
 
-	unsigned int kk = 0;
-	// Visit every pixel of the image and assign a color generated with Perlin noise
-	for(unsigned int i = 0; i < this->height; i++)
-	{     // y
-		for(unsigned int j = 0; j < this->width; j++)
-		{  // x
-			double x = (double)j/((double)this->width);
-			double y = (double)i/((double)this->height);
-
-			// Typical Perlin noise
-			double n = pn.noise(10 * x, 10 * y, 0.8);;
-
-			// Wood like structure
-			//n = 20 * pn.noise(x, y, 0.8);
-			//n = n - floor(n);
-
-			// Map the values to the [0, 255] interval, for simplicity we use
-			// tones of grey
-			this->data[kk] = floor(255 * n);
-			this->data[kk+1] = floor(255 * n);
-			this->data[kk+2] = floor(255 * n);
-			kk+=3;
-		}
-	}
+	doNoise(pn);
 	createTexture();
 }
 
@@ -56,31 +33,8 @@ void NoiseMap::reSeed(int seed)
 {
 	PerlinNoise pn(seed);
 	GLenum format = GL_RGB;
+	doNoise(pn);
 
-	unsigned int kk = 0;
-	// Visit every pixel of the image and assign a color generated with Perlin noise
-	for(unsigned int i = 0; i < this->height; i++)
-	{     // y
-		for(unsigned int j = 0; j < this->width; j++)
-		{  // x
-			double x = (double)j/((double)this->width);
-			double y = (double)i/((double)this->height);
-
-			// Typical Perlin noise
-			double n = pn.noise(10 * x, 10 * y, 0.8);;
-
-			// Wood like structure
-			//n = 20 * pn.noise(x, y, 0.8);
-			//n = n - floor(n);
-
-			// Map the values to the [0, 255] interval, for simplicity we use
-			// tones of grey
-			this->data[kk] = floor(255 * n);
-			this->data[kk+1] = floor(255 * n);
-			this->data[kk+2] = floor(255 * n);
-			kk+=3;
-		}
-	}
 	glBindTexture(GL_TEXTURE_2D, this->texID);
 
 	glTexImage2D(GL_TEXTURE_2D, 0, format, this->width, this->height, 0, format, GL_UNSIGNED_BYTE, this->data);
@@ -126,4 +80,32 @@ void NoiseMap::createTexture(void)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR
 	);
 
+}
+
+void NoiseMap::doNoise(PerlinNoise pn)
+{
+	unsigned int kk = 0;
+	// Visit every pixel of the image and assign a color generated with Perlin noise
+	for(unsigned int i = 0; i < this->height; i++)
+	{     // y
+		for(unsigned int j = 0; j < this->width; j++)
+		{  // x
+			double x = (double)j/((double)this->width);
+			double y = (double)i/((double)this->height);
+
+			// Typical Perlin noise
+			double n = pn.noise(10 * x, 10 * y, 0.8);;
+
+			// Wood like structure
+			//n = 20 * pn.noise(x, y, 0.8);
+			//n = n - floor(n);
+//
+			// Map the values to the [0, 255] interval, for simplicity we use
+			// tones of grey
+			this->data[kk] = floor(255 * n);
+			this->data[kk+1] = floor(255 * n);
+			this->data[kk+2] = floor(255 * n);
+			kk+=3;
+		}
+	}
 }

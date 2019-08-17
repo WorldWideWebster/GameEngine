@@ -16,3 +16,10 @@ void Primitive::set(const Vertex *vertices, const unsigned nrOfVertices, const G
         this->indices.push_back(indices[i]);
     }
 }
+
+
+static Cube *unitCube = new Cube();
+
+Cube *getUnitCube(void) {return unitCube;}
+
+

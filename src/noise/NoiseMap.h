@@ -5,6 +5,7 @@
 #ifndef OPENGLSETUP_NOISEMAP_H
 #define OPENGLSETUP_NOISEMAP_H
 
+#include "PerlinNoise.h"
 enum noiseType
 {
 	PERLIN,
@@ -26,6 +27,7 @@ private:
 	unsigned int width, height;
 	unsigned int texID;
 	void createTexture(void);
+	void doNoise(PerlinNoise pn);
 };
 
 

@@ -45,6 +45,15 @@ Mesh::Mesh(Primitive *primitive, std::vector <Texture> textures)
     setupMesh();
 }
 
+Mesh::Mesh(Primitive *primitive, Texture texture)
+{
+    this->vertices = primitive->getVertices();
+    this->indices = primitive->getIndices();
+    this->textures.push_back(texture);
+    // Now that we have all of the required data, set the vertex buffers and its attribute pointers
+    setupMesh();
+}
+
 
 
 void Mesh::setupMesh()
@@ -137,7 +146,14 @@ void Mesh::Draw(Shader shader)
 
 }
 
-GLuint Mesh::getVAO(void)
+
+//FIXME: The crash probably lies here with my crappy pointers
+unsigned int Mesh::getVAO(void)
 {
     return this->VAO;
+}
+
+unsigned int Mesh::getDefaultTexture(void)
+{
+    return this->DEFAULT_TEXTURE;
 }

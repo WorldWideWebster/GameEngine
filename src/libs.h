@@ -34,10 +34,12 @@
 #include "vertices.h"
 #include "window.h"
 
+#include "Entity.h"
 
 /** Primitives **/
 #include "primitives/depreciated/cube.h"
 #include "primitives/Primitive.h"
+#include "primitives/SkyBox.h"
 #include "primitives/Sphere.h"
 #include "primitives/Terrain.h"
 

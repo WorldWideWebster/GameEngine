@@ -6,7 +6,6 @@
 #include "../vertex.h"
 
 #include "../stb_image.h"
-
 #include <string>
 
 
@@ -15,12 +14,15 @@
 Terrain::Terrain() : Primitive()
 {
     // Default terrain generation values
-    scale = 0.25;
-    size = 512;
+    scale = 0.5;
+    size = 512*4;
 
     std::string filename = "../resources/heightmap.png";
 
-    setImageAsHeightMap(filename);
+    //setImageAsHeightMap(filename);
+
+	NoiseMap nm;
+    setArrayAsHeightMap(nm.getData(), nm.getHeight(), nm.getWidth());
 
 
     vertex_count = height;
@@ -126,4 +128,60 @@ void Terrain::setImageAsHeightMap(std::string filename)
     }
 
     stbi_image_free(image);
+}
+
+void Terrain::setArrayAsHeightMap(unsigned char *data, int width, int height)
+{
+	this->width = width;
+	this->height = height;
+	this->nrComponents = 3;
+	heightMap.clear();
+    if (data)
+    {
+		// Move array pointer by 3 each time to only use one color in each pixel
+        for(int gy = 0; gy < height * 3; gy+=3)
+        {
+            std::vector<unsigned char> heightMapRow;
+            for(int gx = 0; gx < width * 3; gx+=3)
+            {
+                heightMapRow.push_back(data[width * gy + gx]);
+            }
+            heightMap.push_back(heightMapRow);
+        }
+    }
+}
+
+void Terrain::setHeightMap(unsigned char *data, int width, int height)
+{
+	//TODO: clear previous heightmap data
+	setArrayAsHeightMap(data, width, height);
+
+	vertex_count = height;
+	int count = vertex_count * vertex_count;
+	Vertex *vertices = new Vertex[count];
+	int vertexPointer = 0;
+	for(int gy=0;gy<vertex_count;gy++)
+	{
+		for(int gx=0;gx<vertex_count;gx++)
+		{
+			// Fill vertices
+			vertices[vertexPointer] =
+					{glm::vec3(((float)gx/((float)vertex_count - 1) * size), (float)heightMap[gy][gx]*scale, ((float)gy/((float)vertex_count - 1) * size)),
+					 glm::vec3(0, 1, 0),
+					 glm::vec2((float)gx/((float)vertex_count - 1), (float)gy/((float)vertex_count - 1))};
+			vertexPointer++;
+		}
+	}
+
+	calculateNormals(heightMap, vertices);
+	GLuint *indices = new GLuint[6*(vertex_count-1)*(vertex_count-1)];
+	calculateIndices(indices, width, height);
+
+	unsigned nrOfVertices = (vertex_count)*(vertex_count);
+
+	VertTanCalc(vertices, nrOfVertices);
+
+	unsigned nrOfIndices = 6*(vertex_count-1)*(vertex_count-1);
+
+	this->set(vertices, nrOfVertices, indices, nrOfIndices);
 }

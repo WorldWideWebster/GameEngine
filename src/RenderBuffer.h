@@ -16,6 +16,7 @@ public:
     RenderBuffer();
     void setUp();
     void bindAndBuffer(glm::mat4 view);
+	void bindDefault(void);
     glm::mat4 getProjection();
     GLuint getTextureColorbuffer();
 private:

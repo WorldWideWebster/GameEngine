@@ -35,14 +35,17 @@ public:
     Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
     Mesh(Primitive *primitive);
     Mesh(Primitive *primitive, std::vector <Texture> textures);
+    Mesh(Primitive *primitive, Texture texture);
     ~Mesh()
     {
         vertices.clear();
         indices.clear();
         textures.clear();
     }
+	// WHY: can I not make draw virtual?
     void Draw(Shader shader);
     unsigned int getVAO(void);
+    unsigned int getDefaultTexture(void);
 private:
     /* Render Data */
     unsigned int VAO, VBO, EBO;

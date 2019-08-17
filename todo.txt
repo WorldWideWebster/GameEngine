@@ -1,0 +1,35 @@
+/**************Cleanup******************/
+
+// TODO: move file loading to separate texture library/shader library
+
+// TODO: Fix skybox class
+
+// TODO: Move render loop to render class
+
+// TODO: Make image viewer class
+
+// TODO: Move lighting to class
+
+// TODO: Create class for each type of lighting
+
+// TODO: Get some code cleanup tools
+
+// TODO: Create objects to link shaders to - Object.addshader(shader?)
+
+// TODO: Fix Warnings - Done 8/2/2019
+
+// TODO: Add unit primitive for each shape
+
+// TODO: Move all Meshes to entities
+
+/****************Features**************/
+
+// TODO: Add update to render loop
+
+// TODO: Try generating any shape by random vertices?
+
+// TODO: Ability to generate polygons - Polygon class that looks at angle to make sure it does not exceed 360
+/
+// TODO: Add Entity Class - Done 8/8/2019
+
+// TODO: Add model viewer

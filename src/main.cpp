@@ -51,57 +51,6 @@ int main()
     glUniformBlockBinding(lampShader.ID, uniformBlockIndexLamp, 0);
     glUniformBlockBinding(instanceShader.ID, uniformBlockIndexInstance, 0);
 
-
-    GLuint VBO, cubeVAO;
-    glGenVertexArrays(1, &cubeVAO);
-    glGenBuffers(1, &VBO);
-
-    glBindVertexArray(cubeVAO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(CubeVertices), CubeVertices, GL_STATIC_DRAW);
-
-    // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *) 0);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *) (3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-    // texture coord attribute
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *) (6 * sizeof(float)));
-    glEnableVertexAttribArray(2);
-
-    // screen quad VAO
-    GLuint quadVAO, quadVBO;
-    glGenVertexArrays(1, &quadVAO);
-    glGenBuffers(1, &quadVBO);
-    glBindVertexArray(quadVAO);
-    glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void *) 0);
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void *) (2 * sizeof(float)));
-
-    // skybox VAO
-    GLuint skyboxVAO, skyboxVBO;
-    glGenVertexArrays(1, &skyboxVAO);
-    glGenBuffers(1, &skyboxVBO);
-    glBindVertexArray(skyboxVAO);
-    glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *) 0);
-
-    // light Cube cubeVAO
-    GLuint lightVAO;
-    glGenVertexArrays(1, &lightVAO);
-    glBindVertexArray(lightVAO);
-    // we only need to bind to the VBO, the container's VBO's data already contains the correct data
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    // set the vertex attributes (only position data for our lamp)
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *) 0);
-    glEnableVertexAttribArray(0);
-
     GLuint diffuseMap = loadTexture("../resources/container2.png");
     GLuint specularMap = loadTexture("../resources/container2_specular.png");
     GLuint emissionMap = loadTexture("../resources/matrix.jpg");
@@ -109,9 +58,7 @@ int main()
     GLuint cubeTexture = loadTexture("../resources/container2.png");
     GLuint transparentTexture = loadTexture("../resources/window.png");
 
-
-    GLuint cubemapTexture = loadCubemap(faces);
-
+    Texture cubemapTexture = CubemapTextureFromFile(faces);
 
     // tell opengl for each sampler to which texture unit it belongs to (only has to be done once)
     // -------------------------------------------------------------------------------------------
@@ -128,7 +75,7 @@ int main()
     screenShader.setInt("screenTexture", 0);
 
     RenderBuffer renderBuffer;
-
+	SkyBox skybox (cubemapTexture, &camera, &renderBuffer);
     // load models
     // -----------
     Model ourModel((char *) "resources/objects/nanosuit/nanosuit.obj");
@@ -142,59 +89,6 @@ int main()
     srand(glfwGetTime()); // initialize random seed
     float radius = 100.0;
     float offset = 50.5f;
-    for (GLuint i = 0; i < amount; i++)
-    {
-        glm::mat4 model;
-        // 1. translation: displace along circle with 'radius' in range [-offset, offset]
-        float angle = (float) i / (float) amount * 360.0f;
-        float displacement = (rand() % (int) (2 * offset * 100)) / 100.0f - offset;
-        float x = sin(angle) * radius + displacement;
-        displacement = (rand() % (int) (2 * offset * 100)) / 100.0f - offset;
-        float y = displacement * 0.01f; // keep height of asteroid field smaller compared to width of x and z
-        displacement = (rand() % (int) (2 * offset * 100)) / 100.0f - offset;
-        float z = cos(angle) * radius + displacement;
-        model = glm::translate(model, glm::vec3(x, y, z));
-
-        // 2. scale: Scale between 0.05 and 0.25f
-        float scale = (rand() % 20) / 1000.0f + 0.005;
-        model = glm::scale(model, glm::vec3(scale));
-
-        // 3. rotation: add random rotation around a (semi)randomly picked rotation axis vector
-        float rotAngle = (rand() % 360);
-        model = glm::rotate(model, rotAngle, glm::vec3(0.4f, 0.6f, 0.8f));
-
-        // 4. now add to list of matrices
-        modelMatrices[i] = model;
-    }
-
-    // vertex Buffer Object
-    GLuint buffer;
-    glGenBuffers(1, &buffer);
-    glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
-
-    for (GLuint i = 0; i < rock.meshes.size(); i++)
-    {
-        GLuint VAO = rock.meshes[i].getVAO();
-        glBindVertexArray(VAO);
-        // vertex Attributes
-        GLsizei vec4Size = sizeof(glm::vec4);
-        glEnableVertexAttribArray(3);
-        glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void *) 0);
-        glEnableVertexAttribArray(4);
-        glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void *) (vec4Size));
-        glEnableVertexAttribArray(5);
-        glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void *) (2 * vec4Size));
-        glEnableVertexAttribArray(6);
-        glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void *) (3 * vec4Size));
-
-        glVertexAttribDivisor(3, 1);
-        glVertexAttribDivisor(4, 1);
-        glVertexAttribDivisor(5, 1);
-        glVertexAttribDivisor(6, 1);
-
-        glBindVertexArray(0);
-    }
 
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
@@ -225,19 +119,20 @@ int main()
     bool flashlight = false;
 
     Terrain *tri = new Terrain();
-    Sphere *sphe = new Sphere(100, 100, 100);
+	//Quad *triangle = new Quad();
     Mesh *m = new Mesh(tri);
-    Mesh *s = new Mesh(sphe);
     // render loop
     // -----------
 
+	Entity *e = new Entity(new Mesh(new Sphere(25, 25, 25)), glm::vec3(0.0f));
+	Entity *lightSphere = new Entity(new Mesh(new Sphere(10, 10, 10)), glm::vec3(0.0f));
+	lightSphere->setScale(glm::vec3(20.0f));
 
 	int width = 450;
 	int height = 450;
 	NoiseMap *nm = new NoiseMap;
 	//Image im(width, height);
 
-	// FIXME issue with texture from data
 	//Texture tx = TextureFromData(image, width, height);
 	//Texture tx = TextureFromData(nm->getData(), nm->getWidth(), nm->getHeight());
 	//Texture tx = TextureFromImage(im);
@@ -271,7 +166,7 @@ int main()
 
         // Time based variables
         lightPos = glm::vec3(50 * cos(glfwGetTime()), 0, 50 * sin(glfwGetTime()));
-        lightDir = glm::vec3(cos(glfwGetTime()) , sin(glfwGetTime()), 2 );
+        lightDir = glm::vec3(2 , sin(glfwGetTime() / 10), cos(glfwGetTime() / 10) );
 
         // be sure to activate shader when setting uniforms/drawing objects
         terrainColorShader.use();
@@ -370,18 +265,14 @@ int main()
         glm::mat4 model;
         terrainColorShader.use();
 
-        /*
-        model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f)); // translate it down so it's at the center of the scene
-        model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));	// it's a bit too big for our scene, so scale it down
-        terrainColorShader.setMat4("model", model);
-        theCube.Draw(terrainColorShader);
-        */
-
         // draw planet
         terrainColorShader.setMat4("model", model);
         m->Draw(terrainColorShader);
-        s->Draw(terrainColorShader);
 
+		//e->setPosition(lightPos.operator*=(2));
+		// e->setScale(glm::vec3(0.1f, 0.1f, 0.1f));
+		//e->setRotation(lightPos, angle);
+		e->render(&terrainColorShader);
         // then draw model with normal visualizing geometry shader
         normalDisplayShader.use();
         normalDisplayShader.setMat4("projection", renderBuffer.getProjection());
@@ -390,64 +281,11 @@ int main()
 
         m->Draw(normalDisplayShader);
 
-
-        // draw meteorites
-        instanceShader.use();
-        instanceShader.setMat4("model", model);
-
-        glBindTexture(GL_TEXTURE_2D,
-                      rock.textures_loaded[0].id); // note: we also made the textures_loaded vector public (instead of private) from the model class.
-        for (GLuint i = 0; i < rock.meshes.size(); i++)
-        {
-            glBindVertexArray(rock.meshes[i].getVAO());
-            glDrawElementsInstanced(GL_TRIANGLES, rock.meshes[i].indices.size(), GL_UNSIGNED_INT, 0, amount);
-            glBindVertexArray(0);
-        }
-
-        lampShader.use();
-
-        model = glm::mat4();
-        model = glm::translate(model, lightPos);
-        model = glm::scale(model, glm::vec3(0.2f));
-        lampShader.setMat4("model", model);
         // Draw the lamp object
-        glBindVertexArray(lightVAO);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-        //m.Draw(lampShader);
-        // WHY: Why does this slow down so much?
+		lightSphere->setPosition(lightPos);
+        lightSphere->render(&lampShader);
 
-
-        // draw skybox as last
-        glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
-        skyboxShader.use();
-        view = glm::mat4(glm::mat3(camera.GetViewMatrix())); // remove translation from the view matrix
-        skyboxShader.setMat4("view", view);
-        skyboxShader.setMat4("projection", renderBuffer.getProjection());
-
-        // TODO: Enlarge skybox
-        // skybox cube
-        glBindVertexArray(skyboxVAO);
-        glActiveTexture(GL_TEXTURE);
-        glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-        glBindVertexArray(0);
-        glDepthFunc(GL_LESS); // set depth function back to default
-
-
-        // now bind back to default framebuffer and draw a quad plane with the attached framebuffer color texture
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        glDisable(GL_DEPTH_TEST); // disable depth test so screen-space quad isn't discarded due to depth test.
-        // clear all relevant buffers
-        glClearColor(1.0f, 1.0f, 1.0f,
-                     1.0f); // set clear color to white (not really necessery actually, since we won't be able to see behind the quad anyways)
-        glClear(GL_COLOR_BUFFER_BIT);
-
-
-        //screenShader.use();
-        //glBindVertexArray(quadVAO);
-        //glBindTexture(GL_TEXTURE_2D, textureColorbuffer);	// use the color attachment texture as the texture of the quad plane
-        // glDrawArrays(GL_TRIANGLES, 0, 6);
-
+		renderBuffer.bindDefault();
 
         // UI stuff
         // Start the Dear ImGui frame
@@ -466,8 +304,7 @@ int main()
 
             ImGui::Begin("Hello, world!");       // Create a window called "Hello, world!" and append into it.
 
-            ImGui::Text(
-                    "This is some useful text.");               // Display some text (you can use a format strings too)
+            ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
             ImGui::Checkbox("Stupid Toby", &show_demo_window);      // Edit bools storing our window open/close state
             ImGui::Checkbox("Render Window", &show_render_window);
             ImGui::Checkbox("Image Viewer", &show_image_viewer);
@@ -484,7 +321,6 @@ int main()
                         ImGui::GetIO().Framerate);
             ImGui::End();
         }
-        // FIXME: renderbuffer doesn't move with window
         // 3. Show another simple window.
 		// TODO: move to separate file
         if (show_render_window)
@@ -498,7 +334,7 @@ int main()
             ImGui::SetNextWindowSize(ImVec2(RENDER_WINDOW_DEFAULT_X, RENDER_WINDOW_DEFAULT_Y), ImGuiCond_FirstUseEver);
             // Window for rendering scene
             ImGui::Image(
-                    (void *) renderBuffer.getTextureColorbuffer(), ImVec2(RENDER_WINDOW_DEFAULT_X, RENDER_WINDOW_DEFAULT_Y),
+                    (void *)(uintptr_t)  renderBuffer.getTextureColorbuffer(), ImVec2(RENDER_WINDOW_DEFAULT_X, RENDER_WINDOW_DEFAULT_Y),
                     ImVec2(0,1), ImVec2(1,0), ImColor(255,255,255,255), ImColor(255,255,255,128));
             if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Escape)))
             {
@@ -533,6 +369,8 @@ int main()
 				int rando = rand()%100;
 				nm->reSeed(rando);
 				std::cout << rando << std::endl;
+				//tri->setHeightMap(nm->getData(), nm->getWidth(), nm->getHeight());
+				//m = new Mesh(tri);
 			}
             // Set render window position
             ImGui::SetWindowPos("Image Viewer", ImVec2(RENDER_WINDOW_DEFAULT_X, 0), ImGuiCond_FirstUseEver);
@@ -543,7 +381,7 @@ int main()
             // Window for rendering scene
             // FIXME: texture doesn't move with window
             ImGui::Image(
-                    (void *) nm->getTexID(), ImVec2(nm->getWidth(), nm->getHeight()),
+                    (void *)(uintptr_t)  nm->getTexID(), ImVec2(nm->getWidth(), nm->getHeight()),
                     ImVec2(0,1), ImVec2(1,0), ImColor(255,255,255,255), ImColor(255,255,255,128));
 
 
@@ -571,10 +409,7 @@ int main()
 
     // optional: de-allocate all resources once they've outlived their purpose:
     // ------------------------------------------------------------------------
-    glDeleteVertexArrays(1, &cubeVAO);
-    glDeleteVertexArrays(1, &quadVAO);
-    glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &quadVBO);
+
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
     // Cleanup
