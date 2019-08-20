@@ -30,6 +30,8 @@ public:
     void calculateNormals(std::vector< std::vector<unsigned char>> heightMap, Vertex *vertices);
     void calculateIndices(GLuint *indices, int width, int height);
     void setImageAsHeightMap(std::string filename);
+    void setArrayAsHeightMap(unsigned char *data, int width, int height);
+    void setHeightMap(unsigned char *data, int width, int height);
 private:
     std::vector< std::vector<unsigned char>> heightMap;
     int nrComponents;

@@ -152,6 +152,8 @@ public:
         this->set(vertices, nrOfVertices, indices, nrOfIndices);
     }
 };
+Cube *getUnitCube(void);
+
 #endif //OPENGLSETUP_PRIMITIVE_H
 
 

@@ -3,7 +3,7 @@
 
 #include <glad/glad.h>
 #include <glm/glm.hpp>
-#include "Light.h"
+#include "lighting/Light.h"
 #include "camera.h"
 #include <string>
 #include <fstream>
