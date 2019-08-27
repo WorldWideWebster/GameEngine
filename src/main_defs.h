@@ -19,6 +19,10 @@
 #define SCR_WIDTH  3840
 #define SCR_HEIGHT 2160
 
+// Render Distance
+#define RENDER_DISTANCE_NEAR 0.1f
+#define RENDER_DISTANCE_FAR 3000.0f
+
 // Render Window default sizes
 #define  RENDER_WINDOW_DEFAULT_X 1920
 #define  RENDER_WINDOW_DEFAULT_Y 1080

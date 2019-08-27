@@ -5,22 +5,19 @@
 #ifndef OPENGLSETUP_LIGHT_H
 #define OPENGLSETUP_LIGHT_H
 
+
+#include <string>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "../shader.h"
-enum LightType
-{
-    POINT_LIGHT,
-    SPOT_LIGHT,
-};
 
 
-/* Light Class
+/* @brief: Light Class - ambient light object
+ *
  *
  * @Purpose: Place to store lights
  *
- *  TODO: More comments on light class
  */
 class Light
 {
@@ -29,12 +26,21 @@ private:
     glm::vec3 m_diffuse;
     glm::vec3 m_specular;
 public:
-	Light();
-	Light(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular);
+	Light(std::string ID);
+	Light(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, std::string ID);
+
+	std::string m_ID;
 
     void setAmbient(glm::vec3 ambient);
     void setDiffuse(glm::vec3 diffuse);
     void setSpecular(glm::vec3 specular);
+
+	virtual void render(Shader *targetShader);
+
+
+	void setShaderAmbient(Shader *targetShader);
+	void setShaderDiffuse(Shader *targetShader);
+	void setShaderSpecular(Shader *targetShader);
 
     glm::vec3 getAmbient(void);
     glm::vec3 getDiffuse(void);

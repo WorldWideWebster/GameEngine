@@ -139,6 +139,8 @@ int main()
 	Texture tx = TextureFromNoiseMap(*nm);
 
 
+	Light *l = new Light("dirLights[0]");
+
     while (!window.shouldClose())
     {
         // TODO: move render loop to separate file
@@ -168,26 +170,19 @@ int main()
         lightPos = glm::vec3(50 * cos(glfwGetTime()), 0, 50 * sin(glfwGetTime()));
         lightDir = glm::vec3(2 , sin(glfwGetTime() / 10), cos(glfwGetTime() / 10) );
 
+		terrainColorShader.use();
+		terrainColorShader.setVec3("viewPos", camera.Position);
+
         // be sure to activate shader when setting uniforms/drawing objects
-        terrainColorShader.use();
-        terrainColorShader.setVec3("viewPos", camera.Position);
+
         terrainColorShader.setFloat("material.shininess", 1.0f);
         terrainColorShader.setInt("num_point_lights", 1);
         terrainColorShader.setInt("num_dir_lights", 1);
         terrainColorShader.setInt("num_spot_lights", 1);
         // directional light
-        terrainColorShader.setVec3("dirLights[0].direction", lightDir);
-        terrainColorShader.setVec3("dirLights[0].ambient", lightx, lighty, lightz);
-        terrainColorShader.setVec3("dirLights[0].diffuse", 0.4f, 0.4f, 0.4f);
-        terrainColorShader.setVec3("dirLights[0].specular", 0.5f, 0.5f, 0.5f);
-        // point light 1
-        terrainColorShader.setVec3("pointLights[0].position", lightPos);
-        terrainColorShader.setVec3("pointLights[0].ambient", 0.05f, 0.05f, 0.05f);
-        terrainColorShader.setVec3("pointLights[0].diffuse", 0.8f, 0.8f, 0.8f);
-        terrainColorShader.setVec3("pointLights[0].specular", 1.0f, 1.0f, 1.0f);
-        terrainColorShader.setFloat("pointLights[0].constant", 1.0f);
-        terrainColorShader.setFloat("pointLights[0].linear", 0.09);
-        terrainColorShader.setFloat("pointLights[0].quadratic", 0.032);
+
+        // FIXME: Point light not doing point light things
+		l->render(&terrainColorShader);
         if (flashlight)
         {
             // spotLight
@@ -215,53 +210,7 @@ int main()
             terrainColorShader.setFloat("spotLights[0].cutOff", glm::cos(glm::radians(12.5f)));
             terrainColorShader.setFloat("spotLights[0].outerCutOff", glm::cos(glm::radians(15.0f)));
         }
-        // be sure to activate shader when setting uniforms/drawing objects
-        instanceShader.use();
-        instanceShader.setVec3("viewPos", camera.Position);
-        instanceShader.setFloat("material.shininess", 32.0f);
-        instanceShader.setInt("num_point_lights", 1);
-        instanceShader.setInt("num_dir_lights", 1);
-        instanceShader.setInt("num_spot_lights", 1);
-        instanceShader.setVec3("dirLights[0].direction", -0.2f, -1.0f, -0.3f);
-        instanceShader.setVec3("dirLights[0].ambient", 0.5f, 0.5f, 0.5f);
-        instanceShader.setVec3("dirLights[0].diffuse", 0.4f, 0.4f, 0.4f);
-        instanceShader.setVec3("dirLights[0].specular", 0.5f, 0.5f, 0.5f);
-        // point light 1
-        instanceShader.setVec3("pointLights[0].position", lightPos);
-        instanceShader.setVec3("pointLights[0].ambient", 0.05f, 0.05f, 0.05f);
-        instanceShader.setVec3("pointLights[0].diffuse", 0.8f, 0.8f, 0.8f);
-        instanceShader.setVec3("pointLights[0].specular", 1.0f, 1.0f, 1.0f);
-        instanceShader.setFloat("pointLights[0].constant", 1.0f);
-        instanceShader.setFloat("pointLights[0].linear", 0.09);
-        instanceShader.setFloat("pointLights[0].quadratic", 0.032);
-        // spotLight
-        if (flashlight)
-        {
-            // directional light
-            instanceShader.setVec3("spotLights[0].position", camera.Position);
-            instanceShader.setVec3("spotLights[0].direction", camera.Front);
-            instanceShader.setVec3("spotLights[0].ambient", 0.0f, 0.0f, 0.0f);
-            instanceShader.setVec3("spotLights[0].diffuse", 1.0f, 1.0f, 1.0f);
-            instanceShader.setVec3("spotLights[0].specular", 1.0f, 1.0f, 1.0f);
-            instanceShader.setFloat("spotLights[0].constant", 1.0f);
-            instanceShader.setFloat("spotLights[0].linear", 0.09);
-            instanceShader.setFloat("spotLights[0].quadratic", 0.032);
-            instanceShader.setFloat("spotLights[0].cutOff", glm::cos(glm::radians(12.5f)));
-            instanceShader.setFloat("spotLights[0].outerCutOff", glm::cos(glm::radians(15.0f)));
-        }
-        else
-        {
-            instanceShader.setVec3("spotLights[0].position", camera.Position);
-            instanceShader.setVec3("spotLights[0].direction", camera.Front);
-            instanceShader.setVec3("spotLights[0].ambient", 0.0f, 0.0f, 0.0f);
-            instanceShader.setVec3("spotLights[0].diffuse", 0.0f, 0.0f, 0.0f);
-            instanceShader.setVec3("spotLights[0].specular", 0.0f, 0.0f, 0.0f);
-            instanceShader.setFloat("spotLights[0].constant", 1.0f);
-            instanceShader.setFloat("spotLights[0].linear", 0.09);
-            instanceShader.setFloat("spotLights[0].quadratic", 0.032);
-            instanceShader.setFloat("spotLights[0].cutOff", glm::cos(glm::radians(12.5f)));
-            instanceShader.setFloat("spotLights[0].outerCutOff", glm::cos(glm::radians(15.0f)));
-        }
+
         glm::mat4 model;
         terrainColorShader.use();
 

@@ -33,3 +33,9 @@
 // TODO: Add Entity Class - Done 8/8/2019
 
 // TODO: Add model viewer
+
+// TODO: Print position of camera and direction (and maybe other things)
+
+// TODO: Add ambient light
+
+// TODO: Add console

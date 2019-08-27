@@ -5,7 +5,7 @@
 #include "PointLight.h"
 
 
-PointLight::PointLight() : Light()
+PointLight::PointLight(std::string ID) : Light(ID)
 {
 	this->m_position = glm::vec3(0,0,0);
 
@@ -14,7 +14,7 @@ PointLight::PointLight() : Light()
 	this->m_quadratic = 0.032;
 }
 
-PointLight::PointLight(glm::vec3 position) : Light()
+PointLight::PointLight(glm::vec3 position, std::string ID) : Light(ID)
 {
 	this->m_position = position;
 
@@ -23,7 +23,7 @@ PointLight::PointLight(glm::vec3 position) : Light()
 	this->m_quadratic = 0.032;
 }
 
-PointLight::PointLight(glm::vec3 position, float constant, float linear, float quadratic) : Light()
+PointLight::PointLight(glm::vec3 position, float constant, float linear, float quadratic, std::string ID) : Light(ID)
 {
 	this->m_position = position;
 
@@ -33,7 +33,7 @@ PointLight::PointLight(glm::vec3 position, float constant, float linear, float q
 }
 
 PointLight::PointLight(glm::vec3 position, float constant, float linear, float quadratic,
-					   	glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular) : Light(ambient, diffuse, specular)
+					   	glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, std::string ID) : Light(ambient, diffuse, specular, ID)
 {
 	this->m_position = position;
 
@@ -52,6 +52,16 @@ void PointLight::updateFalloff(float constant, float linear, float quadratic)
 void PointLight::updatePosition(glm::vec3 position)
 {
 	this->m_position = position;
+}
+
+void PointLight::render(Shader *targetShader)
+{
+	Light::render(targetShader);
+	targetShader->setVec3("pointLights[0].position", this->m_position);
+	targetShader->setFloat("pointLights[0].constant", this->m_constant);
+	targetShader->setFloat("pointLights[0].linear", this->m_linear);
+	targetShader->setFloat("pointLights[0].quadratic", this->m_quadratic);
+
 }
 
 glm::vec3 PointLight::getPosition(void)

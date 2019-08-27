@@ -3,7 +3,6 @@
 
 #include <glad/glad.h>
 #include <glm/glm.hpp>
-#include "lighting/Light.h"
 #include "camera.h"
 #include <string>
 #include <fstream>
@@ -33,7 +32,7 @@ public:
 
     void setCamera(Camera *camera);
 
-    void addLight(Light light);
+    //void addLight(Light light);
     //void setLight(int ID, Light light);
     //void doLighting(void);
 
@@ -41,10 +40,6 @@ private:
     // utility function for checking shader compilation/linking errors.
     // ------------------------------------------------------------------------
     void checkCompileErrors(unsigned int shader, std::string type);
-    std::vector<Light> lights;
-    short num_dir_lights;
-    short num_point_lights;
-    short num_spot_lights;
     Camera *camera;
 };
 #endif

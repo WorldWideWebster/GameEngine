@@ -17,4 +17,5 @@ add_subdirectory(imgui)
 add_subdirectory(primitives)
 add_subdirectory(noise)
 add_subdirectory(image)
+add_subdirectory(lighting)
 

@@ -44,6 +44,11 @@
 #include "primitives/Terrain.h"
 
 
+/** Lighting **/
+#include "lighting/Light.h"
+#include "lighting/DirectionalLight.h"
+#include "lighting/PointLight.h"
+
 /** Noise **/
 #include "noise/NoiseMap.h"
 #include "noise/PerlinNoise.h"

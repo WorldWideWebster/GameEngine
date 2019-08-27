@@ -10,13 +10,16 @@
 class PointLight : virtual public Light
 {
 public:
-	PointLight();
-	PointLight(glm::vec3 position);
-	PointLight(glm::vec3 position, float constant, float linear, float quadratic);
+	PointLight(std::string ID);
+	PointLight(glm::vec3 position, std::string ID);
+	PointLight(glm::vec3 position, float constant, float linear, float quadratic, std::string ID);
 	PointLight(glm::vec3 position, float constant, float linear, float quadratic,
-			   glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular);
+			   glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, std::string ID);
 	void updateFalloff(float constant, float linear, float quadratic);
 	void updatePosition(glm::vec3 position);
+	virtual void render(Shader *targetShader);
+
+
 	glm::vec3 getPosition(void);
 	float getConstant(void);
 	float getLinear(void);

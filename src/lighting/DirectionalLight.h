@@ -12,11 +12,13 @@ class DirectionalLight : virtual public Light
 private:
 	glm::vec3 m_direction;
 public:
-	DirectionalLight();
-	DirectionalLight(glm::vec3 direction);
-	DirectionalLight(glm::vec3 direction, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular);
+	DirectionalLight(std::string ID);
+	DirectionalLight(glm::vec3 direction, std::string ID);
+	DirectionalLight(glm::vec3 direction, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, std::string ID);
 
 	void updateDirection(glm::vec3 direction);
+
+	virtual void render(Shader *targetShader);
 
 	glm::vec3 getDirection(void);
 };
