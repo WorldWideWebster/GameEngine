@@ -139,7 +139,7 @@ int main()
 	Texture tx = TextureFromNoiseMap(*nm);
 
 
-	DirectionalLight *l = new DirectionalLight("dirLights[0]");
+	PointLight *l = new PointLight("pointLights[0]");
 
     while (!window.shouldClose())
     {
@@ -167,7 +167,7 @@ int main()
         // TODO: Figure out how to have a single light effect multiple shaders
 
         // Time based variables
-        lightPos = glm::vec3(50 * cos(glfwGetTime()), 0, 50 * sin(glfwGetTime()));
+        lightPos = glm::vec3(1000 * cos(glfwGetTime()), 0, 1000 * sin(glfwGetTime()));
         lightDir = glm::vec3(2 , sin(glfwGetTime() / 10), cos(glfwGetTime() / 10) );
 
 		terrainColorShader.use();
@@ -176,14 +176,13 @@ int main()
         // be sure to activate shader when setting uniforms/drawing objects
 
         terrainColorShader.setFloat("material.shininess", 1.0f);
-        terrainColorShader.setInt("u_num_point_lights", 0);
-        terrainColorShader.setInt("u_num_dir_lights", 1);
+        terrainColorShader.setInt("u_num_point_lights", 1);
+        terrainColorShader.setInt("u_num_dir_lights", 0);
         terrainColorShader.setInt("u_num_spot_lights", 0);
         // directional light
 
-        // FIXME: Point light not doing point light things
 		l->render(&terrainColorShader);
-		//l->updateDirection(lightDir);
+		l->updatePosition(lightPos);
         if (flashlight)
         {
             // spotLight
@@ -232,8 +231,8 @@ int main()
         m->Draw(normalDisplayShader);
 
         // Draw the lamp object
-		lightSphere->setPosition(lightPos);
-        lightSphere->render(&lampShader);
+		//lightSphere->setPosition(lightPos);
+        //lightSphere->render(&lampShader);
 
 		renderBuffer.bindDefault();
 

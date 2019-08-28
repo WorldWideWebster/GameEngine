@@ -8,15 +8,13 @@
 
 // TODO: Make image viewer class
 
-// TODO: Move lighting to class
+// TODO: Move all separate lighting to classes
 
 // TODO: Create class for each type of lighting
 
 // TODO: Get some code cleanup tools
 
 // TODO: Create objects to link shaders to - Object.addshader(shader?)
-
-// TODO: Fix Warnings - Done 8/2/2019
 
 // TODO: Add unit primitive for each shape
 
@@ -29,8 +27,6 @@
 // TODO: Try generating any shape by random vertices?
 
 // TODO: Ability to generate polygons - Polygon class that looks at angle to make sure it does not exceed 360
-/
-// TODO: Add Entity Class - Done 8/8/2019
 
 // TODO: Add model viewer
 
@@ -39,3 +35,12 @@
 // TODO: Add ambient light
 
 // TODO: Add console
+
+// TODO: Selectable objects
+
+// TODO: Sliders for Parameters
+
+
+/******************DONE*********************/
+// TODO: Fix Warnings - Done 8/2/2019
+// TODO: Add Entity Class - Done 8/8/2019

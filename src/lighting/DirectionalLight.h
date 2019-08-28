@@ -18,6 +18,8 @@ public:
 
 	void updateDirection(glm::vec3 direction);
 
+	void setShaderDirection(Shader *targetShader);
+
 	virtual void render(Shader *targetShader);
 
 	glm::vec3 getDirection(void);

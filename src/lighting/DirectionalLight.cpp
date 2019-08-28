@@ -33,8 +33,14 @@ void DirectionalLight::updateDirection(glm::vec3 direction)
 void DirectionalLight::render(Shader *targetShader)
 {
 	Light::render(targetShader);
+	setShaderDirection(targetShader);
+}
+
+void DirectionalLight::setShaderDirection(Shader *targetShader)
+{
 	targetShader->setVec3(this->m_ID + ".direction", this->m_direction);
 }
+
 
 glm::vec3 DirectionalLight::getDirection(void)
 {

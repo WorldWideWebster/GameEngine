@@ -85,16 +85,16 @@ void main()
     vec3 result = vec3(0.0, 0.0, 0.0);
 
     // phase 1: Diretional Lighting
-    for(int i = 0; i <= u_num_dir_lights; i++)
-    result += CalcDirLight(dirLights[i], norm, viewDir);
+    for(int i = 0; i < u_num_dir_lights; i++)
+        result += CalcDirLight(dirLights[i], norm, viewDir);
 
     // Phase 2: Point Lights
-    for(int i = 0; i <= u_num_point_lights; i++)
-    result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);
+    for(int i = 0; i < u_num_point_lights; i++)
+        result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);
 
     // Phase 3: Spotlights
-    for(int i = 0; i <= u_num_point_lights; i++)
-    result += CalcSpotLight(spotLights[i], norm, FragPos, viewDir);
+    for(int i = 0; i < u_num_point_lights; i++)
+        result += CalcSpotLight(spotLights[i], norm, FragPos, viewDir);
     //emission
     vec3 emission = material.emissionBrightness * vertexColor;
     result += emission;

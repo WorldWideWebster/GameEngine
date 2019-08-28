@@ -18,6 +18,10 @@ public:
 	void updateFalloff(float constant, float linear, float quadratic);
 	void updatePosition(glm::vec3 position);
 	virtual void render(Shader *targetShader);
+	void setShaderPosition(Shader *targetShader);
+	void setShaderconstant(Shader *targetShader);
+	void setShaderLinear(Shader *targetShader);
+	void setShaderQuadratic(Shader *targetShader);
 
 
 	glm::vec3 getPosition(void);
