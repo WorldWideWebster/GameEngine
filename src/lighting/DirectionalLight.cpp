@@ -33,7 +33,6 @@ void DirectionalLight::updateDirection(glm::vec3 direction)
 void DirectionalLight::render(Shader *targetShader)
 {
 	Light::render(targetShader);
-	std::cout << this->m_ID + ".direction" << ": "<< this->m_direction.x <<  std::endl;
 	targetShader->setVec3(this->m_ID + ".direction", this->m_direction);
 }
 

@@ -48,9 +48,9 @@ struct SpotLight {
 #define MAX_SPOT_LIGHTS 5
 #define MAX_DIR_LIGHTS 1
 
-uniform int u_num_point_lights;
-uniform int u_num_spot_lights;
-uniform int u_num_dir_lights;
+uniform int u_num_point_lights = 0;
+uniform int u_num_spot_lights = 0;
+uniform int u_num_dir_lights = 0;
 
 in vec3 FragPos;
 in vec3 Normal;
@@ -85,15 +85,15 @@ void main()
     vec3 result = vec3(0.0, 0.0, 0.0);
 
     // phase 1: Diretional Lighting
-    for(int i = 0; i <= num_dir_lights; i++)
+    for(int i = 0; i <= u_num_dir_lights; i++)
     result += CalcDirLight(dirLights[i], norm, viewDir);
 
     // Phase 2: Point Lights
-    for(int i = 0; i <= num_point_lights; i++)
+    for(int i = 0; i <= u_num_point_lights; i++)
     result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);
 
     // Phase 3: Spotlights
-    for(int i = 0; i <= num_point_lights; i++)
+    for(int i = 0; i <= u_num_point_lights; i++)
     result += CalcSpotLight(spotLights[i], norm, FragPos, viewDir);
     //emission
     vec3 emission = material.emissionBrightness * vertexColor;

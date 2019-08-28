@@ -139,7 +139,7 @@ int main()
 	Texture tx = TextureFromNoiseMap(*nm);
 
 
-	Light *l = new Light("dirLights[0]");
+	DirectionalLight *l = new DirectionalLight("dirLights[0]");
 
     while (!window.shouldClose())
     {
@@ -176,13 +176,14 @@ int main()
         // be sure to activate shader when setting uniforms/drawing objects
 
         terrainColorShader.setFloat("material.shininess", 1.0f);
-        terrainColorShader.setInt("num_point_lights", 1);
-        terrainColorShader.setInt("num_dir_lights", 1);
-        terrainColorShader.setInt("num_spot_lights", 1);
+        terrainColorShader.setInt("u_num_point_lights", 0);
+        terrainColorShader.setInt("u_num_dir_lights", 1);
+        terrainColorShader.setInt("u_num_spot_lights", 0);
         // directional light
 
         // FIXME: Point light not doing point light things
 		l->render(&terrainColorShader);
+		//l->updateDirection(lightDir);
         if (flashlight)
         {
             // spotLight

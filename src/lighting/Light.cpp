@@ -36,29 +36,21 @@ void Light::setSpecular(glm::vec3 specular)
 
 void Light::render(Shader *targetShader)
 {
-	/*
 	setShaderAmbient(targetShader);
 	setShaderDiffuse(targetShader);
 	setShaderSpecular(targetShader);
-	 */
-	targetShader->setVec3("dirLights[0].ambient", this->m_ambient);
-	targetShader->setVec3("dirLights[0].diffuse", this->m_diffuse);
-	targetShader->setVec3("dirLights[0].specular", this->m_specular);
 }
 
 void Light::setShaderAmbient(Shader *targetShader)
 {
-	std::cout << this->m_ID + ".ambient" << ": "<< this->m_ambient.x <<  std::endl;
 	targetShader->setVec3(this->m_ID + ".ambient", this->m_ambient);
 }
 void Light::setShaderDiffuse(Shader *targetShader)
 {
-	std::cout << this->m_ID + ".diffuse" << ": "<< this->m_diffuse.x <<  std::endl;
 	targetShader->setVec3(this->m_ID + ".diffuse", this->m_diffuse);
 }
 void Light::setShaderSpecular(Shader *targetShader)
 {
-	std::cout << this->m_ID + ".specular" << ": "<< this->m_specular.x <<  std::endl;
 	targetShader->setVec3(this->m_ID + ".specular", this->m_specular);
 }
 
