@@ -8,10 +8,6 @@
 
 // TODO: Make image viewer class
 
-// TODO: Move all separate lighting to classes
-
-// TODO: Create class for each type of lighting
-
 // TODO: Get some code cleanup tools
 
 // TODO: Create objects to link shaders to - Object.addshader(shader?)
@@ -42,5 +38,8 @@
 
 
 /******************DONE*********************/
-// TODO: Fix Warnings - Done 8/2/2019
-// TODO: Add Entity Class - Done 8/8/2019
+// Fix Warnings - Done 8/2/2019
+// Add Entity Class - Done 8/8/2019
+// Fix SpotLight render function - Done 8/29/2019
+// Create class for each type of lighting - Done 8/29/2019
+// Move all separate lighting to classes - Done 8/29/2019

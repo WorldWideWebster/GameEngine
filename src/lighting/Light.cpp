@@ -11,6 +11,7 @@ Light::Light(std::string ID)
     this->m_diffuse = glm::vec3(0.8f, 0.8f, 0.8f);
     this->m_specular = glm::vec3(1.0f, 1.0f, 1.0f);
 	this->m_ID = ID;
+	this->m_on = true;
 }
 
 Light::Light(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, std::string ID)
@@ -19,6 +20,7 @@ Light::Light(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, std::stri
     this->m_diffuse = diffuse;
     this->m_specular = specular;
     this->m_ID = ID;
+	this->m_on = true;
 }
 
 void Light::setAmbient(glm::vec3 ambient)
@@ -43,15 +45,33 @@ void Light::render(Shader *targetShader)
 
 void Light::setShaderAmbient(Shader *targetShader)
 {
-	targetShader->setVec3(this->m_ID + ".ambient", this->m_ambient);
+	if(m_on)
+		targetShader->setVec3(this->m_ID + ".ambient", this->m_ambient);
+	else
+		targetShader->setVec3(this->m_ID + ".ambient", glm::vec3(0));
 }
 void Light::setShaderDiffuse(Shader *targetShader)
 {
-	targetShader->setVec3(this->m_ID + ".diffuse", this->m_diffuse);
+	if (m_on)
+		targetShader->setVec3(this->m_ID + ".diffuse", this->m_diffuse);
+	else
+		targetShader->setVec3(this->m_ID + ".diffuse", glm::vec3(0));
 }
 void Light::setShaderSpecular(Shader *targetShader)
 {
-	targetShader->setVec3(this->m_ID + ".specular", this->m_specular);
+	if(m_on)
+		targetShader->setVec3(this->m_ID + ".specular", this->m_specular);
+	else
+		targetShader->setVec3(this->m_ID + ".specular", glm::vec3(0));
+}
+
+void Light::turnOff()
+{
+	this->m_on = false;
+}
+void Light::turnOn()
+{
+	this->m_on = true;
 }
 
 glm::vec3 Light::getAmbient(void)

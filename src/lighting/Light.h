@@ -25,6 +25,7 @@ private:
     glm::vec3 m_ambient;
     glm::vec3 m_diffuse;
     glm::vec3 m_specular;
+    bool m_on;
 public:
 	Light(std::string ID);
 	Light(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, std::string ID);
@@ -36,6 +37,8 @@ public:
     void setSpecular(glm::vec3 specular);
 
 	virtual void render(Shader *targetShader);
+	virtual void turnOff();
+	virtual void turnOn();
 
 
 	void setShaderAmbient(Shader *targetShader);

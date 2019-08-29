@@ -140,7 +140,7 @@ int main()
 
 
 	PointLight *l = new PointLight("pointLights[0]");
-
+	SpotLight *sl = new SpotLight("spotLights[0]");
     while (!window.shouldClose())
     {
         // TODO: move render loop to separate file
@@ -178,39 +178,23 @@ int main()
         terrainColorShader.setFloat("material.shininess", 1.0f);
         terrainColorShader.setInt("u_num_point_lights", 1);
         terrainColorShader.setInt("u_num_dir_lights", 0);
-        terrainColorShader.setInt("u_num_spot_lights", 0);
+        terrainColorShader.setInt("u_num_spot_lights", 1);
         // directional light
 
 		l->render(&terrainColorShader);
 		l->updatePosition(lightPos);
-        if (flashlight)
-        {
-            // spotLight
-            terrainColorShader.setVec3("spotLights[0].position", camera.Position);
-            terrainColorShader.setVec3("spotLights[0].direction", camera.Front);
-            terrainColorShader.setVec3("spotLights[0].ambient", 0.0f, 0.0f, 0.0f);
-            terrainColorShader.setVec3("spotLights[0].diffuse", 1.0f, 1.0f, 1.0f);
-            terrainColorShader.setVec3("spotLights[0].specular", 1.0f, 1.0f, 1.0f);
-            terrainColorShader.setFloat("spotLights[0].constant", 1.0f);
-            terrainColorShader.setFloat("spotLights[0].linear", 0.09);
-            terrainColorShader.setFloat("spotLights[0].quadratic", 0.032);
-            terrainColorShader.setFloat("spotLights[0].cutOff", glm::cos(glm::radians(12.5f)));
-            terrainColorShader.setFloat("spotLights[0].outerCutOff", glm::cos(glm::radians(15.0f)));
-        }
+		if (flashlight)
+		{
+			sl->turnOn();
+		}
         else
         {
-            terrainColorShader.setVec3("spotLights[0].position", camera.Position);
-            terrainColorShader.setVec3("spotLights[0].direction", camera.Front);
-            terrainColorShader.setVec3("spotLights[0].ambient", 0.0f, 0.0f, 0.0f);
-            terrainColorShader.setVec3("spotLights[0].diffuse", 0.0f, 0.0f, 0.0f);
-            terrainColorShader.setVec3("spotLights[0].specular", 0.0f, 0.0f, 0.0f);
-            terrainColorShader.setFloat("spotLights[0].constant", 1.0f);
-            terrainColorShader.setFloat("spotLights[0].linear", 0.09);
-            terrainColorShader.setFloat("spotLights[0].quadratic", 0.032);
-            terrainColorShader.setFloat("spotLights[0].cutOff", glm::cos(glm::radians(12.5f)));
-            terrainColorShader.setFloat("spotLights[0].outerCutOff", glm::cos(glm::radians(15.0f)));
+			sl->turnOff();
         }
-
+		// spotLight
+		sl->render(&terrainColorShader);
+		sl->updatePosition(camera.Position);
+		sl->updateDirection(camera.Front);
         glm::mat4 model;
         terrainColorShader.use();
 

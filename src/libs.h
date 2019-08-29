@@ -48,6 +48,7 @@
 #include "lighting/Light.h"
 #include "lighting/DirectionalLight.h"
 #include "lighting/PointLight.h"
+#include "lighting/SpotLight.h"
 
 /** Noise **/
 #include "noise/NoiseMap.h"

@@ -1,2 +1,4 @@
 8/27/2019
 Fixed Light, DirectionalLight, and Pointlight classes to actually work and inherit/render
+8/27/2019
+Fixed SpotLight Class

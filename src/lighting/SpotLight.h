@@ -13,7 +13,7 @@ class SpotLight : public DirectionalLight, public PointLight
 private:
 	float m_cutOff;
 	float m_outerCutOff;
-private:
+public:
 	SpotLight(std::string ID);
 	SpotLight(float cutOff, float outerCutOff, std::string ID);
 	SpotLight(float cutOff, float outerCutOff, glm::vec3 direction,
