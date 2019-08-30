@@ -6,7 +6,6 @@
 // camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 
-
 // timing
 float deltaTime = 0.0f;    // time between current frame and last frame
 float lastFrame = 0.0f;
@@ -41,11 +40,9 @@ int main()
     Shader instanceShader("../shaders/instance.vert", "../shaders/instance.frag");
     Shader normalDisplayShader("../shaders/normal_vis.vert", "../shaders/normal_vis.frag", "../shaders/normal_vis.geom");
 
-
     GLuint uniformBlockIndexLighting = glGetUniformBlockIndex(lightingShader.ID, "Matrices");
     GLuint uniformBlockIndexLamp = glGetUniformBlockIndex(lampShader.ID, "Matrices");
     GLuint uniformBlockIndexInstance = glGetUniformBlockIndex(instanceShader.ID, "Matrices");
-
 
     glUniformBlockBinding(lightingShader.ID, uniformBlockIndexLighting, 0);
     glUniformBlockBinding(lampShader.ID, uniformBlockIndexLamp, 0);
@@ -115,7 +112,6 @@ int main()
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
     float lightx = 0.5f, lighty = 0.5f, lightz = 0.50f;
-
     bool flashlight = false;
 
     Terrain *tri = new Terrain();
@@ -138,7 +134,6 @@ int main()
 	//Texture tx = TextureFromImage(im);
 	Texture tx = TextureFromNoiseMap(*nm);
 
-
 	PointLight *l = new PointLight("pointLights[0]");
 	SpotLight *sl = new SpotLight("spotLights[0]");
     while (!window.shouldClose())
@@ -156,11 +151,8 @@ int main()
         // -----
         window.processInput(deltaTime);
 
-
         glm::mat4 view = camera.GetViewMatrix();
-
         renderBuffer.bindAndBuffer(view);
-
 
         // TODO: Move lighting stuff to a separate file
 
@@ -215,8 +207,8 @@ int main()
         m->Draw(normalDisplayShader);
 
         // Draw the lamp object
-		//lightSphere->setPosition(lightPos);
-        //lightSphere->render(&lampShader);
+		lightSphere->setPosition(lightPos);
+        lightSphere->render(&lampShader);
 
 		renderBuffer.bindDefault();
 
@@ -258,7 +250,10 @@ int main()
 		// TODO: move to separate file
         if (show_render_window)
         {
-			ImGui::Begin("Render Window",  &show_render_window);       // Create a window called "Hello, world!" and append into it.
+			ImGui::Begin("Render Window",  &show_render_window);
+
+			ImGui::Text("Location: %f %f %f     Direction: %f %f %f", camera.Position.x, camera.Position.y, camera.Position.z, camera.Front.x, camera.Front.y, camera.Front.z);
+
 			// Set render window position
             ImGui::SetWindowPos("Render Window", ImVec2(0, 0), ImGuiCond_FirstUseEver);
             // Set render window size
@@ -320,7 +315,6 @@ int main()
 
             ImGui::End();
         }
-
 
         ImVec2 pos = ImGui::GetCursorScreenPos();
 
