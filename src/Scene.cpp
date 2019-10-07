@@ -9,15 +9,26 @@ Scene::Scene()
 
 
 
-void Scene::addEntity(Entity targetEntity)
+void Scene::addEntity(Entity *targetEntity)
 {
-	entities.push_back(targetEntity);
+	m_entities.push_back(*targetEntity);
 }
 
 void Scene::render(Shader *shader)
 {
-	for(int i = 0; i < entities.size(); i++)
+	if(this->m_active)
 	{
-		entities[i].render(shader);
+		for (int i = 0; i < m_entities.size(); i++)
+		{
+			m_entities[i].render(shader);
+		}
 	}
+}
+void Scene::setActiveScene(void)
+{
+	this->m_active = true;
+}
+void Scene::setInactiveScene(void)
+{
+	this->m_active = false;
 }

@@ -370,7 +370,6 @@ void ImGui::ShowDemoWindow(bool* p_open)
         ImGui::Checkbox("No background", &no_background);
         ImGui::Checkbox("No bring to front", &no_bring_to_front);
     }
-
     // All demo contents
     ShowDemoWindowWidgets();
     ShowDemoWindowLayout();

@@ -28,6 +28,7 @@
 #include "mesh.h"
 #include "model.h"
 #include "RenderBuffer.h"
+#include "Scene.h"
 #include "shader.h"
 #include "texture.h"
 #include "vertex.h"
@@ -53,6 +54,10 @@
 /** Noise **/
 #include "noise/NoiseMap.h"
 #include "noise/PerlinNoise.h"
+
+
+/** UI Windows **/
+#include "ui/UITestWindow.h"
 
 /******* EXTERNAL LIBRARIES ********/
 // STBI

@@ -11,10 +11,13 @@ class Scene
 {
 public:
 	Scene();
-	void addEntity(Entity targetEntity);
+	void addEntity(Entity* targetEntity);
 	void render(Shader *shader);
+	void setActiveScene(void);
+	void setInactiveScene(void);
 private:
-	std::vector<Entity> entities;
+	std::vector<Entity> m_entities;
+	bool m_active;
 };
 
 

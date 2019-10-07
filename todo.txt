@@ -16,6 +16,13 @@
 
 // TODO: Move all Meshes to entities
 
+
+// TODO: Make UI Render Window Class
+
+// TODO: MAKE UI 3D Render Window Class
+
+// TODO: Move UI windows in main to classes
+
 /****************Features**************/
 
 // TODO: Add update to render loop
@@ -26,8 +33,6 @@
 
 // TODO: Add model viewer
 
-// TODO: Print position of camera and direction (and maybe other things)
-
 // TODO: Add ambient light
 
 // TODO: Add console
@@ -36,10 +41,33 @@
 
 // TODO: Sliders for Parameters
 
+// TODO: Drag-Rotate mode
 
+// TODO: Cardinal directions display
+
+// TODO: Show lights/objects positions
+
+// TODO: Create test scene
+
+// TODO: Create shader viewer
+
+
+// TODO: Polygon generator
+
+// TODO: Clouds
+/****************Research**************/
+// TODO: L-systems
+
+// TODO: Roads based on L-systems
+
+// TODO: GGX vs Blinn-Phong
 /******************DONE*********************/
-// Fix Warnings - Done 8/2/2019
-// Add Entity Class - Done 8/8/2019
-// Fix SpotLight render function - Done 8/29/2019
-// Create class for each type of lighting - Done 8/29/2019
-// Move all separate lighting to classes - Done 8/29/2019
+// Fix Warnings                                                     - Done 8/2/2019
+// Add Entity Class                                                 - Done 8/8/2019
+// Fix SpotLight render function                                    - Done 8/29/2019
+// Create class for each type of lighting                           - Done 8/29/2019
+// Move all separate lighting to classes                            - Done 8/29/2019
+// Print position of camera and direction (and maybe other things)  - Done 8/29/2019
+// Move test window into the UITestWindow class                     - Done 10/7/2019
+// Make UI Window class                                             - Done 10/7/2019
+// Create test window                                               - Done 10/7/2019

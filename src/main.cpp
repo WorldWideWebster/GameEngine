@@ -87,6 +87,8 @@ int main()
     float radius = 100.0;
     float offset = 50.5f;
 
+	/**********************************************/
+	// TODO: Move this to window creation
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -98,6 +100,7 @@ int main()
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
     //ImGui::StyleColorsClassic();
+    /**********************************************/
 
     // Setup Platform/Renderer bindings
     const char *glsl_version = "#version 130";
@@ -107,7 +110,7 @@ int main()
 
     bool show_demo_window = true;
     bool show_render_window = false;
-    bool show_image_viewer = false;
+    bool noise_map_viewer = false;
     bool render_input = true;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
@@ -115,27 +118,26 @@ int main()
     bool flashlight = false;
 
     Terrain *tri = new Terrain();
-	//Quad *triangle = new Quad();
     Mesh *m = new Mesh(tri);
     // render loop
-    // -----------
 
-	Entity *e = new Entity(new Mesh(new Sphere(25, 25, 25)), glm::vec3(0.0f));
-	Entity *lightSphere = new Entity(new Mesh(new Sphere(10, 10, 10)), glm::vec3(0.0f));
-	lightSphere->setScale(glm::vec3(20.0f));
+    Scene *newScene = new Scene();
+	newScene->setActiveScene();
+	newScene->addEntity(new Entity(new Mesh(new Sphere(25, 25, 25)), glm::vec3(0.0f)));
+	//newScene->addEntity(new Entity(new Mesh(new Sphere(10, 10, 10)), glm::vec3(0.0f)));
+	//lightSphere->setScale(glm::vec3(20.0f));
 
-	int width = 450;
-	int height = 450;
+	// Terrain Generation
+	// Create Noise map
 	NoiseMap *nm = new NoiseMap;
-	//Image im(width, height);
-
-	//Texture tx = TextureFromData(image, width, height);
-	//Texture tx = TextureFromData(nm->getData(), nm->getWidth(), nm->getHeight());
-	//Texture tx = TextureFromImage(im);
+	// Create texture from noise map
 	Texture tx = TextureFromNoiseMap(*nm);
 
 	PointLight *l = new PointLight("pointLights[0]");
 	SpotLight *sl = new SpotLight("spotLights[0]");
+
+	UITestWindow *testWindow = new UITestWindow(&show_demo_window, &show_render_window, &noise_map_viewer);
+	testWindow->open();
     while (!window.shouldClose())
     {
         // TODO: move render loop to separate file
@@ -166,7 +168,7 @@ int main()
 		terrainColorShader.setVec3("viewPos", camera.Position);
 
         // be sure to activate shader when setting uniforms/drawing objects
-
+		newScene->render(&terrainColorShader);
         terrainColorShader.setFloat("material.shininess", 1.0f);
         terrainColorShader.setInt("u_num_point_lights", 1);
         terrainColorShader.setInt("u_num_dir_lights", 0);
@@ -197,7 +199,7 @@ int main()
 		//e->setPosition(lightPos.operator*=(2));
 		// e->setScale(glm::vec3(0.1f, 0.1f, 0.1f));
 		//e->setRotation(lightPos, angle);
-		e->render(&terrainColorShader);
+		//e->render(&terrainColorShader);
         // then draw model with normal visualizing geometry shader
         normalDisplayShader.use();
         normalDisplayShader.setMat4("projection", renderBuffer.getProjection());
@@ -207,8 +209,8 @@ int main()
         m->Draw(normalDisplayShader);
 
         // Draw the lamp object
-		lightSphere->setPosition(lightPos);
-        lightSphere->render(&lampShader);
+		//lightSphere->setPosition(lightPos);
+        //lightSphere->render(&lampShader);
 
 		renderBuffer.bindDefault();
 
@@ -218,34 +220,14 @@ int main()
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
+        testWindow->render();
         // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
         if (show_demo_window)
             ImGui::ShowDemoWindow(&show_demo_window);
 
-        // 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
-        {
-            static float f = 0.0f;
-            static int counter = 0;
 
-            ImGui::Begin("Hello, world!");       // Create a window called "Hello, world!" and append into it.
 
-            ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-            ImGui::Checkbox("Stupid Toby", &show_demo_window);      // Edit bools storing our window open/close state
-            ImGui::Checkbox("Render Window", &show_render_window);
-            ImGui::Checkbox("Image Viewer", &show_image_viewer);
 
-            ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-            ImGui::ColorEdit3("clear color", (float *) &clear_color); // Edit 3 floats representing a color
-
-            if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-                counter++;
-            ImGui::SameLine();
-            ImGui::Text("counter = %d", counter);
-
-            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate,
-                        ImGui::GetIO().Framerate);
-            ImGui::End();
-        }
         // 3. Show another simple window.
 		// TODO: move to separate file
         if (show_render_window)
@@ -287,10 +269,10 @@ int main()
 
         // 3. Show another simple window.
 		// TODO move to separate file
-        if (show_image_viewer)
+        if (noise_map_viewer)
         {
 
-			ImGui::Begin("Image Viewer", &show_image_viewer);       // Create a window called "Hello, world!" and append into it.
+			ImGui::Begin("Noise Map Viewer", &noise_map_viewer);       // Create a window called "Hello, world!" and append into it.
 
             if (ImGui::Button("GenNoise"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
             {
@@ -308,11 +290,8 @@ int main()
             ImGui::SetNextWindowSize(ImVec2(RENDER_WINDOW_DEFAULT_X, RENDER_WINDOW_DEFAULT_Y), ImGuiCond_FirstUseEver);
             // Window for rendering scene
             // FIXME: texture doesn't move with window
-            ImGui::Image(
-                    (void *)(uintptr_t)  nm->getTexID(), ImVec2(nm->getWidth(), nm->getHeight()),
+            ImGui::Image((void *)(uintptr_t)  nm->getTexID(), ImVec2(nm->getWidth(), nm->getHeight()),
                     ImVec2(0,1), ImVec2(1,0), ImColor(255,255,255,255), ImColor(255,255,255,128));
-
-
             ImGui::End();
         }
 
