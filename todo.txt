@@ -16,6 +16,7 @@
 
 // TODO: Move all Meshes to entities
 
+// TODO: Move terrain meshes to entity
 
 // TODO: Make UI Render Window Class
 
@@ -47,10 +48,9 @@
 
 // TODO: Show lights/objects positions
 
-// TODO: Create test scene
+// TODO: Create test scene <<<<<<<<<<<<
 
 // TODO: Create shader viewer
-
 
 // TODO: Polygon generator
 
@@ -71,3 +71,4 @@
 // Move test window into the UITestWindow class                     - Done 10/7/2019
 // Make UI Window class                                             - Done 10/7/2019
 // Create test window                                               - Done 10/7/2019
+// Move lighting to scene                                           - Done 10/8/2019

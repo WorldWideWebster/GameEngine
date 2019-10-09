@@ -45,7 +45,7 @@ set(HEADER_FILES
         src/Scene.h
         src/Environment.cpp
         src/Environment.h
-        src/Renderer.cpp src/Renderer.h src/ui/UIWindow.cpp src/ui/UIWindow.h src/ui/UIRenderWindow.cpp src/ui/UIRenderWindow.h src/ui/UITestWindow.cpp src/ui/UITestWindow.h)
+        src/Renderer.cpp src/Renderer.h src/ui/UIWindow.cpp src/ui/UIWindow.h src/ui/UIRenderWindow.cpp src/ui/UIRenderWindow.h src/ui/UITestWindow.cpp src/ui/UITestWindow.h src/test_scenes.h src/test_scenes.cpp)
 
 set(dir ${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${dir}/build)

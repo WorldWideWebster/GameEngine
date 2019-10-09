@@ -124,6 +124,8 @@ int main()
     Scene *newScene = new Scene();
 	newScene->setActiveScene();
 	newScene->addEntity(new Entity(new Mesh(new Sphere(25, 25, 25)), glm::vec3(0.0f)));
+	newScene->addPointLight(new PointLight("pointLights[0]"));
+	newScene->addSpotLight(new SpotLight("spotLights[0]"));
 	//newScene->addEntity(new Entity(new Mesh(new Sphere(10, 10, 10)), glm::vec3(0.0f)));
 	//lightSphere->setScale(glm::vec3(20.0f));
 
@@ -133,8 +135,6 @@ int main()
 	// Create texture from noise map
 	Texture tx = TextureFromNoiseMap(*nm);
 
-	PointLight *l = new PointLight("pointLights[0]");
-	SpotLight *sl = new SpotLight("spotLights[0]");
 
 	UITestWindow *testWindow = new UITestWindow(&show_demo_window, &show_render_window, &noise_map_viewer);
 	testWindow->open();
@@ -169,13 +169,9 @@ int main()
 
         // be sure to activate shader when setting uniforms/drawing objects
 		newScene->render(&terrainColorShader);
-        terrainColorShader.setFloat("material.shininess", 1.0f);
-        terrainColorShader.setInt("u_num_point_lights", 1);
-        terrainColorShader.setInt("u_num_dir_lights", 0);
-        terrainColorShader.setInt("u_num_spot_lights", 1);
-        // directional light
 
-		l->render(&terrainColorShader);
+		// TODO: Figure out flashlight with scene
+		/*
 		l->updatePosition(lightPos);
 		if (flashlight)
 		{
@@ -185,10 +181,11 @@ int main()
         {
 			sl->turnOff();
         }
+        */
 		// spotLight
-		sl->render(&terrainColorShader);
-		sl->updatePosition(camera.Position);
-		sl->updateDirection(camera.Front);
+		// TODO: Figure out position/direction update in scene
+		//sl->updatePosition(camera.Position);
+		//sl->updateDirection(camera.Front);
         glm::mat4 model;
         terrainColorShader.use();
 
@@ -224,9 +221,6 @@ int main()
         // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
         if (show_demo_window)
             ImGui::ShowDemoWindow(&show_demo_window);
-
-
-
 
         // 3. Show another simple window.
 		// TODO: move to separate file
