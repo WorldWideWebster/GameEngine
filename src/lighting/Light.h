@@ -39,6 +39,7 @@ public:
 	virtual void render(Shader *targetShader);
 	virtual void turnOff();
 	virtual void turnOn();
+	inline virtual void updatePosition(glm::vec3 position){}
 
 
 	void setShaderAmbient(Shader *targetShader);

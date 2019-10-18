@@ -4,7 +4,7 @@
 #include "libs.h"
 
 // camera
-Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+/// Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 
 // timing
 float deltaTime = 0.0f;    // time between current frame and last frame
@@ -17,7 +17,6 @@ int main()
 {
     Window window;
 
-    window.setCamera(&camera);
 
     // glad: load all OpenGL function pointers
     // ---------------------------------------
@@ -72,7 +71,6 @@ int main()
     screenShader.setInt("screenTexture", 0);
 
     RenderBuffer renderBuffer;
-	SkyBox skybox (cubemapTexture, &camera, &renderBuffer);
     // load models
     // -----------
     Model ourModel((char *) "resources/objects/nanosuit/nanosuit.obj");
@@ -117,15 +115,17 @@ int main()
     float lightx = 0.5f, lighty = 0.5f, lightz = 0.50f;
     bool flashlight = false;
 
-    Terrain *tri = new Terrain();
-    Mesh *m = new Mesh(tri);
     // render loop
 
-    Scene *newScene = new Scene();
+    auto newScene = std::make_unique<Scene>();
+	//SkyBox skybox (cubemapTexture, newScene->getDefaultCamera(), &renderBuffer);
+
+	window.setCamera(newScene->getDefaultCamera());
 	newScene->setActiveScene();
 	newScene->addEntity(new Entity(new Mesh(new Sphere(25, 25, 25)), glm::vec3(0.0f)));
-	newScene->addPointLight(new PointLight("pointLights[0]"));
-	newScene->addSpotLight(new SpotLight("spotLights[0]"));
+	newScene->addEntity(new Entity(new Mesh(new Terrain())));
+	newScene->addLight(new PointLight("pointLights[0]"));
+	newScene->addLight(new SpotLight("spotLights[0]"));
 	//newScene->addEntity(new Entity(new Mesh(new Sphere(10, 10, 10)), glm::vec3(0.0f)));
 	//lightSphere->setScale(glm::vec3(20.0f));
 
@@ -153,23 +153,18 @@ int main()
         // -----
         window.processInput(deltaTime);
 
-        glm::mat4 view = camera.GetViewMatrix();
-        renderBuffer.bindAndBuffer(view);
-
-        // TODO: Move lighting stuff to a separate file
-
+        // TODO: Move renderbuffer
         // TODO: Figure out how to have a single light effect multiple shaders
 
         // Time based variables
         lightPos = glm::vec3(1000 * cos(glfwGetTime()), 0, 1000 * sin(glfwGetTime()));
         lightDir = glm::vec3(2 , sin(glfwGetTime() / 10), cos(glfwGetTime() / 10) );
 
-		terrainColorShader.use();
-		terrainColorShader.setVec3("viewPos", camera.Position);
-
         // be sure to activate shader when setting uniforms/drawing objects
-		newScene->render(&terrainColorShader);
+		newScene->render(&terrainColorShader, &renderBuffer);
 
+
+		newScene->setLightPosition("pointLights[0]", lightPos);
 		// TODO: Figure out flashlight with scene
 		/*
 		l->updatePosition(lightPos);
@@ -187,29 +182,24 @@ int main()
 		//sl->updatePosition(camera.Position);
 		//sl->updateDirection(camera.Front);
         glm::mat4 model;
-        terrainColorShader.use();
-
-        // draw planet
-        terrainColorShader.setMat4("model", model);
-        m->Draw(terrainColorShader);
 
 		//e->setPosition(lightPos.operator*=(2));
 		// e->setScale(glm::vec3(0.1f, 0.1f, 0.1f));
 		//e->setRotation(lightPos, angle);
 		//e->render(&terrainColorShader);
         // then draw model with normal visualizing geometry shader
+/*
         normalDisplayShader.use();
         normalDisplayShader.setMat4("projection", renderBuffer.getProjection());
         normalDisplayShader.setMat4("view", view);
         normalDisplayShader.setMat4("model", model);
-
-        m->Draw(normalDisplayShader);
+*/
 
         // Draw the lamp object
 		//lightSphere->setPosition(lightPos);
         //lightSphere->render(&lampShader);
 
-		renderBuffer.bindDefault();
+        // TODO: Move renderbuffer to inside scene?
 
         // UI stuff
         // Start the Dear ImGui frame
@@ -228,8 +218,11 @@ int main()
         {
 			ImGui::Begin("Render Window",  &show_render_window);
 
-			ImGui::Text("Location: %f %f %f     Direction: %f %f %f", camera.Position.x, camera.Position.y, camera.Position.z, camera.Front.x, camera.Front.y, camera.Front.z);
-
+			ImGui::Text("Location: %f %f %f     Direction: %f %f %f", newScene->getDefaultCamera()->Position.x,
+					newScene->getDefaultCamera()->Position.y, newScene->getDefaultCamera()->Position.z,
+						newScene->getDefaultCamera()->Front.x, newScene->getDefaultCamera()->Front.y, newScene->getDefaultCamera()->Front.z);
+			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate,
+						ImGui::GetIO().Framerate);
 			// Set render window position
             ImGui::SetWindowPos("Render Window", ImVec2(0, 0), ImGuiCond_FirstUseEver);
             // Set render window size

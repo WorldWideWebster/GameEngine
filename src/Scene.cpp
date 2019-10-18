@@ -9,6 +9,12 @@ Scene::Scene()
 	this->m_num_point_lights = 1;
 	this->m_num_dir_lights = 0;
 	this->m_num_spot_lights = 1;
+
+	// Default camera
+	Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+
+	this->m_cameras.push_back(camera);
+	setDefaultCamera(0);
 }
 
 
@@ -18,25 +24,23 @@ void Scene::addEntity(Entity *targetEntity)
 	this->m_entities.push_back(*targetEntity);
 }
 
-void Scene::addPointLight(PointLight* targetLight)
+void Scene::addLight(Light* targetLight)
 {
-	this->m_p_lights.push_back(*targetLight);
+	this->m_lights.push_back(targetLight);
 }
 
-void Scene::addDirectionalLight(DirectionalLight* targetLight)
+void Scene::addCamera(void)
 {
-	this->m_d_lights.push_back(*targetLight);
+	//this->m_cameras.push_back(std::unique_ptr<Camera>);
 }
 
-void Scene::addSpotLight(SpotLight* targetLight)
-{
-	this->m_s_lights.push_back(*targetLight);
-}
-
-void Scene::render(Shader *shader)
+void Scene::render(Shader *shader, RenderBuffer *renderBuffer)
 {
 	if(this->m_active)
 	{
+		glm::mat4 view = this->m_default_camera->GetViewMatrix();
+		renderBuffer->bindAndBuffer(view);
+		shader->use();
 		setShaderPointLights(shader);
 		setShaderDirLights(shader);
 		setShaderSpotLights(shader);
@@ -44,25 +48,20 @@ void Scene::render(Shader *shader)
 		// TODO: Move this to a function
 		shader->setFloat("material.shininess", 1.0f);
 
+		// TODO: Move this to a separate function
+		// TODO: Allow for multiple cameras
+		shader->setVec3("viewPos", this->m_default_camera->Position);
+
 		for (int i = 0; i < m_entities.size(); i++)
 		{
 			m_entities[i].render(shader);
 		}
 
-		for (int i = 0; i < m_p_lights.size(); i++)
+		for (int i = 0; i < m_lights.size(); i++)
 		{
-			m_p_lights[i].render(shader);
+			m_lights[i]->render(shader);
 		}
-
-		for (int i = 0; i < m_d_lights.size(); i++)
-		{
-			m_d_lights[i].render(shader);
-		}
-
-		for (int i = 0; i < m_s_lights.size(); i++)
-		{
-			m_s_lights[i].render(shader);
-		}
+		renderBuffer->bindDefault();
 	}
 }
 void Scene::setActiveScene(void)
@@ -98,3 +97,29 @@ void Scene::setShaderSpotLights(Shader *shader)
 {
 	shader->setInt("u_num_spot_lights", m_num_spot_lights);
 }
+
+void Scene::setDefaultCamera(int cameraNum)
+{
+	if(cameraNum < this->m_cameras.size())
+	{
+		m_default_camera = std::make_shared<Camera>(this->m_cameras[cameraNum]);
+	}
+}
+
+
+std::shared_ptr<Camera> Scene::getDefaultCamera(void)
+{
+	return m_default_camera;
+}
+
+
+void Scene::setLightPosition(std::string targetID, glm::vec3 targetPosition)
+{
+	for (int i = 0; i < m_lights.size(); i++)
+	{
+		m_lights[i]->updatePosition(targetPosition);
+	}
+}
+void setLightDirection(std::string targetID, glm::vec3 targetPosition);
+void setEntityPosition(std::string targetID, glm::vec3 targetPosition);
+void setEntityDirection(std::string targetID, glm::vec3 targetPosition);

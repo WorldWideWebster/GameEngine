@@ -24,6 +24,20 @@
 
 // TODO: Move UI windows in main to classes
 
+// TODO: Replace all pointers with smart pointers
+
+// TODO: Allow lights/entities to be edited from scene
+
+// TODO: Move to C++17
+
+// TODO: Add destructors to all classes
+
+// TODO: Attach shaders to Entity?
+
+// TODO: Renderbuffer should use OPENGL stuff
+
+
+
 /****************Features**************/
 
 // TODO: Add update to render loop
@@ -55,6 +69,16 @@
 // TODO: Polygon generator
 
 // TODO: Clouds
+
+// TODO: Add light/Entity list to UI
+
+// TODO: Rotatable scene via click/hold
+
+
+/****************Architecture**************/
+// TODO: Figure out where to put renderbuffer instances
+
+
 /****************Research**************/
 // TODO: L-systems
 
@@ -62,13 +86,18 @@
 
 // TODO: GGX vs Blinn-Phong
 /******************DONE*********************/
-// Fix Warnings                                                     - Done 8/2/2019
-// Add Entity Class                                                 - Done 8/8/2019
-// Fix SpotLight render function                                    - Done 8/29/2019
-// Create class for each type of lighting                           - Done 8/29/2019
-// Move all separate lighting to classes                            - Done 8/29/2019
-// Print position of camera and direction (and maybe other things)  - Done 8/29/2019
-// Move test window into the UITestWindow class                     - Done 10/7/2019
-// Make UI Window class                                             - Done 10/7/2019
-// Create test window                                               - Done 10/7/2019
-// Move lighting to scene                                           - Done 10/8/2019
+// Fix Warnings                                                     - Done 08/02/2019
+// Add Entity Class                                                 - Done 08/08/2019
+// Fix SpotLight render function                                    - Done 08/29/2019
+// Create class for each type of lighting                           - Done 08/29/2019
+// Move all separate lighting to classes                            - Done 08/29/2019
+// Print position of camera and direction (and maybe other things)  - Done 08/29/2019
+// Move test window into the UITestWindow class                     - Done 10/07/2019
+// Make UI Window class                                             - Done 10/07/2019
+// Create test window                                               - Done 10/07/2019
+// Move lighting to scene                                           - Done 10/08/2019
+// Move lighting stuff to a separate file                           - Done 10/09/2019
+// Move to C++14                                                    - Done 10/12/2019
+// Add camera(s) to Scene                                           - Done 10/16/2019
+// Fix stack overflow in Scene/Window/Camera                        - Done 10/17/2019
+// Fix window and scene camera relationship                         - Done 10/17/2019

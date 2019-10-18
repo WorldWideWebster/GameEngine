@@ -6,7 +6,7 @@
 #include "primitives/Sphere.h"
 
 Scene *testScene_1 = new Scene();
-Scene *testScene_2 = new Scene();
+//Scene *testScene_2 = new Scene();
 
 void setUpTestScene1(void)
 {

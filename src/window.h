@@ -11,7 +11,7 @@
 
 #include <iostream>
 #include <string>
-
+#include <memory>
 
 
 class Window
@@ -20,7 +20,7 @@ public:
     Window();
     Window(std::string t, int w, int h);
     ~Window();
-    void setCamera(Camera *cam);
+    void setCamera(std::shared_ptr<Camera> cam);
     void processInput(float deltaTime);
     int shouldClose();
     int getWidth();
@@ -37,7 +37,7 @@ private:
     float lastY;
     bool polyMode; // flag for polygon mode
     bool firstMouse;
-    Camera *camera;
+	std::shared_ptr<Camera> camera;
     void mouse_callback(double xpos, double ypos);
     void scroll_callback(double xoffset, double yoffset);
     void swapBuffers();

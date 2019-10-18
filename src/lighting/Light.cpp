@@ -43,6 +43,7 @@ void Light::render(Shader *targetShader)
 	setShaderSpecular(targetShader);
 }
 
+
 void Light::setShaderAmbient(Shader *targetShader)
 {
 	if(m_on)

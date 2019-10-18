@@ -198,7 +198,7 @@ void Window::scroll_callback(double xoffset, double yoffset)
 }
 
 
-void Window::setCamera(Camera *cam)
+void Window::setCamera(std::shared_ptr<Camera> cam)
 {
     camera = cam;
 }

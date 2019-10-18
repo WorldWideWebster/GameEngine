@@ -6,7 +6,7 @@
 #include "Primitive.h"
 #include "../RenderBuffer.h"
 
-SkyBox::SkyBox(Texture texture, Camera *camera, RenderBuffer *renderBuffer)
+SkyBox::SkyBox(Texture texture, std::shared_ptr<Camera> camera, RenderBuffer *renderBuffer)
 {
 	//this->camera = camera;
 	//this->renderBuffer = renderBuffer;

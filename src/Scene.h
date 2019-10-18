@@ -5,20 +5,22 @@
 #ifndef OPENGLSETUP_SCENE_H
 #define OPENGLSETUP_SCENE_H
 #include <vector>
+#include <memory>
+#include "camera.h"
 #include "Entity.h"
 #include "lighting/PointLight.h"
 #include "lighting/DirectionalLight.h"
 #include "lighting/SpotLight.h"
+#include "RenderBuffer.h"
 
 class Scene
 {
 public:
 	Scene();
 	void addEntity(Entity* targetEntity);
-	void addPointLight(PointLight* targetLight);
-	void addDirectionalLight(DirectionalLight* targetLight);
-	void addSpotLight(SpotLight* targetLight);
-	void render(Shader *shader);
+	void addLight(Light* targetLight);
+	void addCamera(void);
+	void render(Shader *shader, RenderBuffer *renderBuffer);
 	void setActiveScene(void);
 	void setInactiveScene(void);
 	void setNumberOfPointLights(int numLights);
@@ -27,16 +29,25 @@ public:
 	void setShaderPointLights(Shader *shader);
 	void setShaderDirLights(Shader *shader);
 	void setShaderSpotLights(Shader *shader);
+	void setDefaultCamera(int cameraNum);
+	std::shared_ptr<Camera> getDefaultCamera(void);
+
+
+	void setLightPosition(std::string targetID, glm::vec3 targetPosition);
+	void setLightDirection(std::string targetID, glm::vec3 targetPosition);
+	void setEntityPosition(std::string targetID, glm::vec3 targetPosition);
+	void setEntityDirection(std::string targetID, glm::vec3 targetPosition);
 
 private:
 	std::vector<Entity> m_entities;
-	std::vector<DirectionalLight> m_d_lights;
-	std::vector<PointLight> m_p_lights;
-	std::vector<SpotLight> m_s_lights;
+	std::vector<Light*> m_lights;
+	std::vector<Camera> m_cameras;
+	std::shared_ptr<Camera> m_default_camera;
 	bool m_active;
 	int m_num_point_lights;
 	int m_num_dir_lights;
 	int m_num_spot_lights;
+	// std::unique_ptr<Camera> m_default_camera;
 };
 
 

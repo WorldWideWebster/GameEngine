@@ -5,6 +5,7 @@
 #ifndef OPENGLSETUP_SKYBOX_H
 #define OPENGLSETUP_SKYBOX_H
 
+#include <memory>
 #include "../mesh.h"
 #include "../RenderBuffer.h"
 /**
@@ -14,12 +15,12 @@
 class SkyBox
 {
 public:
-	SkyBox(Texture texture, Camera *camera, RenderBuffer *renderBuffer);
+	SkyBox(Texture texture, std::shared_ptr<Camera> camera, RenderBuffer *renderBuffer);
 	void Draw(Shader shader);
 private:
 	Texture texture;
 	Cube *cube = new Cube();
-	Camera *camera;
+	std::shared_ptr<Camera> camera;
 	RenderBuffer *renderBuffer;
 };
 
