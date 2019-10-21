@@ -37,9 +37,9 @@ public:
     void setSpecular(glm::vec3 specular);
 
 	virtual void render(Shader *targetShader);
-	virtual void turnOff();
-	virtual void turnOn();
+	void toggle(bool toggle);
 	inline virtual void updatePosition(glm::vec3 position){}
+	inline virtual void updateDirection(glm::vec3 direction){}
 
 
 	void setShaderAmbient(Shader *targetShader);

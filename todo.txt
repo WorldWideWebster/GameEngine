@@ -32,10 +32,9 @@
 
 // TODO: Add destructors to all classes
 
-// TODO: Attach shaders to Entity?
+// TODO: Attach shaders to Entity? Entities to shader? Active shader(s) render?
 
 // TODO: Renderbuffer should use OPENGL stuff
-
 
 
 /****************Features**************/
@@ -74,12 +73,16 @@
 
 // TODO: Rotatable scene via click/hold
 
+// TODO: Attach x to y  with offset function
 
 /****************Architecture**************/
 // TODO: Figure out where to put renderbuffer instances
 
 
+/****************Bugs**************/
+
 /****************Research**************/
+
 // TODO: L-systems
 
 // TODO: Roads based on L-systems
@@ -101,3 +104,6 @@
 // Add camera(s) to Scene                                           - Done 10/16/2019
 // Fix stack overflow in Scene/Window/Camera                        - Done 10/17/2019
 // Fix window and scene camera relationship                         - Done 10/17/2019
+// Figure out position/direction update in scene                    - Done 10/17/2019
+// Fix bug where positions are not updating                         - Done 10/21/2019
+// Figure out flashlight with scene                                 - Done 10/21/2019

@@ -118,6 +118,8 @@ int main()
     // render loop
 
     auto newScene = std::make_unique<Scene>();
+
+    // TODO: move skybox to special entity
 	//SkyBox skybox (cubemapTexture, newScene->getDefaultCamera(), &renderBuffer);
 
 	window.setCamera(newScene->getDefaultCamera());
@@ -129,6 +131,7 @@ int main()
 	//newScene->addEntity(new Entity(new Mesh(new Sphere(10, 10, 10)), glm::vec3(0.0f)));
 	//lightSphere->setScale(glm::vec3(20.0f));
 
+	// TODO: move terrain to special entity
 	// Terrain Generation
 	// Create Noise map
 	NoiseMap *nm = new NoiseMap;
@@ -163,32 +166,21 @@ int main()
         // be sure to activate shader when setting uniforms/drawing objects
 		newScene->render(&terrainColorShader, &renderBuffer);
 
-
 		newScene->setLightPosition("pointLights[0]", lightPos);
-		// TODO: Figure out flashlight with scene
-		/*
-		l->updatePosition(lightPos);
+
 		if (flashlight)
 		{
-			sl->turnOn();
+			newScene->toggleLight("spotLights[0]", true);
 		}
         else
         {
-			sl->turnOff();
+			newScene->toggleLight("spotLights[0]", false);
         }
-        */
-		// spotLight
-		// TODO: Figure out position/direction update in scene
-		//sl->updatePosition(camera.Position);
-		//sl->updateDirection(camera.Front);
-        glm::mat4 model;
 
-		//e->setPosition(lightPos.operator*=(2));
-		// e->setScale(glm::vec3(0.1f, 0.1f, 0.1f));
-		//e->setRotation(lightPos, angle);
-		//e->render(&terrainColorShader);
-        // then draw model with normal visualizing geometry shader
+		newScene->setLightPosition("spotLights[0]", newScene->getDefaultCamera()->Position);
+		newScene->setLightDirection("spotLights[0]", newScene->getDefaultCamera()->Front);
 /*
+        glm::mat4 model;
         normalDisplayShader.use();
         normalDisplayShader.setMat4("projection", renderBuffer.getProjection());
         normalDisplayShader.setMat4("view", view);

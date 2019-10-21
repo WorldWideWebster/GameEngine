@@ -28,6 +28,10 @@ public:
 	void setcutOff(float cutOff);
 	void setOuterCutOff(float outerCutOff);
 
+	void updatePosition(glm::vec3 position){PointLight::updatePosition(position);}
+	void updateDirection(glm::vec3 direction){DirectionalLight::updateDirection(direction);}
+
+
 	void render(Shader *targetShader);
 
 	float getcutOff(void);

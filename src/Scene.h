@@ -34,7 +34,9 @@ public:
 
 
 	void setLightPosition(std::string targetID, glm::vec3 targetPosition);
-	void setLightDirection(std::string targetID, glm::vec3 targetPosition);
+	void setLightDirection(std::string targetID, glm::vec3 targetDirection);
+	void toggleLight(std::string targetID, bool toggle);
+
 	void setEntityPosition(std::string targetID, glm::vec3 targetPosition);
 	void setEntityDirection(std::string targetID, glm::vec3 targetPosition);
 

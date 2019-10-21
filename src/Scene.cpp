@@ -117,9 +117,39 @@ void Scene::setLightPosition(std::string targetID, glm::vec3 targetPosition)
 {
 	for (int i = 0; i < m_lights.size(); i++)
 	{
-		m_lights[i]->updatePosition(targetPosition);
+		if(m_lights[i]->m_ID == targetID)
+		{
+			m_lights[i]->updatePosition(targetPosition);
+			return;
+		}
 	}
 }
-void setLightDirection(std::string targetID, glm::vec3 targetPosition);
+
+
+void Scene::setLightDirection(std::string targetID, glm::vec3 targetDirection)
+{
+	for (int i = 0; i < m_lights.size(); i++)
+	{
+		if(m_lights[i]->m_ID == targetID)
+		{
+			m_lights[i]->updateDirection(targetDirection);
+			return;
+		}
+	}
+}
+
+void Scene::toggleLight(std::string targetID, bool toggle)
+{
+	for (int i = 0; i < m_lights.size(); i++)
+	{
+		if(m_lights[i]->m_ID == targetID)
+		{
+			m_lights[i]->toggle(toggle);
+			return;
+		}
+	}
+}
+
+
 void setEntityPosition(std::string targetID, glm::vec3 targetPosition);
 void setEntityDirection(std::string targetID, glm::vec3 targetPosition);

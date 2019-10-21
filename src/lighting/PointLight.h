@@ -16,7 +16,7 @@ public:
 	PointLight(glm::vec3 position, float constant, float linear, float quadratic,
 			   glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, std::string ID);
 	void updateFalloff(float constant, float linear, float quadratic);
-	void updatePosition(glm::vec3 position);
+	virtual void updatePosition(glm::vec3 position);
 	virtual void render(Shader *targetShader);
 	void setShaderPosition(Shader *targetShader);
 	void setShaderconstant(Shader *targetShader);

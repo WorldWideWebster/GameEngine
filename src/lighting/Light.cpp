@@ -66,14 +66,11 @@ void Light::setShaderSpecular(Shader *targetShader)
 		targetShader->setVec3(this->m_ID + ".specular", glm::vec3(0));
 }
 
-void Light::turnOff()
+void Light::toggle(bool toggle)
 {
-	this->m_on = false;
+	this->m_on = toggle;
 }
-void Light::turnOn()
-{
-	this->m_on = true;
-}
+
 
 glm::vec3 Light::getAmbient(void)
 {
