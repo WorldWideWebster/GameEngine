@@ -5,9 +5,10 @@
 #ifndef OPENGLSETUP_TEST_SCENES_H
 #define OPENGLSETUP_TEST_SCENES_H
 
+#include <memory>
 #include "Scene.h"
 
-void setUpTestScene1(void);
+void setUpTestScene1(std::shared_ptr<Scene> targetScene);
 
 
 

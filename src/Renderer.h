@@ -5,17 +5,20 @@
 #ifndef OPENGLSETUP_RENDERER_H
 #define OPENGLSETUP_RENDERER_H
 
+#include <memory>
+
 #include "Scene.h"
 
 class Renderer
 {
 public:
 	void addScene(Scene m_scene);
-	void setActiveScene(int id);
-
+	void setActiveScene(std::shared_ptr<Scene> targetScene);
+	void setActiveScene(int targetSceneID);
+	std::shared_ptr<Scene> getActiveScene(void);
 private:
 	std::vector<Scene> m_scenes;
-	int m_currentActiveScene;
+	std::shared_ptr<Scene> m_currentActiveScene;
 };
 
 

@@ -117,17 +117,16 @@ int main()
 
     // render loop
 
-    auto newScene = std::make_unique<Scene>();
+	 /// Render loop septup
+		auto newScene = std::make_shared<Scene>();
 
-    // TODO: move skybox to special entity
-	//SkyBox skybox (cubemapTexture, newScene->getDefaultCamera(), &renderBuffer);
+		// TODO: move skybox to special entity
+		//SkyBox skybox (cubemapTexture, newScene->getDefaultCamera(), &renderBuffer);
 
-	window.setCamera(newScene->getDefaultCamera());
-	newScene->setActiveScene();
-	newScene->addEntity(new Entity(new Mesh(new Sphere(25, 25, 25)), glm::vec3(0.0f)));
-	newScene->addEntity(new Entity(new Mesh(new Terrain())));
-	newScene->addLight(new PointLight("pointLights[0]"));
-	newScene->addLight(new SpotLight("spotLights[0]"));
+		window.setCamera(newScene->getDefaultCamera());
+		setUpTestScene1(newScene);
+
+	// TODO: Attach light to entity
 	//newScene->addEntity(new Entity(new Mesh(new Sphere(10, 10, 10)), glm::vec3(0.0f)));
 	//lightSphere->setScale(glm::vec3(20.0f));
 
@@ -159,27 +158,32 @@ int main()
         // TODO: Move renderbuffer
         // TODO: Figure out how to have a single light effect multiple shaders
 
-        // Time based variables
-        lightPos = glm::vec3(1000 * cos(glfwGetTime()), 0, 1000 * sin(glfwGetTime()));
-        lightDir = glm::vec3(2 , sin(glfwGetTime() / 10), cos(glfwGetTime() / 10) );
+		{	/// Position updates
+			// Time based variables
+			lightPos = glm::vec3(1000 * cos(glfwGetTime()), 0, 1000 * sin(glfwGetTime()));
+			lightDir = glm::vec3(2, sin(glfwGetTime() / 10), cos(glfwGetTime() / 10));
 
-        // be sure to activate shader when setting uniforms/drawing objects
-		newScene->render(&terrainColorShader, &renderBuffer);
+			// be sure to activate shader when setting uniforms/drawing objects
+			newScene->render(&terrainColorShader, &renderBuffer);
 
-		newScene->setLightPosition("pointLights[0]", lightPos);
+			//newScene->setLightPosition("pointLights[0]", lightPos);
 
-		if (flashlight)
-		{
-			newScene->toggleLight("spotLights[0]", true);
+			if (flashlight)
+			{
+				newScene->toggleLight("spotLights[0]", true);
+			}
+			else
+			{
+				newScene->toggleLight("spotLights[0]", false);
+			}
+
+			newScene->setLightPosition("spotLights[0]", newScene->getDefaultCamera()->Position);
+			newScene->setLightDirection("spotLights[0]", newScene->getDefaultCamera()->Front);
 		}
-        else
-        {
-			newScene->toggleLight("spotLights[0]", false);
-        }
-
-		newScene->setLightPosition("spotLights[0]", newScene->getDefaultCamera()->Position);
-		newScene->setLightDirection("spotLights[0]", newScene->getDefaultCamera()->Front);
 /*
+ *
+ * TODO: figure out what to do with the view and projection matrices
+ *
         glm::mat4 model;
         normalDisplayShader.use();
         normalDisplayShader.setMat4("projection", renderBuffer.getProjection());

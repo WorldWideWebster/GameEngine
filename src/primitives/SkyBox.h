@@ -6,11 +6,11 @@
 #define OPENGLSETUP_SKYBOX_H
 
 #include <memory>
-#include "../mesh.h"
+#include "../Entity.h"
 #include "../RenderBuffer.h"
 /**
  * @class SkyBox
- * @brief Mesh extension for skybox
+ * @brief Entity extension for skybox
  */
 class SkyBox
 {
@@ -18,8 +18,7 @@ public:
 	SkyBox(Texture texture, std::shared_ptr<Camera> camera, RenderBuffer *renderBuffer);
 	void Draw(Shader shader);
 private:
-	Texture texture;
-	Cube *cube = new Cube();
+	Texture m_texture;
 	std::shared_ptr<Camera> camera;
 	RenderBuffer *renderBuffer;
 };

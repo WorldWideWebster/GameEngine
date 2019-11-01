@@ -16,8 +16,6 @@ SpotLight::SpotLight(float cutOff, float outerCutOff, std::string ID) : Light(ID
 	this->m_outerCutOff = outerCutOff;
 }
 
-// FIXME: These constructors should probably move light specific stuff to Light()
-
 SpotLight::SpotLight(float cutOff, float outerCutOff, glm::vec3 direction,
 		  glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, std::string ID) :
 		Light(ID), DirectionalLight(direction, ambient, diffuse, specular, ID), PointLight(ID)

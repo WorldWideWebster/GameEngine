@@ -6,6 +6,7 @@
 #define OPENGLSETUP_ENTITY_H
 #include "mesh.h"
 #include "shader.h"
+#include <memory>
 
 
 static const glm::vec3 position_home = glm::vec3(0);
@@ -23,13 +24,19 @@ public:
 	void setPosition(glm::vec3 targetPosition);
 	void setRotation(glm::vec3 targetRotation, float targetRotAngle);
 	void setScale(glm::vec3 targetScale);
+
+	glm::vec3 getPosition(void);
+	glm::vec3 getRotation(void);
+
 	void update();
 	void render(Shader *targetShader);
+
+	std::string m_ID;
 private:
 	Mesh *mesh;
-	glm::vec3 position;
-	glm::vec3 rotation;
-	glm::vec3 scale;
+	glm::vec3 m_position;
+	glm::vec3 m_rotation;
+	glm::vec3 m_scale;
 	float rotAngle;
 	bool needsUpdate;
 	glm::mat4 model;

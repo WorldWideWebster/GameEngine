@@ -4,13 +4,15 @@
 
 #include "test_scenes.h"
 #include "primitives/Sphere.h"
+#include "primitives/Terrain.h"
 
-Scene *testScene_1 = new Scene();
-//Scene *testScene_2 = new Scene();
-
-void setUpTestScene1(void)
+void setUpTestScene1(std::shared_ptr<Scene> targetScene)
 {
-	testScene_1->addEntity(new Entity(new Mesh(new Sphere(25, 25, 25)), glm::vec3(0.0f)));
+	targetScene->setActiveScene();
+	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Sphere(25, 25, 25)), glm::vec3(0.0f))));
+	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Terrain()))));
+	targetScene->addLight(std::make_shared<PointLight>(PointLight("pointLights[0]")));
+	targetScene->addLight(std::make_shared<SpotLight>(SpotLight("spotLights[0]")));
 }
 
 void setUpTestScene2(void)

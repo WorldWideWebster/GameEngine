@@ -10,6 +10,9 @@
 
 
 
+
+// TODO: Terrain contains a heightmap, generated off of noisemap
+
 // Default Terrain constructor
 Terrain::Terrain() : Primitive()
 {
@@ -53,10 +56,6 @@ Terrain::Terrain() : Primitive()
     unsigned nrOfIndices = 6*(vertex_count-1)*(vertex_count-1);
 
     this->set(vertices, nrOfVertices, indices, nrOfIndices);
-}
-
-Terrain::~Terrain()
-{
 }
 
 // FIXME: Normal x-y directions are backwards?

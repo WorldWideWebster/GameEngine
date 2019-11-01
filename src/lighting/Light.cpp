@@ -84,3 +84,8 @@ glm::vec3 Light::getSpecular(void)
 {
     return this->m_specular;
 }
+
+void Light::attachToEntity(std::shared_ptr<Entity> targetEntity)
+{
+	this->m_targetEntity = targetEntity;
+}

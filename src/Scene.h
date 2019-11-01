@@ -17,8 +17,8 @@ class Scene
 {
 public:
 	Scene();
-	void addEntity(Entity* targetEntity);
-	void addLight(Light* targetLight);
+	void addEntity(std::shared_ptr<Entity> targetEntity);
+	void addLight(std::shared_ptr<Light> targetLight);
 	void addCamera(void);
 	void render(Shader *shader, RenderBuffer *renderBuffer);
 	void setActiveScene(void);
@@ -32,6 +32,8 @@ public:
 	void setDefaultCamera(int cameraNum);
 	std::shared_ptr<Camera> getDefaultCamera(void);
 
+	std::shared_ptr<Entity> getEntityByID(std::string ID);
+	std::shared_ptr<Light> getLightByID(std::string ID);
 
 	void setLightPosition(std::string targetID, glm::vec3 targetPosition);
 	void setLightDirection(std::string targetID, glm::vec3 targetDirection);
@@ -41,8 +43,8 @@ public:
 	void setEntityDirection(std::string targetID, glm::vec3 targetPosition);
 
 private:
-	std::vector<Entity> m_entities;
-	std::vector<Light*> m_lights;
+	std::vector<std::shared_ptr<Entity>> m_entities;
+	std::vector<std::shared_ptr<Light>> m_lights;
 	std::vector<Camera> m_cameras;
 	std::shared_ptr<Camera> m_default_camera;
 	bool m_active;

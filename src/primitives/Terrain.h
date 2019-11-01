@@ -26,7 +26,6 @@ class Terrain : public Primitive
 public:
     Terrain();
 
-    virtual ~Terrain();
     void calculateNormals(std::vector< std::vector<unsigned char>> heightMap, Vertex *vertices);
     void calculateIndices(GLuint *indices, int width, int height);
     void setImageAsHeightMap(std::string filename);

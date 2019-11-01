@@ -36,7 +36,7 @@
 #include "vertex.h"
 #include "vertices.h"
 #include "window.h"
-
+#include "test_scenes.h"
 #include "Entity.h"
 
 /** Primitives **/

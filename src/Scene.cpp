@@ -2,6 +2,7 @@
 // Created by Sean on 8/8/2019.
 //
 
+#include <iterator>
 #include "Scene.h"
 
 Scene::Scene()
@@ -19,12 +20,12 @@ Scene::Scene()
 
 
 
-void Scene::addEntity(Entity *targetEntity)
+void Scene::addEntity(std::shared_ptr<Entity> targetEntity)
 {
-	this->m_entities.push_back(*targetEntity);
+	this->m_entities.push_back(targetEntity);
 }
 
-void Scene::addLight(Light* targetLight)
+void Scene::addLight(std::shared_ptr<Light> targetLight)
 {
 	this->m_lights.push_back(targetLight);
 }
@@ -54,7 +55,7 @@ void Scene::render(Shader *shader, RenderBuffer *renderBuffer)
 
 		for (int i = 0; i < m_entities.size(); i++)
 		{
-			m_entities[i].render(shader);
+			m_entities[i]->render(shader);
 		}
 
 		for (int i = 0; i < m_lights.size(); i++)
@@ -110,6 +111,32 @@ void Scene::setDefaultCamera(int cameraNum)
 std::shared_ptr<Camera> Scene::getDefaultCamera(void)
 {
 	return m_default_camera;
+}
+
+
+
+std::shared_ptr<Entity> Scene::getEntityByID(std::string targetID)
+{
+	for (int i = 0; i < m_entities.size(); i++)
+	{
+		if(m_entities[i]->m_ID == targetID)
+		{
+			return m_entities[i];
+		}
+	}
+	return m_entities[0];
+}
+std::shared_ptr<Light> Scene::getLightByID(std::string targetID)
+{
+	for (int i = 0; i < m_lights.size(); i++)
+	{
+		if(m_lights[i]->m_ID == targetID)
+		{
+			return m_lights[i];
+		}
+	}
+
+	return m_lights[0];
 }
 
 

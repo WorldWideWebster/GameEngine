@@ -5,12 +5,13 @@
 #ifndef OPENGLSETUP_LIGHT_H
 #define OPENGLSETUP_LIGHT_H
 
-
+#include <memory>
 #include <string>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "../shader.h"
+#include "../Entity.h"
 
 
 /* @brief: Light Class - ambient light object
@@ -25,6 +26,7 @@ private:
     glm::vec3 m_ambient;
     glm::vec3 m_diffuse;
     glm::vec3 m_specular;
+    std::shared_ptr<Entity> m_targetEntity = nullptr;
     bool m_on;
 public:
 	Light(std::string ID);
@@ -40,7 +42,8 @@ public:
 	void toggle(bool toggle);
 	inline virtual void updatePosition(glm::vec3 position){}
 	inline virtual void updateDirection(glm::vec3 direction){}
-
+	virtual void attachToEntity(std::shared_ptr<Entity> targetEntity);
+	inline virtual std::shared_ptr<Entity> getAttachedEntity(void){return m_targetEntity;};
 
 	void setShaderAmbient(Shader *targetShader);
 	void setShaderDiffuse(Shader *targetShader);

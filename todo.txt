@@ -37,6 +37,7 @@
 // TODO: Renderbuffer should use OPENGL stuff
 
 
+
 /****************Features**************/
 
 // TODO: Add update to render loop
@@ -75,9 +76,16 @@
 
 // TODO: Attach x to y  with offset function
 
+// TODO: edit mesh in entity
+
 /****************Architecture**************/
 // TODO: Figure out where to put renderbuffer instances
 
+// TODO: Use STD chrono
+
+// TODO: Implement std::threads
+
+// TODO: c++17 filesystem library
 
 /****************Bugs**************/
 
@@ -107,3 +115,10 @@
 // Figure out position/direction update in scene                    - Done 10/17/2019
 // Fix bug where positions are not updating                         - Done 10/21/2019
 // Figure out flashlight with scene                                 - Done 10/21/2019
+// Moved scene set up to setupTestScene function                    - Done 10/28/2019
+
+
+
+
+/***************************IN PROGRESS************************/
+// Attach lights to entities

@@ -52,7 +52,14 @@ void PointLight::updateFalloff(float constant, float linear, float quadratic)
 
 void PointLight::updatePosition(glm::vec3 position)
 {
-	this->m_position = position;
+	if(getAttachedEntity())
+	{
+		this->m_position = getAttachedEntity()->getPosition();
+	}
+	else
+	{
+		this->m_position = position;
+	}
 }
 
 void PointLight::render(Shader *targetShader)

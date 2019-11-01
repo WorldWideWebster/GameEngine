@@ -26,27 +26,38 @@ void Entity::setMesh(Mesh *targetMesh)
 }
 void Entity::setPosition(glm::vec3 targetPosition)
 {
-	this->position = targetPosition;
+	this->m_position = targetPosition;
 	needsUpdate = true;
 }
 void Entity::setRotation(glm::vec3 targetRotation, float targetRotAngle)
 {
-	this->rotation = targetRotation;
+	this->m_rotation = targetRotation;
 	this->rotAngle = targetRotAngle;
 	needsUpdate = true;
 }
 void Entity::setScale(glm::vec3 targetScale)
 {
-	this->scale = targetScale;
+	this->m_scale = targetScale;
 	needsUpdate = true;
 }
+
+glm::vec3 Entity::getPosition(void)
+{
+	return this->m_position;
+}
+
+glm::vec3 Entity::getRotation(void)
+{
+	return this->m_rotation;
+}
+
 
 void Entity::update()
 {
 	this->model = glm::mat4();
-	this->model = glm::scale(this->model, this->scale);
-	this->model = glm::translate(this->model, this->position);
-	this->model = glm::rotate(this->model, this->rotAngle, this->rotation);
+	this->model = glm::scale(this->model, this->m_scale);
+	this->model = glm::translate(this->model, this->m_position);
+	this->model = glm::rotate(this->model, this->rotAngle, this->m_rotation);
 }
 
 static bool once = false;
@@ -58,6 +69,7 @@ void Entity::render(Shader *targetShader)
 		this->update();
 	}
 	targetShader->use();
+
 	targetShader->setMat4("model", model);
 	mesh->Draw(*targetShader);
 }
