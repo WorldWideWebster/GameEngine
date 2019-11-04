@@ -89,3 +89,12 @@ void Light::attachToEntity(std::shared_ptr<Entity> targetEntity)
 {
 	this->m_targetEntity = targetEntity;
 }
+
+glm::vec3 Light::getPosition(void)
+{
+	return glm::vec3(0);
+}
+glm::vec3 Light::getDirection(void)
+{
+	return glm::vec3(0);
+}

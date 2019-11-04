@@ -14,17 +14,18 @@ static const glm::vec3 scale_unity = glm::vec3(1);
 static const glm::vec3 rotation_home = glm::vec3(1);
 static const float rotAngle_zeo = 0.0f;
 
+static int EntityNum = 0;
 
 class Entity
 {
 public:
-	Entity();
-	Entity(Mesh *targetMesh, glm::vec3 startPosition = position_home);
+	Entity(std::string ID = "entity" + EntityNum++);
+	Entity(Mesh *targetMesh, glm::vec3 startPosition = position_home, std::string ID = "entity" + EntityNum++);
 	void setMesh(Mesh *targetMesh);
 	void setPosition(glm::vec3 targetPosition);
 	void setRotation(glm::vec3 targetRotation, float targetRotAngle);
 	void setScale(glm::vec3 targetScale);
-
+	void setID(std::string ID);
 	glm::vec3 getPosition(void);
 	glm::vec3 getRotation(void);
 

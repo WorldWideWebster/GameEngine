@@ -52,6 +52,9 @@ public:
     glm::vec3 getAmbient(void);
     glm::vec3 getDiffuse(void);
     glm::vec3 getSpecular(void);
+	virtual glm::vec3 getPosition(void);
+	virtual glm::vec3 getDirection(void);
+
 };
 
 

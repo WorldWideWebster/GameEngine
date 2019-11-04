@@ -108,6 +108,7 @@ int main()
 
     bool show_demo_window = true;
     bool show_render_window = false;
+    bool show_scene_window = true;
     bool noise_map_viewer = false;
     bool render_input = true;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
@@ -138,7 +139,7 @@ int main()
 	Texture tx = TextureFromNoiseMap(*nm);
 
 
-	UITestWindow *testWindow = new UITestWindow(&show_demo_window, &show_render_window, &noise_map_viewer);
+	UITestWindow *testWindow = new UITestWindow(&show_demo_window, &show_render_window, &noise_map_viewer, &show_scene_window);
 	testWindow->open();
     while (!window.shouldClose())
     {
@@ -167,7 +168,7 @@ int main()
 			newScene->render(&terrainColorShader, &renderBuffer);
 
 			//newScene->setLightPosition("pointLights[0]", lightPos);
-
+			newScene->setEntityPosition("sphere", lightPos);
 			if (flashlight)
 			{
 				newScene->toggleLight("spotLights[0]", true);
@@ -208,7 +209,17 @@ int main()
         if (show_demo_window)
             ImGui::ShowDemoWindow(&show_demo_window);
 
-        // 3. Show another simple window.
+
+		if (show_scene_window)
+		{
+			std::vector<std::string> sceneDetails = newScene->showSceneDetails();
+			ImGui::Begin("Scene Window",  &show_scene_window);
+			for (int i = 0; i < sceneDetails.size(); i++)
+			{
+					ImGui::Text(sceneDetails[i].c_str());
+			}
+			ImGui::End();
+		}
 		// TODO: move to separate file
         if (show_render_window)
         {

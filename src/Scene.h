@@ -6,6 +6,10 @@
 #define OPENGLSETUP_SCENE_H
 #include <vector>
 #include <memory>
+
+#include <glm/ext.hpp>
+
+
 #include "camera.h"
 #include "Entity.h"
 #include "lighting/PointLight.h"
@@ -40,8 +44,9 @@ public:
 	void toggleLight(std::string targetID, bool toggle);
 
 	void setEntityPosition(std::string targetID, glm::vec3 targetPosition);
-	void setEntityDirection(std::string targetID, glm::vec3 targetPosition);
+	void setEntityDirection(std::string targetID, glm::vec3 targetRotation, float targetRotAngle);
 
+	std::vector<std::string> showSceneDetails(void);
 private:
 	std::vector<std::shared_ptr<Entity>> m_entities;
 	std::vector<std::shared_ptr<Light>> m_lights;

@@ -177,6 +177,49 @@ void Scene::toggleLight(std::string targetID, bool toggle)
 	}
 }
 
+// TODO: Figure out why this is not working
 
-void setEntityPosition(std::string targetID, glm::vec3 targetPosition);
-void setEntityDirection(std::string targetID, glm::vec3 targetPosition);
+void Scene::setEntityPosition(std::string targetID, glm::vec3 targetPosition)
+{
+	for (int i = 0; i < m_entities.size(); i++)
+	{
+		if(m_entities[i]->m_ID.compare(targetID) == 0)
+		{
+			m_entities[i]->setPosition(targetPosition);
+			return;
+		}
+	}
+}
+void Scene::setEntityDirection(std::string targetID, glm::vec3 targetRotation, float targetRotAngle)
+{
+	for (int i = 0; i < m_entities.size(); i++)
+	{
+		if(m_entities[i]->m_ID == targetID)
+		{
+			m_entities[i]->setRotation(targetRotation, targetRotAngle);
+			return;
+		}
+	}
+}
+
+std::vector<std::string> Scene::showSceneDetails(void)
+{
+	std::vector<std::string> returnString;
+	for (int i = 0; i < m_entities.size(); i++)
+	{
+		std::string info;
+		info = m_entities[i]->m_ID + ": " +
+				"\nPosition: " +glm::to_string(m_entities[i]->getPosition()) +
+				"\nRotation: " +glm::to_string(m_entities[i]->getRotation());
+		returnString.push_back(info);
+	}
+	for (int i = 0; i < m_lights.size(); i++)
+	{
+		std::string info;
+		info = m_lights[i]->m_ID + ": " +
+			   "\nPosition: " +glm::to_string(m_lights[i]->getPosition()) +
+			   "\nDirection: " +glm::to_string(m_lights[i]->getDirection());
+		returnString.push_back(info);
+	}
+	return returnString;
+}

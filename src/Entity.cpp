@@ -5,15 +5,16 @@
 #include "Entity.h"
 #include "primitives/Primitive.h"
 
-Entity::Entity()
+Entity::Entity(std::string ID)
 {
-
+	setID(ID);
 	setPosition(position_home);
 	setScale(scale_unity);
 	setRotation(rotation_home, rotAngle_zeo);
 }
-Entity::Entity(Mesh *targetMesh, glm::vec3 startPosition)
+Entity::Entity(Mesh *targetMesh, glm::vec3 startPosition, std::string ID)
 {
+	setID(ID);
 	setMesh(targetMesh);
 	setPosition(startPosition);
 	setScale(scale_unity);
@@ -49,6 +50,10 @@ glm::vec3 Entity::getPosition(void)
 glm::vec3 Entity::getRotation(void)
 {
 	return this->m_rotation;
+}
+void Entity::setID(std::string ID)
+{
+	this->m_ID = ID;
 }
 
 

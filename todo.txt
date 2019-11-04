@@ -36,7 +36,7 @@
 
 // TODO: Renderbuffer should use OPENGL stuff
 
-
+// TODO: Each mesh should have a name to return for entity use
 
 /****************Features**************/
 
@@ -78,6 +78,12 @@
 
 // TODO: edit mesh in entity
 
+// TODO: Add way to print screen
+
+// TODO: Select terrain generation method (file or code)
+
+// TODO: Create scenehandler class where scenes can be looked at via UI and then have UI manipulate scene
+
 /****************Architecture**************/
 // TODO: Figure out where to put renderbuffer instances
 
@@ -116,8 +122,8 @@
 // Fix bug where positions are not updating                         - Done 10/21/2019
 // Figure out flashlight with scene                                 - Done 10/21/2019
 // Moved scene set up to setupTestScene function                    - Done 10/28/2019
-
-
+// Moved Scene Entity and Light to smart pointers                   - Done 10/28/2019
+// Added window to display Light/Entity properties                  - Done 11/03/2019
 
 
 /***************************IN PROGRESS************************/
