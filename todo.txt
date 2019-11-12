@@ -26,11 +26,7 @@
 
 // TODO: Replace all pointers with smart pointers
 
-// TODO: Allow lights/entities to be edited from scene
-
 // TODO: Move to C++17
-
-// TODO: Add destructors to all classes
 
 // TODO: Attach shaders to Entity? Entities to shader? Active shader(s) render?
 
@@ -60,10 +56,6 @@
 
 // TODO: Cardinal directions display
 
-// TODO: Show lights/objects positions
-
-// TODO: Create test scene <<<<<<<<<<<<
-
 // TODO: Create shader viewer
 
 // TODO: Polygon generator
@@ -73,8 +65,6 @@
 // TODO: Add light/Entity list to UI
 
 // TODO: Rotatable scene via click/hold
-
-// TODO: Attach x to y  with offset function
 
 // TODO: edit mesh in entity
 
@@ -102,6 +92,10 @@
 // TODO: Roads based on L-systems
 
 // TODO: GGX vs Blinn-Phong
+
+// TODO: OpenGL 3 to 4 (and the changes to how shaders work)
+
+
 /******************DONE*********************/
 // Fix Warnings                                                     - Done 08/02/2019
 // Add Entity Class                                                 - Done 08/08/2019
@@ -122,9 +116,13 @@
 // Fix bug where positions are not updating                         - Done 10/21/2019
 // Figure out flashlight with scene                                 - Done 10/21/2019
 // Moved scene set up to setupTestScene function                    - Done 10/28/2019
+// Create test scene                                                - Done 10/28/2019
 // Moved Scene Entity and Light to smart pointers                   - Done 10/28/2019
 // Added window to display Light/Entity properties                  - Done 11/03/2019
+// Attach light to entity                                           - Done 11/03/2019
+// Allow lights/entities to be edited from scene                    - Done 11/04/2019
+// Attach light to entity  with offset function                     - Done 11/04/2019
 
 
-/***************************IN PROGRESS************************/
-// Attach lights to entities
+/******************NOT REQUIRED*********************/
+// Add destructors to all classes                    -- Smart pointers have auto garbage collection

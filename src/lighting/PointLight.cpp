@@ -52,18 +52,16 @@ void PointLight::updateFalloff(float constant, float linear, float quadratic)
 
 void PointLight::updatePosition(glm::vec3 position)
 {
-	if(getAttachedEntity())
-	{
-		this->m_position = getAttachedEntity()->getPosition();
-	}
-	else
-	{
-		this->m_position = position;
-	}
+	this->m_position = position;
 }
 
 void PointLight::render(Shader *targetShader)
 {
+	// TODO: clean this up
+	if(getAttachedEntity())
+	{
+		this->m_position = getAttachedEntity()->getPosition() + this->m_attached_entity_offset_position;
+	}
 	setShaderAmbient(targetShader);
 	setShaderDiffuse(targetShader);
 	setShaderSpecular(targetShader);

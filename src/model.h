@@ -13,7 +13,7 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-#include "shader.h"
+#include "shader/shader.h"
 #include "mesh.h"
 #include <string>
 #include <fstream>

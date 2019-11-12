@@ -3,7 +3,7 @@
 //
 
 
-float generateNoiseMap(int mapWidth, int mapHeight, float scale)
+void generateNoiseMap(int mapWidth, int mapHeight, float scale)
 {
     if(scale <= 0)
     {

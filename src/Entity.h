@@ -5,7 +5,7 @@
 #ifndef OPENGLSETUP_ENTITY_H
 #define OPENGLSETUP_ENTITY_H
 #include "mesh.h"
-#include "shader.h"
+#include "shader/shader.h"
 #include <memory>
 
 

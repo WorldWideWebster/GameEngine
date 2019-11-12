@@ -3,7 +3,7 @@
 
 #include <glad/glad.h>
 #include <glm/glm.hpp>
-#include "camera.h"
+#include "../camera.h"
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -13,6 +13,7 @@ class Shader
 {
 public:
     unsigned int ID;
+    std::string m_name;
     // constructor generates the shader on the fly
     // ------------------------------------------------------------------------
     Shader(const char *vertexPath, const char *fragmentPath, const char *geometryPath = nullptr);

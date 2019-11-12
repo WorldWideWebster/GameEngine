@@ -32,7 +32,7 @@
 #include "model.h"
 #include "RenderBuffer.h"
 #include "Scene.h"
-#include "shader.h"
+#include <shader/shader.h>
 #include "texture.h"
 #include "vertex.h"
 #include "vertices.h"

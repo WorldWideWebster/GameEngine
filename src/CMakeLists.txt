@@ -1,12 +1,10 @@
 set(SOURCE_FILES
         main.cpp
-        shader.cpp
         camera.cpp
         mesh.cpp
         model.cpp
         )
 set(HEADER_FILES
-        shader.h
         stb_image.h
         camera.h
         mesh.h
@@ -18,4 +16,6 @@ add_subdirectory(primitives)
 add_subdirectory(noise)
 add_subdirectory(image)
 add_subdirectory(lighting)
+add_subdirectory(shader)
+add_subdirectory(ui)
 

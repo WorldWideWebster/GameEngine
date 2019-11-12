@@ -76,18 +76,22 @@ glm::vec3 Light::getAmbient(void)
 {
     return this->m_ambient;
 }
+
 glm::vec3 Light::getDiffuse(void)
 {
     return this->m_diffuse;
 }
+
 glm::vec3 Light::getSpecular(void)
 {
     return this->m_specular;
 }
 
-void Light::attachToEntity(std::shared_ptr<Entity> targetEntity)
+void Light::attachToEntity(std::shared_ptr<Entity> targetEntity, glm::vec3 offset, glm::vec3 rotation)
 {
 	this->m_targetEntity = targetEntity;
+	this->m_attached_entity_offset_position = offset;
+	this->m_attached_entity_offset_rotation = rotation;
 }
 
 glm::vec3 Light::getPosition(void)

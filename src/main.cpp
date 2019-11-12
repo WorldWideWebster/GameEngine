@@ -2,21 +2,16 @@
 #define IMGUI_IMPL_OPENGL_LOADER_GLAD
 
 #include "libs.h"
+#include <shader/shader.h>
 
-// camera
-/// Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 
 // timing
 float deltaTime = 0.0f;    // time between current frame and last frame
 float lastFrame = 0.0f;
 
-glm::vec3 lightPos(0.0f, 0.0f, 0.0f);
-glm::vec3 lightDir(-0.2f, -1.0f, -0.3f);
-
 int main()
 {
     Window window;
-
 
     // glad: load all OpenGL function pointers
     // ---------------------------------------
@@ -127,10 +122,6 @@ int main()
 		window.setCamera(newScene->getDefaultCamera());
 		setUpTestScene1(newScene);
 
-	// TODO: Attach light to entity
-	//newScene->addEntity(new Entity(new Mesh(new Sphere(10, 10, 10)), glm::vec3(0.0f)));
-	//lightSphere->setScale(glm::vec3(20.0f));
-
 	// TODO: move terrain to special entity
 	// Terrain Generation
 	// Create Noise map
@@ -159,30 +150,10 @@ int main()
         // TODO: Move renderbuffer
         // TODO: Figure out how to have a single light effect multiple shaders
 
-		{	/// Position updates
-			// Time based variables
-			lightPos = glm::vec3(1000 * cos(glfwGetTime()), 0, 1000 * sin(glfwGetTime()));
-			lightDir = glm::vec3(2, sin(glfwGetTime() / 10), cos(glfwGetTime() / 10));
-
-			// be sure to activate shader when setting uniforms/drawing objects
-			newScene->render(&terrainColorShader, &renderBuffer);
-
-			//newScene->setLightPosition("pointLights[0]", lightPos);
-			newScene->setEntityPosition("sphere", lightPos);
-			if (flashlight)
-			{
-				newScene->toggleLight("spotLights[0]", true);
-			}
-			else
-			{
-				newScene->toggleLight("spotLights[0]", false);
-			}
-
-			newScene->setLightPosition("spotLights[0]", newScene->getDefaultCamera()->Position);
-			newScene->setLightDirection("spotLights[0]", newScene->getDefaultCamera()->Front);
-		}
+		// be sure to activate shader when setting uniforms/drawing objects
+		newScene->render(&terrainColorShader, &renderBuffer);
+		doTestScene1(newScene);
 /*
- *
  * TODO: figure out what to do with the view and projection matrices
  *
         glm::mat4 model;
@@ -191,10 +162,6 @@ int main()
         normalDisplayShader.setMat4("view", view);
         normalDisplayShader.setMat4("model", model);
 */
-
-        // Draw the lamp object
-		//lightSphere->setPosition(lightPos);
-        //lightSphere->render(&lampShader);
 
         // TODO: Move renderbuffer to inside scene?
 
@@ -255,7 +222,7 @@ int main()
             }
             if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_F)))
             {
-                flashlight = !flashlight;
+				toggleFlashLight();
             }
 
             ImGui::End();
