@@ -26,13 +26,13 @@
 
 // TODO: Replace all pointers with smart pointers
 
-// TODO: Move to C++17
-
 // TODO: Attach shaders to Entity? Entities to shader? Active shader(s) render?
 
 // TODO: Renderbuffer should use OPENGL stuff
 
 // TODO: Each mesh should have a name to return for entity use
+
+// TODO: Clean up shader files
 
 /****************Features**************/
 
@@ -73,6 +73,12 @@
 // TODO: Select terrain generation method (file or code)
 
 // TODO: Create scenehandler class where scenes can be looked at via UI and then have UI manipulate scene
+
+// TODO: Add gamma correction https://learnopengl.com/Advanced-Lighting/Gamma-Correction
+
+// TODO: Add Shadows
+
+// TODO: Add water
 
 /****************Architecture**************/
 // TODO: Figure out where to put renderbuffer instances
@@ -122,7 +128,11 @@
 // Attach light to entity                                           - Done 11/03/2019
 // Allow lights/entities to be edited from scene                    - Done 11/04/2019
 // Attach light to entity  with offset function                     - Done 11/04/2019
-
+// Move to C++17                                                    - Done 11/09/2019
+// Added blinn-phong lighting                                        - Done 11/11/2019
 
 /******************NOT REQUIRED*********************/
 // Add destructors to all classes                    -- Smart pointers have auto garbage collection
+
+/******************IN PROGRESS*********************/
+// Fix texture loading in shaders

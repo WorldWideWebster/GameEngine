@@ -16,6 +16,7 @@ RenderBuffer::RenderBuffer()
 
 void RenderBuffer::setUp()
 {
+	// TODO: Move this?
     projection = glm::perspective(45.0f, (float)SCR_WIDTH / (float)SCR_HEIGHT, RENDER_DISTANCE_NEAR, RENDER_DISTANCE_FAR);
 
     // framebuffer configuration

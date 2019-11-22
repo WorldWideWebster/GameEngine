@@ -44,9 +44,9 @@ struct SpotLight {
 };
 
 // Max light definitions
-#define MAX_POINT_LIGHTS 5
-#define MAX_SPOT_LIGHTS 5
-#define MAX_DIR_LIGHTS 1
+#define MAX_POINT_LIGHTS 10
+#define MAX_SPOT_LIGHTS 10
+#define MAX_DIR_LIGHTS 10
 
 uniform int u_num_point_lights = 0;
 uniform int u_num_spot_lights = 0;
@@ -73,9 +73,9 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
 // Check if lights are within the defined max, if not, set them to the max
 void CheckLightNumbers(void);
 
-int num_point_lights = 1;
-int num_spot_lights = 1;
-int num_dir_lights = 1;
+int num_point_lights = 0;
+int num_spot_lights = 0;
+int num_dir_lights = 0;
 
 void main()
 {

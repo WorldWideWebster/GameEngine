@@ -127,6 +127,7 @@ Texture TextureFromFile(const char *path, const std::string &directory, bool gam
     texture.type = "";
     glGenTextures(1, &texture.id);
 
+
     unsigned char *data = stbi_load(filename.c_str(), &texture.width, &texture.height, &texture.nrComponents, 0);
     if (data)
     {

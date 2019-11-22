@@ -13,6 +13,7 @@ int main()
 {
     Window window;
 
+    // TODO: Move GLAD setup to renderer setup function
     // glad: load all OpenGL function pointers
     // ---------------------------------------
     if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
@@ -21,10 +22,14 @@ int main()
         return -1;
     }
 
+    // TODO: move opengl setup to renderer setup
     // configure global opengl state
     // -----------------------------
-    glEnable(GL_DEPTH_TEST);
-    // build and compile our shader program
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);    // build and compile our shader program
+
+
     // ------------------------------------
     Shader lightingShader("../shaders/colors.vert", "../shaders/colors.frag");
     Shader terrainColorShader("../shaders/terrain_colors.vert", "../shaders/terrain_colors.frag");
@@ -33,14 +38,19 @@ int main()
     Shader skyboxShader("../shaders/skybox.vert", "../shaders/skybox.frag");
     Shader instanceShader("../shaders/instance.vert", "../shaders/instance.frag");
     Shader normalDisplayShader("../shaders/normal_vis.vert", "../shaders/normal_vis.frag", "../shaders/normal_vis.geom");
+//	Shader shadowShader("../shaders/advanced_lighting.vert", "../shaders/advanced_lighting.frag");
+//	Shader simpleDepthShader("../shaders/shadow_mapping_depth.vert", "../shaders/shadow_mapping_depth.frag");
+//	Shader debugDepthQuad("../shaders/debug_quad_depth.vert", "../shaders/debug_quad_depth.frag");
 
     GLuint uniformBlockIndexLighting = glGetUniformBlockIndex(lightingShader.ID, "Matrices");
     GLuint uniformBlockIndexLamp = glGetUniformBlockIndex(lampShader.ID, "Matrices");
     GLuint uniformBlockIndexInstance = glGetUniformBlockIndex(instanceShader.ID, "Matrices");
+    GLuint uniformBlockIndexTerrain = glGetUniformBlockIndex(terrainColorShader.ID, "Matrices");
 
     glUniformBlockBinding(lightingShader.ID, uniformBlockIndexLighting, 0);
     glUniformBlockBinding(lampShader.ID, uniformBlockIndexLamp, 0);
     glUniformBlockBinding(instanceShader.ID, uniformBlockIndexInstance, 0);
+    glUniformBlockBinding(terrainColorShader.ID, uniformBlockIndexTerrain, 0);
 
     GLuint diffuseMap = loadTexture("../resources/container2.png");
     GLuint specularMap = loadTexture("../resources/container2_specular.png");
@@ -48,6 +58,7 @@ int main()
     GLuint floorTexture = loadTexture("../resources/metal.png");
     GLuint cubeTexture = loadTexture("../resources/container2.png");
     GLuint transparentTexture = loadTexture("../resources/window.png");
+    GLuint woodTex = loadTexture("../resources/wood.png");
 
     Texture cubemapTexture = CubemapTextureFromFile(faces);
 
@@ -113,7 +124,7 @@ int main()
 
     // render loop
 
-	 /// Render loop septup
+	 /// Render loop setup
 		auto newScene = std::make_shared<Scene>();
 
 		// TODO: move skybox to special entity
@@ -128,6 +139,37 @@ int main()
 	NoiseMap *nm = new NoiseMap;
 	// Create texture from noise map
 	Texture tx = TextureFromNoiseMap(*nm);
+
+
+//	/*** SHADOW STUFF ***/
+//	// Configure DepthMap FBO
+//	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+//	GLuint depthMapFBO;
+//	glGenFramebuffers(1, &depthMapFBO);
+//	// create depth texture;
+//	unsigned int depthMap;
+//	glGenTextures(1, &depthMap);
+//	glBindTexture(GL_TEXTURE_2D, depthMap);
+//	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+//	// Attach depth texture as FBO's depth buffer
+//	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+//	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
+//	glDrawBuffer(GL_NONE);
+//	glReadBuffer(GL_NONE);
+//	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+//	// Shader Configuration
+//	debugDepthQuad.use();
+//	debugDepthQuad.setInt("depthMap", 0);
+//	glm::vec3 lightPos(-2.0f, 4.0f, -1.0f);
+//	/*** SHADOW STUFF ***/
+
+
+
+
 
 
 	UITestWindow *testWindow = new UITestWindow(&show_demo_window, &show_render_window, &noise_map_viewer, &show_scene_window);
@@ -151,8 +193,40 @@ int main()
         // TODO: Figure out how to have a single light effect multiple shaders
 
 		// be sure to activate shader when setting uniforms/drawing objects
-		newScene->render(&terrainColorShader, &renderBuffer);
 		doTestScene1(newScene);
+
+/*		*//*** SHADOW STUFF ***//*
+		glClear(GL_DEPTH_BUFFER_BIT);
+		// 1. Render Depth of scene to texture (from lights perspective)
+		glm::mat4 lightProjection, lightView;
+		glm::mat4 lightSpaceMatrix;
+		float near_plane = 1.0, far_plane = 7.5f;
+		lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
+		lightView = glm::lookAt(lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+		lightSpaceMatrix = lightProjection * lightView;
+		// Render scene from light's point of view
+		simpleDepthShader.use();
+		simpleDepthShader.setMat4("lightSpaceMatrix", lightSpaceMatrix);
+
+		glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+			glClear(GL_DEPTH_BUFFER_BIT);
+//			glActiveTexture(GL_TEXTURE0);
+//			glBindTexture(GL_TEXTURE_2D, woodTex);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		// reset viewport
+		glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		// Render depth map
+		debugDepthQuad.use();
+		debugDepthQuad.setFloat("near_plane", near_plane);
+		debugDepthQuad.setFloat("far_plane", far_plane);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, depthMap);
+		*//*** SHADOW STUFF ***/
+
+		newScene->render(&lightingShader, &renderBuffer);
 /*
  * TODO: figure out what to do with the view and projection matrices
  *

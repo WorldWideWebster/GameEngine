@@ -5,11 +5,16 @@
 #include <iterator>
 #include "Scene.h"
 
+// Max light definitions
+#define MAX_POINT_LIGHTS 10
+#define MAX_SPOT_LIGHTS 10
+#define MAX_DIR_LIGHTS 10
+
 Scene::Scene()
 {
-	this->m_num_point_lights = 1;
+	this->m_num_point_lights = 0;
 	this->m_num_dir_lights = 0;
-	this->m_num_spot_lights = 1;
+	this->m_num_spot_lights = 0;
 
 	// Default camera
 	Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
@@ -27,6 +32,46 @@ void Scene::addEntity(std::shared_ptr<Entity> targetEntity)
 
 void Scene::addLight(std::shared_ptr<Light> targetLight)
 {
+	if(typeid(*targetLight) == typeid(Light))
+	{
+		if(this->m_num_dir_lights < MAX_DIR_LIGHTS)
+		{
+			m_num_dir_lights++;
+			std::cout << "dir light added" << std::endl;
+		}
+		else
+		{
+			std::cout << "Max dir light limit hit" << std::endl;
+		}
+	}
+	else if(typeid(*targetLight) == typeid(PointLight))
+	{
+		if(this->m_num_point_lights < MAX_DIR_LIGHTS)
+		{
+			m_num_point_lights++;
+			std::cout << "point light added" << std::endl;
+		}
+		else
+		{
+			std::cout << "Max point light limit hit" << std::endl;
+		}
+	}
+	else if(typeid(*targetLight) == typeid(SpotLight))
+	{
+		if(this->m_num_spot_lights < MAX_DIR_LIGHTS)
+		{
+			m_num_spot_lights++;
+			std::cout << "spot light added" << std::endl;
+		}
+		else
+		{
+			std::cout << "Max spot light limit hit" << std::endl;
+		}
+	}
+	else
+	{
+		std::cout << "not a known light type!" << std::endl;
+	}
 	this->m_lights.push_back(targetLight);
 }
 
@@ -40,6 +85,7 @@ void Scene::render(Shader *shader, RenderBuffer *renderBuffer)
 	if(this->m_active)
 	{
 		glm::mat4 view = this->m_default_camera->GetViewMatrix();
+		shader->setMat4("view", view);
 		renderBuffer->bindAndBuffer(view);
 		shader->use();
 		setShaderPointLights(shader);

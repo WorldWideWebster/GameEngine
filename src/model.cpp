@@ -7,7 +7,6 @@
 #include "model.h"
 #include "stb_image.h"
 
-Texture TextureFromFile(const char *path, const std::string &directory, bool gamma = false);
 
 Model::Model(char *path)
 {

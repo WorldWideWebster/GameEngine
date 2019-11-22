@@ -36,8 +36,7 @@ struct Texture {
 unsigned int loadTexture(char const * path);
 unsigned int loadCubemap(std::vector<std::string> faces);
 Texture CubemapTextureFromFile(std::vector<std::string> faces);
-Texture TextureFromData(unsigned char *data, int width, int length);
-Texture TextureFromFile(const char *path, const std::string &directory, bool gamma);
+Texture TextureFromFile(const char *path, const std::string &directory, bool gamma = false);
 Texture TextureFromImage(Image image);
 Texture TextureFromNoiseMap(NoiseMap nm);
 

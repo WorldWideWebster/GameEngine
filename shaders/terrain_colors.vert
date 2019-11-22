@@ -25,6 +25,7 @@ void main()
     Normal = mat3(transpose(inverse(model))) * aNormal;
 
 
+    TexCoords = aTexCoords;
 
     vertexColor = mix(colorA, colorB, FragPos.y/25.0);
 

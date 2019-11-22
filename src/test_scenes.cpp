@@ -10,6 +10,10 @@
 glm::vec3 lightPos(0.0f, 0.0f, 0.0f);
 glm::vec3 lightDir(-0.2f, -1.0f, -0.3f);
 
+Texture woodTex;
+
+
+
 bool flashlight = false;
 
 void toggleFlashLight(void)
@@ -54,4 +58,23 @@ void setUpTestScene2(void)
 	NoiseMap *nm = new NoiseMap;
 	// Create texture from noise map
 	Texture tx = TextureFromNoiseMap(*nm);
+}
+
+void setUpTestScene3(std::shared_ptr<Scene> targetScene)
+{
+	woodTex = TextureFromFile("wood.png", "resources", 1);
+
+	targetScene->setActiveScene();
+	//targetScene->addLight(std::make_shared<PointLight>(Light("dirLights[0]")));
+	targetScene->addLight(std::make_shared<PointLight>(PointLight("pointLights[0]")));
+
+
+	//targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Quad, woodTex)), glm::vec3(0.5)));
+	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Cube))));
+}
+
+
+void doTestScene3(std::shared_ptr<Scene> targetScene)
+{
+
 }
