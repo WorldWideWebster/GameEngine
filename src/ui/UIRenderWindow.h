@@ -5,8 +5,9 @@
 #ifndef OPENGLSETUP_UIRENDERWINDOW_H
 #define OPENGLSETUP_UIRENDERWINDOW_H
 
+#include <memory>
 #include "UIWindow.h"
-#include "../Renderer.h"
+#include "../RenderBuffer.h"
 
 // Render Window default sizes
 #define  RENDER_WINDOW_DEFAULT_X 1920
@@ -15,10 +16,11 @@
 class UIRenderWindow : public UIWindow
 {
 public:
-	UIRenderWindow(Renderer *targetRenderer);
+	UIRenderWindow(RenderBuffer *targetRenderBuffer, std::string Name);
+	virtual void showRenderBuffer(void);
 	virtual void showWidgets(void);
 private:
-	Renderer *m_renderer;
+	RenderBuffer *m_renderBuffer;
 };
 
 

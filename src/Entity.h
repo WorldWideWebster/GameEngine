@@ -11,7 +11,7 @@
 
 static const glm::vec3 position_home = glm::vec3(0);
 static const glm::vec3 scale_unity = glm::vec3(1);
-static const glm::vec3 rotation_home = glm::vec3(1);
+static const glm::vec3 rotation_home = glm::vec3(1);	// Why does this have to be 1? (things don't render otherwise)
 static const float rotAngle_zeo = 0.0f;
 
 static int EntityNum = 0;
@@ -19,15 +19,22 @@ static int EntityNum = 0;
 class Entity
 {
 public:
-	Entity(std::string ID = "entity" + EntityNum++);
-	Entity(Mesh *targetMesh, glm::vec3 startPosition = position_home, std::string ID = "entity" + EntityNum++);
+	Entity(std::string ID = "entity_" + std::to_string(EntityNum++));
+	Entity(Mesh *targetMesh, glm::vec3 startPosition = position_home, std::string ID = "entity_" + std::to_string(EntityNum++));
 	void setMesh(Mesh *targetMesh);
 	void setPosition(glm::vec3 targetPosition);
-	void setRotation(glm::vec3 targetRotation, float targetRotAngle);
+
+	/**
+	 * @brief Sets rotation of an Entity
+	 * @param targetRotAngleDeg - Rotation angle in degrees
+	 * @param targetRotation  - Rotation vector mask (put 1 in axis to rotate about)
+	 */
+	void setRotation(float targetRotAngleDeg, glm::vec3 targetRotation);
 	void setScale(glm::vec3 targetScale);
 	void setID(std::string ID);
 	glm::vec3 getPosition(void);
 	glm::vec3 getRotation(void);
+	glm::vec3 getScale(void);
 
 	void update();
 	void render(Shader *targetShader);

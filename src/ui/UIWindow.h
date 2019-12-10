@@ -18,9 +18,11 @@ public:
 
 	void openOrClose(bool open);
 	void setName(std::string name);
+	std::string getName(void);
 	bool isOpen(void);
 	virtual void showWidgets(void);
 
+	//virtual void setup(void);
 	virtual void render(void);
 private:
 	bool m_open;

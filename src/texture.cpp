@@ -124,20 +124,22 @@ Texture TextureFromFile(const char *path, const std::string &directory, bool gam
 
     Texture texture;
     texture.path = filename;
-    texture.type = "";
+    texture.type = "texture_diffuse";	// Default this to diffuse texture
     glGenTextures(1, &texture.id);
 
 
     unsigned char *data = stbi_load(filename.c_str(), &texture.width, &texture.height, &texture.nrComponents, 0);
     if (data)
     {
-        GLenum format;
+
+		GLenum format;
         if (texture.nrComponents == 1)
             format = GL_RED;
         else if (texture.nrComponents == 3)
             format = GL_RGB;
         else if (texture.nrComponents == 4)
             format = GL_RGBA;
+		std::cout << texture.id << "" << format << std::endl;
 
         glBindTexture(GL_TEXTURE_2D, texture.id);
         glTexImage2D(GL_TEXTURE_2D, 0, format, texture.width, texture.height, 0, format, GL_UNSIGNED_BYTE, data);

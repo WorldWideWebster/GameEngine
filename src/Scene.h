@@ -44,7 +44,8 @@ public:
 	void toggleLight(std::string targetID, bool toggle);
 
 	void setEntityPosition(std::string targetID, glm::vec3 targetPosition);
-	void setEntityDirection(std::string targetID, glm::vec3 targetRotation, float targetRotAngle);
+	void setEntityRotationDeg(std::string targetID, float targetRotAngle, glm::vec3 targetRotation);
+	void setEntityScale(std::string targetID, glm::vec3 targetScale);
 
 	std::vector<std::string> showSceneDetails(void);
 private:

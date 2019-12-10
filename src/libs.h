@@ -61,6 +61,7 @@
 
 /** UI Windows **/
 #include "ui/UITestWindow.h"
+#include "ui/UIRenderWindow.h"
 
 /******* EXTERNAL LIBRARIES ********/
 // STBI

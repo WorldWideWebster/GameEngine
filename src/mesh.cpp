@@ -91,7 +91,8 @@ void Mesh::setupMesh()
 
     if(!textures.size())
     {
-        DEFAULT_TEXTURE = loadTexture("../resources/life_has_many_doors.png");
+    	// TODO: Move this to a init function
+        DEFAULT_TEXTURE = loadTexture("../resources/wood.png");
     }
 
 }
@@ -112,7 +113,7 @@ void Mesh::Draw(Shader shader)
         for (GLuint i = 0; i < textures.size(); i++)
         {
             glActiveTexture(GL_TEXTURE0 + i); //activate proper texture unit before binding
-            // retreive texture number (the N in diffuse_textureN)
+            // retrieve texture number (the N in diffuse_textureN)
             std::string number;
             std::string name = textures[i].type;
             if (name == "texture_diffuse")
@@ -123,9 +124,12 @@ void Mesh::Draw(Shader shader)
                 number = std::to_string(normalNr++); // transfer GLuint to stream
             else if (name == "texture_height")
                 number = std::to_string(heightNr++); // transfer GLuint to stream
+			if(name != "")
+			{
+				// Set the sampler
+				shader.setFloat(("material." + name + number).c_str(), i);
+			}
 
-            // Set the sampler
-            shader.setFloat(("material." + name + number).c_str(), i);
             // Bind the texture
             glBindTexture(GL_TEXTURE_2D, textures[i].id);
         }

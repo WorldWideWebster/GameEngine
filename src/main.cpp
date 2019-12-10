@@ -29,16 +29,17 @@ int main()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);    // build and compile our shader program
 
-
+	/*******************SHADER SETUP***************************/
     // ------------------------------------
     Shader lightingShader("../shaders/colors.vert", "../shaders/colors.frag");
+    Shader gridShader("../shaders/grid.vert", "../shaders/grid.frag");
     Shader terrainColorShader("../shaders/terrain_colors.vert", "../shaders/terrain_colors.frag");
     Shader lampShader("../shaders/lamp.vert", "../shaders/lamp.frag");
     Shader screenShader("../shaders/framebuffer.vert", "../shaders/framebuffer.frag");
     Shader skyboxShader("../shaders/skybox.vert", "../shaders/skybox.frag");
     Shader instanceShader("../shaders/instance.vert", "../shaders/instance.frag");
     Shader normalDisplayShader("../shaders/normal_vis.vert", "../shaders/normal_vis.frag", "../shaders/normal_vis.geom");
-//	Shader shadowShader("../shaders/advanced_lighting.vert", "../shaders/advanced_lighting.frag");
+//	Shader shadowShader("../shaders/shadow_mapping.vert", "../shaders/shadow_mapping.frag");
 //	Shader simpleDepthShader("../shaders/shadow_mapping_depth.vert", "../shaders/shadow_mapping_depth.frag");
 //	Shader debugDepthQuad("../shaders/debug_quad_depth.vert", "../shaders/debug_quad_depth.frag");
 
@@ -51,16 +52,18 @@ int main()
     glUniformBlockBinding(lampShader.ID, uniformBlockIndexLamp, 0);
     glUniformBlockBinding(instanceShader.ID, uniformBlockIndexInstance, 0);
     glUniformBlockBinding(terrainColorShader.ID, uniformBlockIndexTerrain, 0);
+	/*******************SHADER SETUP***************************/
 
-    GLuint diffuseMap = loadTexture("../resources/container2.png");
+	/*******************TEXTURE SETUP***************************/
+	GLuint diffuseMap = loadTexture("../resources/container2.png");
     GLuint specularMap = loadTexture("../resources/container2_specular.png");
     GLuint emissionMap = loadTexture("../resources/matrix.jpg");
     GLuint floorTexture = loadTexture("../resources/metal.png");
     GLuint cubeTexture = loadTexture("../resources/container2.png");
     GLuint transparentTexture = loadTexture("../resources/window.png");
-    GLuint woodTex = loadTexture("../resources/wood.png");
 
     Texture cubemapTexture = CubemapTextureFromFile(faces);
+	/*******************TEXTURE SETUP***************************/
 
     // tell opengl for each sampler to which texture unit it belongs to (only has to be done once)
     // -------------------------------------------------------------------------------------------
@@ -77,20 +80,8 @@ int main()
     screenShader.setInt("screenTexture", 0);
 
     RenderBuffer renderBuffer;
-    // load models
-    // -----------
-    Model ourModel((char *) "resources/objects/nanosuit/nanosuit.obj");
-    Model rock((char *) "resources/objects/rock/rock.obj");
-    Model planet((char *) "resources/objects/planet/planet.obj");
-    // generate a large list of semi-random model transformation matrices
-    // ------------------------------------------------------------------
-    GLuint amount = 1000;
-    glm::mat4 *modelMatrices;
-    modelMatrices = new glm::mat4[amount];
-    srand(glfwGetTime()); // initialize random seed
-    float radius = 100.0;
-    float offset = 50.5f;
-
+	UIRenderWindow renderWindow(&renderBuffer, "Render Window");
+	renderWindow.open();
 	/**********************************************/
 	// TODO: Move this to window creation
     // Setup Dear ImGui context
@@ -119,11 +110,6 @@ int main()
     bool render_input = true;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-    float lightx = 0.5f, lighty = 0.5f, lightz = 0.50f;
-    bool flashlight = false;
-
-    // render loop
-
 	 /// Render loop setup
 		auto newScene = std::make_shared<Scene>();
 
@@ -131,14 +117,17 @@ int main()
 		//SkyBox skybox (cubemapTexture, newScene->getDefaultCamera(), &renderBuffer);
 
 		window.setCamera(newScene->getDefaultCamera());
-		setUpTestScene1(newScene);
+		setUpTestScene3(newScene);
 
 	// TODO: move terrain to special entity
 	// Terrain Generation
 	// Create Noise map
+/*
+ * FIXME: Texture from this somehow overwrites other textures
 	NoiseMap *nm = new NoiseMap;
 	// Create texture from noise map
 	Texture tx = TextureFromNoiseMap(*nm);
+*/
 
 
 //	/*** SHADOW STUFF ***/
@@ -153,21 +142,24 @@ int main()
 //	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
 //	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 //	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+//	float borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
 //	// Attach depth texture as FBO's depth buffer
 //	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
 //	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
 //	glDrawBuffer(GL_NONE);
 //	glReadBuffer(GL_NONE);
 //	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-//	// Shader Configuration
+//
+//	// shader configuration
+//	// --------------------
+//	shadowShader.use();
+//	shadowShader.setInt("diffuseTexture", 0);
+//	shadowShader.setInt("shadowMap", 1);
 //	debugDepthQuad.use();
 //	debugDepthQuad.setInt("depthMap", 0);
-//	glm::vec3 lightPos(-2.0f, 4.0f, -1.0f);
 //	/*** SHADOW STUFF ***/
-
-
 
 
 
@@ -193,39 +185,40 @@ int main()
         // TODO: Figure out how to have a single light effect multiple shaders
 
 		// be sure to activate shader when setting uniforms/drawing objects
-		doTestScene1(newScene);
+		doTestScene3(newScene);
 
-/*		*//*** SHADOW STUFF ***//*
-		glClear(GL_DEPTH_BUFFER_BIT);
-		// 1. Render Depth of scene to texture (from lights perspective)
-		glm::mat4 lightProjection, lightView;
-		glm::mat4 lightSpaceMatrix;
-		float near_plane = 1.0, far_plane = 7.5f;
-		lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
-		lightView = glm::lookAt(lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
-		lightSpaceMatrix = lightProjection * lightView;
-		// Render scene from light's point of view
-		simpleDepthShader.use();
-		simpleDepthShader.setMat4("lightSpaceMatrix", lightSpaceMatrix);
-
-		glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
-		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-			glClear(GL_DEPTH_BUFFER_BIT);
-//			glActiveTexture(GL_TEXTURE0);
-//			glBindTexture(GL_TEXTURE_2D, woodTex);
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		// reset viewport
-		glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		// Render depth map
-		debugDepthQuad.use();
-		debugDepthQuad.setFloat("near_plane", near_plane);
-		debugDepthQuad.setFloat("far_plane", far_plane);
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, depthMap);
-		*//*** SHADOW STUFF ***/
-
+//		/*** SHADOW STUFF ***/
+//		glClear(GL_DEPTH_BUFFER_BIT);
+//		// 1. Render Depth of scene to texture (from lights perspective)
+//		glm::mat4 lightProjection, lightView;
+//		glm::mat4 lightSpaceMatrix;
+//		float near_plane = 1.0, far_plane = 7.5f;
+//		//lightProjection = glm::perspective(glm::radians(45.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, near_plane, far_plane);
+//		// note that if you use a perspective projection matrix you'll have to change the light position as the current light position isn't enough to reflect the whole scene
+//		lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
+//		lightView = glm::lookAt(lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+//		lightSpaceMatrix = lightProjection * lightView;
+//		// Render scene from light's point of view
+//		simpleDepthShader.use();
+//		simpleDepthShader.setMat4("lightSpaceMatrix", lightSpaceMatrix);
+//
+//		glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+//		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+//			glClear(GL_DEPTH_BUFFER_BIT);
+////			glActiveTexture(GL_TEXTURE0);
+////			glBindTexture(GL_TEXTURE_2D, woodTex);
+//		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+//		// reset viewport
+//		glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+//		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//
+//		// Render depth map
+//		debugDepthQuad.use();
+//		debugDepthQuad.setFloat("near_plane", near_plane);
+//		debugDepthQuad.setFloat("far_plane", far_plane);
+//		glActiveTexture(GL_TEXTURE0);
+//		glBindTexture(GL_TEXTURE_2D, depthMap);
+//		/*** SHADOW STUFF ***/
 		newScene->render(&lightingShader, &renderBuffer);
 /*
  * TODO: figure out what to do with the view and projection matrices
@@ -261,50 +254,31 @@ int main()
 			}
 			ImGui::End();
 		}
-		// TODO: move to separate file
-        if (show_render_window)
-        {
-			ImGui::Begin("Render Window",  &show_render_window);
 
-			ImGui::Text("Location: %f %f %f     Direction: %f %f %f", newScene->getDefaultCamera()->Position.x,
-					newScene->getDefaultCamera()->Position.y, newScene->getDefaultCamera()->Position.z,
-						newScene->getDefaultCamera()->Front.x, newScene->getDefaultCamera()->Front.y, newScene->getDefaultCamera()->Front.z);
-			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate,
-						ImGui::GetIO().Framerate);
-			// Set render window position
-            ImGui::SetWindowPos("Render Window", ImVec2(0, 0), ImGuiCond_FirstUseEver);
-            // Set render window size
-            ImGui::SetWindowSize("Render Window", ImVec2(RENDER_WINDOW_DEFAULT_X, RENDER_WINDOW_DEFAULT_Y),
-                                 ImGuiCond_FirstUseEver);
-            ImGui::SetNextWindowSize(ImVec2(RENDER_WINDOW_DEFAULT_X, RENDER_WINDOW_DEFAULT_Y), ImGuiCond_FirstUseEver);
-            // Window for rendering scene
-            ImGui::Image(
-                    (void *)(uintptr_t)  renderBuffer.getTextureColorbuffer(), ImVec2(RENDER_WINDOW_DEFAULT_X, RENDER_WINDOW_DEFAULT_Y),
-                    ImVec2(0,1), ImVec2(1,0), ImColor(255,255,255,255), ImColor(255,255,255,128));
-            if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Escape)))
-            {
-                render_input = !render_input;
-            }
-            if(render_input)
-            {
-                glfwSetInputMode(window.m_glfwWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		// Render Window
+		renderWindow.render();
 
-            }
-            else
-            {
-                glfwSetInputMode(window.m_glfwWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-            }
-            if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_F)))
-            {
-				toggleFlashLight();
-            }
+		// Capture input for render window, allow ESC to drop context(?)
+		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Escape)))
+		{
+			render_input = !render_input;
+		}
+		if(render_input)
+		{
+			glfwSetInputMode(window.m_glfwWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-            ImGui::End();
-        }
+		}
+		else
+		{
+			glfwSetInputMode(window.m_glfwWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		}
+
+
 
         // 3. Show another simple window.
 		// TODO move to separate file
-        if (noise_map_viewer)
+
+/*        if (noise_map_viewer)
         {
 
 			ImGui::Begin("Noise Map Viewer", &noise_map_viewer);       // Create a window called "Hello, world!" and append into it.
@@ -328,7 +302,7 @@ int main()
             ImGui::Image((void *)(uintptr_t)  nm->getTexID(), ImVec2(nm->getWidth(), nm->getHeight()),
                     ImVec2(0,1), ImVec2(1,0), ImColor(255,255,255,255), ImColor(255,255,255,128));
             ImGui::End();
-        }
+        }*/
 
         ImVec2 pos = ImGui::GetCursorScreenPos();
 

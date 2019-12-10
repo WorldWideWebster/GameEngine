@@ -27,6 +27,11 @@ void UIWindow::setName(std::string name)
 	this->m_name = name;
 }
 
+std::string UIWindow::getName(void)
+{
+	return this->m_name;
+}
+
 bool UIWindow::isOpen(void)
 {
 	return this->m_open;

@@ -236,17 +236,33 @@ void Scene::setEntityPosition(std::string targetID, glm::vec3 targetPosition)
 		}
 	}
 }
-void Scene::setEntityDirection(std::string targetID, glm::vec3 targetRotation, float targetRotAngle)
+void Scene::setEntityRotationDeg(std::string targetID, float targetRotAngle, glm::vec3 targetRotation)
 {
 	for (int i = 0; i < m_entities.size(); i++)
 	{
 		if(m_entities[i]->m_ID == targetID)
 		{
-			m_entities[i]->setRotation(targetRotation, targetRotAngle);
+			m_entities[i]->setRotation(targetRotAngle, targetRotation);
 			return;
 		}
 	}
 }
+
+void Scene::setEntityScale(std::string targetID, glm::vec3 targetScale)
+{
+	for (int i = 0; i < m_entities.size(); i++)
+	{
+		if(m_entities[i]->m_ID == targetID)
+		{
+			m_entities[i]->setScale(targetScale);
+			return;
+		}
+	}
+}
+
+
+
+
 
 std::vector<std::string> Scene::showSceneDetails(void)
 {
@@ -256,7 +272,8 @@ std::vector<std::string> Scene::showSceneDetails(void)
 		std::string info;
 		info = m_entities[i]->m_ID + ": " +
 				"\nPosition: " +glm::to_string(m_entities[i]->getPosition()) +
-				"\nRotation: " +glm::to_string(m_entities[i]->getRotation());
+				"\nRotation: " +glm::to_string(m_entities[i]->getRotation()) +
+				"\nScale:	 " +glm::to_string(m_entities[i]->getScale());
 		returnString.push_back(info);
 	}
 	for (int i = 0; i < m_lights.size(); i++)
