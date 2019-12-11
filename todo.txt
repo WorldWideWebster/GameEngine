@@ -93,6 +93,7 @@
 // TODO: c++17 filesystem library
 
 /****************Bugs**************/
+// TODO: Test scene 3 not rendering properly (cube won't move to proper height)
 
 /****************Research**************/
 
@@ -103,6 +104,8 @@
 // TODO: GGX vs Blinn-Phong
 
 // TODO: OpenGL 3 to 4 (and the changes to how shaders work)
+
+// TODO: GCC optimization (for smart pointer speed increase)
 
 
 /******************DONE*********************/
@@ -139,9 +142,9 @@
 // Fix crash caused by render buffer in render window               - Done 12/02/2019
 // Fixed cube in scene 3 not rendering                              - Done 12/09/2019
 // Fix transformations for entities                                 - Done 12/09/2019
+// Fix Test scene 3                                                 - Done 12/10/2019
 
 /******************NOT REQUIRED*********************/
 // Add destructors to all classes                    -- Smart pointers have auto garbage collection
 
 /******************IN PROGRESS*********************/
-Fix Test scene 3

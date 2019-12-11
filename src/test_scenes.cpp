@@ -11,6 +11,7 @@ glm::vec3 lightPos(0.0f, 0.0f, 0.0f);
 glm::vec3 lightDir(-0.2f, -1.0f, -0.3f);
 
 Texture woodTex;
+Texture cubeTex;
 Texture sand;
 
 
@@ -77,16 +78,19 @@ void setUpTestScene2(void)
 void setUpTestScene3(std::shared_ptr<Scene> targetScene)
 {
 	woodTex = TextureFromFile("wood.png", "../resources", 1);
+	cubeTex = TextureFromFile("container2.png", "../resources/");
 
 	targetScene->setActiveScene();
 	//targetScene->addLight(std::make_shared<PointLight>(Light("dirLights[0]")));
 	targetScene->addLight(std::make_shared<Light>(Light(glm::vec3(0.5f), glm::vec3 (0.8f), glm::vec3(1.0f), "dirLights[0]")));
-	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Cube, woodTex))));
+	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Cube, cubeTex), glm::vec3(0,2,0), "cube")));
+	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Cube, cubeTex), glm::vec3(2,1,0), "cube_1")));
+	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Cube, cubeTex), glm::vec3(3,.5,5), "cube_2")));
 
 	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Quad, woodTex), glm::vec3(0), "quad")));
 
 	targetScene->setEntityRotationDeg("quad", 90, glm::vec3(1, 0, 0));
-	targetScene->setEntityScale("quad", glm::vec3(5,5,5));
+	targetScene->setEntityScale("quad", glm::vec3(20,20,20));
 
 }
 
