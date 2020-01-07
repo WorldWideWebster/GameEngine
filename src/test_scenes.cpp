@@ -81,15 +81,16 @@ void setUpTestScene3(std::shared_ptr<Scene> targetScene)
 	cubeTex = TextureFromFile("container2.png", "../resources/");
 
 	targetScene->setActiveScene();
-	//targetScene->addLight(std::make_shared<PointLight>(Light("dirLights[0]")));
-	targetScene->addLight(std::make_shared<Light>(Light(glm::vec3(0.5f), glm::vec3 (0.8f), glm::vec3(1.0f), "dirLights[0]")));
+	targetScene->addLight(std::make_shared<DirectionalLight>(DirectionalLight("dirLights[0]")));
+//	targetScene->addLight(std::make_shared<Light>(Light(glm::vec3(0.3f), glm::vec3 (0.2f), glm::vec3(0.5f), "dirLights[0]")));
+
 	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Cube, cubeTex), glm::vec3(0,2,0), "cube")));
 	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Cube, cubeTex), glm::vec3(2,1,0), "cube_1")));
-	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Cube, cubeTex), glm::vec3(3,.5,5), "cube_2")));
+	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Cube, cubeTex), glm::vec3(3,0,5), "cube_2")));
 
-	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Quad, woodTex), glm::vec3(0), "quad")));
+	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Quad, woodTex), glm::vec3(0, 0, -0.025), "quad")));
 
-	targetScene->setEntityRotationDeg("quad", 90, glm::vec3(1, 0, 0));
+	targetScene->setEntityRotationDeg("quad", -90, glm::vec3(1, 0, 0));
 	targetScene->setEntityScale("quad", glm::vec3(20,20,20));
 
 }
@@ -98,8 +99,8 @@ void setUpTestScene3(std::shared_ptr<Scene> targetScene)
 void doTestScene3(std::shared_ptr<Scene> targetScene)
 {
 	lightPos = glm::vec3(1 * cos(glfwGetTime()), 0, 1 * sin(glfwGetTime()));
-	lightDir = glm::vec3(2, sin(glfwGetTime() / 10), cos(glfwGetTime() / 10));
-	targetScene->setLightPosition("pointLights[0]", lightPos);
+	lightDir = glm::vec3(0, 100 * sin(glfwGetTime()), 100 * cos(glfwGetTime()));
+	targetScene->setLightDirection("dirLights[0]", lightDir);
 
 
 }

@@ -79,9 +79,12 @@ int main()
     screenShader.use();
     screenShader.setInt("screenTexture", 0);
 
-    RenderBuffer renderBuffer;
-	UIRenderWindow renderWindow(&renderBuffer, "Render Window");
+    FrameBuffer frameBuffer;
+    FrameBuffer testBuffer;
+	UIRenderWindow renderWindow(&frameBuffer, "Render Window");
+	UIRenderWindow testRenderWindow(&testBuffer, "Test Render Window");
 	renderWindow.open();
+	testRenderWindow.open();
 	/**********************************************/
 	// TODO: Move this to window creation
     // Setup Dear ImGui context
@@ -114,7 +117,7 @@ int main()
 		auto newScene = std::make_shared<Scene>();
 
 		// TODO: move skybox to special entity
-		//SkyBox skybox (cubemapTexture, newScene->getDefaultCamera(), &renderBuffer);
+		//SkyBox skybox (cubemapTexture, newScene->getDefaultCamera(), &frameBuffer);
 
 		window.setCamera(newScene->getDefaultCamera());
 		setUpTestScene3(newScene);
@@ -129,39 +132,15 @@ int main()
 	Texture tx = TextureFromNoiseMap(*nm);
 */
 
-
-//	/*** SHADOW STUFF ***/
-//	// Configure DepthMap FBO
-//	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
-//	GLuint depthMapFBO;
-//	glGenFramebuffers(1, &depthMapFBO);
-//	// create depth texture;
-//	unsigned int depthMap;
-//	glGenTextures(1, &depthMap);
-//	glBindTexture(GL_TEXTURE_2D, depthMap);
-//	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
-//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-//	float borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
-//	// Attach depth texture as FBO's depth buffer
-//	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-//	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
-//	glDrawBuffer(GL_NONE);
-//	glReadBuffer(GL_NONE);
-//	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-//
-//	// shader configuration
+//	/** Shadow Stuff */
+//	// shadow shader configuration
 //	// --------------------
 //	shadowShader.use();
 //	shadowShader.setInt("diffuseTexture", 0);
 //	shadowShader.setInt("shadowMap", 1);
 //	debugDepthQuad.use();
 //	debugDepthQuad.setInt("depthMap", 0);
-//	/*** SHADOW STUFF ***/
-
-
+//	/** Shadow Stuff */
 
 
 	UITestWindow *testWindow = new UITestWindow(&show_demo_window, &show_render_window, &noise_map_viewer, &show_scene_window);
@@ -169,6 +148,7 @@ int main()
     while (!window.shouldClose())
     {
         // TODO: move render loop to separate file
+		glClear(GL_DEPTH_BUFFER_BIT);
 
         // per-frame time logic
         // --------------------
@@ -187,8 +167,6 @@ int main()
 		// be sure to activate shader when setting uniforms/drawing objects
 		doTestScene3(newScene);
 
-//		/*** SHADOW STUFF ***/
-//		glClear(GL_DEPTH_BUFFER_BIT);
 //		// 1. Render Depth of scene to texture (from lights perspective)
 //		glm::mat4 lightProjection, lightView;
 //		glm::mat4 lightSpaceMatrix;
@@ -201,31 +179,25 @@ int main()
 //		// Render scene from light's point of view
 //		simpleDepthShader.use();
 //		simpleDepthShader.setMat4("lightSpaceMatrix", lightSpaceMatrix);
-//
-//		glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
-//		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-//			glClear(GL_DEPTH_BUFFER_BIT);
-////			glActiveTexture(GL_TEXTURE0);
-////			glBindTexture(GL_TEXTURE_2D, woodTex);
-//		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-//		// reset viewport
-//		glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
-//		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//
-//		// Render depth map
-//		debugDepthQuad.use();
-//		debugDepthQuad.setFloat("near_plane", near_plane);
-//		debugDepthQuad.setFloat("far_plane", far_plane);
-//		glActiveTexture(GL_TEXTURE0);
-//		glBindTexture(GL_TEXTURE_2D, depthMap);
-//		/*** SHADOW STUFF ***/
-		newScene->render(&lightingShader, &renderBuffer);
+
+
+		newScene->render(&lightingShader, &frameBuffer);
+		//	// Render depth map
+		//	debugDepthQuad.use();
+		//	debugDepthQuad.setFloat("near_plane", near_plane);
+		//	debugDepthQuad.setFloat("far_plane", far_plane);
+		//	glActiveTexture(GL_TEXTURE0);
+		//	glBindTexture(GL_TEXTURE_2D, this->m_depthMap);
+		// TODO: Find way to output to quad easily
+		newScene->render(&lightingShader, &testBuffer);
 /*
  * TODO: figure out what to do with the view and projection matrices
  *
+ *
+ /// Stuff for displaying normals
         glm::mat4 model;
         normalDisplayShader.use();
-        normalDisplayShader.setMat4("projection", renderBuffer.getProjection());
+        normalDisplayShader.setMat4("projection", frameBuffer.getProjection());
         normalDisplayShader.setMat4("view", view);
         normalDisplayShader.setMat4("model", model);
 */
@@ -257,6 +229,7 @@ int main()
 
 		// Render Window
 		renderWindow.render();
+		testRenderWindow.render();
 
 		// Capture input for render window, allow ESC to drop context(?)
 		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Escape)))

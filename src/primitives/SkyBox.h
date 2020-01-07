@@ -7,7 +7,7 @@
 
 #include <memory>
 #include "../Entity.h"
-#include "../RenderBuffer.h"
+#include "buffer-objects/FrameBuffer.h"
 /**
  * @class SkyBox
  * @brief Entity extension for skybox
@@ -15,12 +15,12 @@
 class SkyBox
 {
 public:
-	SkyBox(Texture texture, std::shared_ptr<Camera> camera, RenderBuffer *renderBuffer);
+	SkyBox(Texture texture, std::shared_ptr<Camera> camera, FrameBuffer *frameBuffer);
 	void Draw(Shader shader);
 private:
 	Texture m_texture;
 	std::shared_ptr<Camera> camera;
-	RenderBuffer *renderBuffer;
+	FrameBuffer *frameBuffer;
 };
 
 

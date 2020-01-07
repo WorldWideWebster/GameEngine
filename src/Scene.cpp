@@ -32,7 +32,7 @@ void Scene::addEntity(std::shared_ptr<Entity> targetEntity)
 
 void Scene::addLight(std::shared_ptr<Light> targetLight)
 {
-	if(typeid(*targetLight) == typeid(Light))
+	if(typeid(*targetLight) == typeid(DirectionalLight))
 	{
 		if(this->m_num_dir_lights < MAX_DIR_LIGHTS)
 		{
@@ -80,13 +80,14 @@ void Scene::addCamera(void)
 	//this->m_cameras.push_back(std::unique_ptr<Camera>);
 }
 
-void Scene::render(Shader *shader, RenderBuffer *renderBuffer)
+void Scene::render(Shader *shader, FrameBuffer *frameBuffer)
 {
 	if(this->m_active)
 	{
 		glm::mat4 view = this->m_default_camera->GetViewMatrix();
 		shader->setMat4("view", view);
-		renderBuffer->bindAndBuffer(view);
+		// TODO: Framebuffer has to be decoupled from scene
+		frameBuffer->bind(view);
 		shader->use();
 		setShaderPointLights(shader);
 		setShaderDirLights(shader);
@@ -108,7 +109,7 @@ void Scene::render(Shader *shader, RenderBuffer *renderBuffer)
 		{
 			m_lights[i]->render(shader);
 		}
-		renderBuffer->bindDefault();
+		frameBuffer->unbind();
 	}
 }
 void Scene::setActiveScene(void)

@@ -5,9 +5,9 @@
 
 #include "UIRenderWindow.h"
 
-UIRenderWindow::UIRenderWindow(RenderBuffer *targetRenderBuffer, std::string Name)
+UIRenderWindow::UIRenderWindow(BufferObject *targetBufferObject, std::string Name)
 {
-	this->m_renderBuffer = targetRenderBuffer;
+	this->m_bufferObject = targetBufferObject;
 	this->setName(Name);
 }
 
@@ -26,7 +26,7 @@ void UIRenderWindow::showRenderBuffer(void)
 	ImGui::SetNextWindowSize(ImVec2(RENDER_WINDOW_DEFAULT_X, RENDER_WINDOW_DEFAULT_Y), ImGuiCond_FirstUseEver);
 	// Window for rendering scene
 	ImGui::Image(
-			(void *) (uintptr_t) this->m_renderBuffer->getTextureColorbuffer(),
+			(void *) (uintptr_t) this->m_bufferObject->getTextureBuffer(),
 			ImVec2(RENDER_WINDOW_DEFAULT_X, RENDER_WINDOW_DEFAULT_Y),
 			ImVec2(0, 1), ImVec2(1, 0), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));
 }
@@ -54,7 +54,7 @@ void UIRenderWindow::showWidgets(void)
             ImGui::SetNextWindowSize(ImVec2(RENDER_WINDOW_DEFAULT_X, RENDER_WINDOW_DEFAULT_Y), ImGuiCond_FirstUseEver);
             // Window for rendering scene
             ImGui::Image(
-                    (void *)(uintptr_t)  renderBuffer.getTextureColorbuffer(), ImVec2(RENDER_WINDOW_DEFAULT_X, RENDER_WINDOW_DEFAULT_Y),
+                    (void *)(uintptr_t)  frameBuffer.getTextureBuffer(), ImVec2(RENDER_WINDOW_DEFAULT_X, RENDER_WINDOW_DEFAULT_Y),
                     ImVec2(0,1), ImVec2(1,0), ImColor(255,255,255,255), ImColor(255,255,255,128));
 
             if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_F)))

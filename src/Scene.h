@@ -15,7 +15,7 @@
 #include "lighting/PointLight.h"
 #include "lighting/DirectionalLight.h"
 #include "lighting/SpotLight.h"
-#include "RenderBuffer.h"
+#include "buffer-objects/FrameBuffer.h"
 
 class Scene
 {
@@ -24,7 +24,7 @@ public:
 	void addEntity(std::shared_ptr<Entity> targetEntity);
 	void addLight(std::shared_ptr<Light> targetLight);
 	void addCamera(void);
-	void render(Shader *shader, RenderBuffer *renderBuffer);
+	void render(Shader *shader, FrameBuffer *frameBuffer);
 	void setActiveScene(void);
 	void setInactiveScene(void);
 	void setNumberOfPointLights(int numLights);

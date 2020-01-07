@@ -31,8 +31,8 @@ set(HEADER_FILES
         src/libs.h
         src/Lighting.cpp
         src/Lighting.h
-        src/RenderBuffer.cpp
-        src/RenderBuffer.h
+        src/buffer-objects/FrameBuffer.cpp
+        src/buffer-objects/FrameBuffer.h
         src/image/Image.cpp
         src/image/Image.h
         src/tools/ImageViewer.cpp
@@ -92,4 +92,5 @@ target_link_libraries(
         imgui
         shader
         ui
+        buffer_objects
         ${dir}/dependencies/libs/libassimpd.dll.a)

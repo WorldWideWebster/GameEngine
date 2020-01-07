@@ -18,4 +18,5 @@ add_subdirectory(image)
 add_subdirectory(lighting)
 add_subdirectory(shader)
 add_subdirectory(ui)
+add_subdirectory(buffer-objects)
 

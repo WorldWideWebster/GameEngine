@@ -4,12 +4,12 @@
 #include <memory>
 #include "SkyBox.h"
 #include "Primitive.h"
-#include "../RenderBuffer.h"
+#include "buffer-objects/FrameBuffer.h"
 
-SkyBox::SkyBox(Texture texture, std::shared_ptr<Camera> camera, RenderBuffer *renderBuffer)
+SkyBox::SkyBox(Texture texture, std::shared_ptr<Camera> camera, FrameBuffer *frameBuffer)
 {
 	//this->camera = camera;
-	//this->renderBuffer = renderBuffer;
+	//this->frameBuffer = frameBuffer;
 }
 
 
@@ -61,7 +61,7 @@ void SkyBox::Draw(Shader shader)
 	shader.use();
 	glm::mat4 view = glm::mat4(glm::mat3(camera->GetViewMatrix())); // remove translation from the view matrix
 	shader.setMat4("view", view);
-	shader.setMat4("projection", renderBuffer->getProjection());
+	shader.setMat4("projection", frameBuffer->getProjection());
 
 	// Draw Mesh
 	glBindVertexArray(this->getVAO());

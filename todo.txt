@@ -22,8 +22,6 @@
 
 // TODO: MAKE UI 3D Render Window Class
 
-// TODO: Move UI windows in main to classes
-
 // TODO: Replace all pointers with smart pointers
 
 // TODO: Attach shaders to Entity? Entities to shader? Active shader(s) render?
@@ -58,17 +56,13 @@
 
 // TODO: Create shader viewer
 
-// TODO: Polygon generator
-
 // TODO: Clouds
-
-// TODO: Add light/Entity list to UI
 
 // TODO: Rotatable scene via click/hold
 
 // TODO: edit mesh in entity
 
-// TODO: Add way to print screen
+// TODO: Add way to print screen to image file
 
 // TODO: Select terrain generation method (file or code)
 
@@ -93,7 +87,7 @@
 // TODO: c++17 filesystem library
 
 /****************Bugs**************/
-// TODO: Test scene 3 not rendering properly (cube won't move to proper height)
+// Captured mouse for perspective view should not move
 
 /****************Research**************/
 
@@ -139,12 +133,15 @@
 // Fixed texture loading in shaders                                 - Done 11/20/2019
 // Fixed loading custom textures onto meshes/entities               - Done 11/23/2019
 // Moved Render Window to separate file                             - Done 11/27/2019
+// Move UI windows in main to classes                               - Done 11/27/2019
 // Fix crash caused by render buffer in render window               - Done 12/02/2019
 // Fixed cube in scene 3 not rendering                              - Done 12/09/2019
 // Fix transformations for entities                                 - Done 12/09/2019
 // Fix Test scene 3                                                 - Done 12/10/2019
-
+// Fixed Setting a directional light's direction                    - Done 12/25/2019
 /******************NOT REQUIRED*********************/
 // Add destructors to all classes                    -- Smart pointers have auto garbage collection
 
 /******************IN PROGRESS*********************/
+Shadows
+ShadowDepth Buffer Class based on Shadow tutorial and FrameBuffer Class

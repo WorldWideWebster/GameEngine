@@ -30,7 +30,7 @@
 #include "main_defs.h"
 #include "mesh.h"
 #include "model.h"
-#include "RenderBuffer.h"
+#include "buffer-objects/FrameBuffer.h"
 #include "Scene.h"
 #include <shader/shader.h>
 #include "texture.h"
