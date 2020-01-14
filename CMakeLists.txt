@@ -31,12 +31,8 @@ set(HEADER_FILES
         src/libs.h
         src/Lighting.cpp
         src/Lighting.h
-        src/buffer-objects/FrameBuffer.cpp
-        src/buffer-objects/FrameBuffer.h
         src/image/Image.cpp
         src/image/Image.h
-        src/tools/ImageViewer.cpp
-        src/tools/ImageViewer.h
         src/Entity.cpp
         src/Entity.h
         src/Scene.cpp
@@ -47,7 +43,7 @@ set(HEADER_FILES
         src/Renderer.h
         src/test_scenes.h
         src/test_scenes.cpp
-        )
+        src/ShadowMap.h)
 
 set(dir ${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${dir}/build)

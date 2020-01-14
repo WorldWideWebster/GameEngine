@@ -52,6 +52,7 @@ private:
     /* Functions */
     void setupMesh();
     GLuint DEFAULT_TEXTURE;
+    bool didShadows = false;
 };
 
 

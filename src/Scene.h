@@ -24,7 +24,7 @@ public:
 	void addEntity(std::shared_ptr<Entity> targetEntity);
 	void addLight(std::shared_ptr<Light> targetLight);
 	void addCamera(void);
-	void render(Shader *shader, FrameBuffer *frameBuffer);
+	void render(Shader *shader, BufferObject *buffer);
 	void setActiveScene(void);
 	void setInactiveScene(void);
 	void setNumberOfPointLights(int numLights);

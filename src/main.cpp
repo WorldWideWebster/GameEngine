@@ -3,7 +3,8 @@
 
 #include "libs.h"
 #include <shader/shader.h>
-
+#include <buffer-objects/ShadowDepthBuffer.h>
+#include "ShadowMap.h"
 
 // timing
 float deltaTime = 0.0f;    // time between current frame and last frame
@@ -39,9 +40,9 @@ int main()
     Shader skyboxShader("../shaders/skybox.vert", "../shaders/skybox.frag");
     Shader instanceShader("../shaders/instance.vert", "../shaders/instance.frag");
     Shader normalDisplayShader("../shaders/normal_vis.vert", "../shaders/normal_vis.frag", "../shaders/normal_vis.geom");
-//	Shader shadowShader("../shaders/shadow_mapping.vert", "../shaders/shadow_mapping.frag");
-//	Shader simpleDepthShader("../shaders/shadow_mapping_depth.vert", "../shaders/shadow_mapping_depth.frag");
-//	Shader debugDepthQuad("../shaders/debug_quad_depth.vert", "../shaders/debug_quad_depth.frag");
+	Shader shadowShader("../shaders/shadow_mapping.vert", "../shaders/shadow_mapping.frag");
+	Shader simpleDepthShader("../shaders/shadow_mapping_depth.vert", "../shaders/shadow_mapping_depth.frag");
+	Shader debugDepthQuad("../shaders/debug_quad_depth.vert", "../shaders/debug_quad_depth.frag");
 
     GLuint uniformBlockIndexLighting = glGetUniformBlockIndex(lightingShader.ID, "Matrices");
     GLuint uniformBlockIndexLamp = glGetUniformBlockIndex(lampShader.ID, "Matrices");
@@ -79,10 +80,12 @@ int main()
     screenShader.use();
     screenShader.setInt("screenTexture", 0);
 
+	ShadowDepthBuffer sb;
+	setShadowMap(sb.getShadowMap());
     FrameBuffer frameBuffer;
     FrameBuffer testBuffer;
 	UIRenderWindow renderWindow(&frameBuffer, "Render Window");
-	UIRenderWindow testRenderWindow(&testBuffer, "Test Render Window");
+	UIRenderWindow testRenderWindow(&sb, "Test Render Window");
 	renderWindow.open();
 	testRenderWindow.open();
 	/**********************************************/
@@ -132,16 +135,17 @@ int main()
 	Texture tx = TextureFromNoiseMap(*nm);
 */
 
-//	/** Shadow Stuff */
-//	// shadow shader configuration
-//	// --------------------
-//	shadowShader.use();
-//	shadowShader.setInt("diffuseTexture", 0);
-//	shadowShader.setInt("shadowMap", 1);
-//	debugDepthQuad.use();
-//	debugDepthQuad.setInt("depthMap", 0);
-//	/** Shadow Stuff */
+	/** Shadow Stuff */
+	// shadow shader configuration
+	// --------------------
+	shadowShader.use();
+	shadowShader.setInt("diffuseTexture", 0);
+	shadowShader.setInt("shadowMap", 1);
+	debugDepthQuad.use();
+	debugDepthQuad.setInt("depthMap", 0);
+	/** Shadow Stuff */
 
+	glm::vec3 lightPos(-2.0f, 4.0f, -1.0f);
 
 	UITestWindow *testWindow = new UITestWindow(&show_demo_window, &show_render_window, &noise_map_viewer, &show_scene_window);
 	testWindow->open();
@@ -166,30 +170,22 @@ int main()
 
 		// be sure to activate shader when setting uniforms/drawing objects
 		doTestScene3(newScene);
+		lightPos = glm::vec3(1 * cos(glfwGetTime()), 0, 1 * sin(glfwGetTime()));
 
-//		// 1. Render Depth of scene to texture (from lights perspective)
-//		glm::mat4 lightProjection, lightView;
-//		glm::mat4 lightSpaceMatrix;
-//		float near_plane = 1.0, far_plane = 7.5f;
-//		//lightProjection = glm::perspective(glm::radians(45.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, near_plane, far_plane);
-//		// note that if you use a perspective projection matrix you'll have to change the light position as the current light position isn't enough to reflect the whole scene
-//		lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
-//		lightView = glm::lookAt(lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
-//		lightSpaceMatrix = lightProjection * lightView;
-//		// Render scene from light's point of view
-//		simpleDepthShader.use();
-//		simpleDepthShader.setMat4("lightSpaceMatrix", lightSpaceMatrix);
+		// 1. Render Depth of scene to texture (from lights perspective)
+		glm::mat4 lightProjection, lightView;
+		glm::mat4 lightSpaceMatrix;
+		float near_plane = 1.0, far_plane = 7.5f;
+		//lightProjection = glm::perspective(glm::radians(45.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, near_plane, far_plane);
+		// note that if you use a perspective projection matrix you'll have to change the light position as the current light position isn't enough to reflect the whole scene
+		lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
+		lightView = glm::lookAt(lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+		lightSpaceMatrix = lightProjection * lightView;
+		// Render scene from light's point of view
+		simpleDepthShader.use();
+		simpleDepthShader.setMat4("lightSpaceMatrix", lightSpaceMatrix);
 
 
-		newScene->render(&lightingShader, &frameBuffer);
-		//	// Render depth map
-		//	debugDepthQuad.use();
-		//	debugDepthQuad.setFloat("near_plane", near_plane);
-		//	debugDepthQuad.setFloat("far_plane", far_plane);
-		//	glActiveTexture(GL_TEXTURE0);
-		//	glBindTexture(GL_TEXTURE_2D, this->m_depthMap);
-		// TODO: Find way to output to quad easily
-		newScene->render(&lightingShader, &testBuffer);
 /*
  * TODO: figure out what to do with the view and projection matrices
  *
@@ -228,8 +224,13 @@ int main()
 		}
 
 		// Render Window
-		renderWindow.render();
-		testRenderWindow.render();
+
+
+		newScene->render(&simpleDepthShader, &sb);
+		testRenderWindow.renderTargetImage(getShadowMap());
+
+//		newScene->render(&shadowShader, &frameBuffer);
+//		renderWindow.render();
 
 		// Capture input for render window, allow ESC to drop context(?)
 		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Escape)))

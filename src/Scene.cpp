@@ -80,15 +80,17 @@ void Scene::addCamera(void)
 	//this->m_cameras.push_back(std::unique_ptr<Camera>);
 }
 
-void Scene::render(Shader *shader, FrameBuffer *frameBuffer)
+
+// TODO: Clean up this function (scene should not own render -> buffer manipulation belongs in renderer)
+void Scene::render(Shader *shader, BufferObject *buffer)
 {
 	if(this->m_active)
 	{
 		glm::mat4 view = this->m_default_camera->GetViewMatrix();
 		shader->setMat4("view", view);
 		// TODO: Framebuffer has to be decoupled from scene
-		frameBuffer->bind(view);
 		shader->use();
+		buffer->bind(view);
 		setShaderPointLights(shader);
 		setShaderDirLights(shader);
 		setShaderSpotLights(shader);
@@ -109,7 +111,7 @@ void Scene::render(Shader *shader, FrameBuffer *frameBuffer)
 		{
 			m_lights[i]->render(shader);
 		}
-		frameBuffer->unbind();
+		buffer->unbind();
 	}
 }
 void Scene::setActiveScene(void)

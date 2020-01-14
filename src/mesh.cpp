@@ -4,6 +4,7 @@
 
 #include "mesh.h"
 
+#include "ShadowMap.h"
 
 
 /* Constructor */
@@ -133,16 +134,28 @@ void Mesh::Draw(Shader shader)
             // Bind the texture
             glBindTexture(GL_TEXTURE_2D, textures[i].id);
         }
-        glActiveTexture(GL_TEXTURE0);
     }
     else
     {
         // If there are no textures, use default texture
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, DEFAULT_TEXTURE);
-        glActiveTexture(GL_TEXTURE0);
 
     }
+
+    // DO SHADOW MAP TEXTURE HERE
+	glActiveTexture(GL_TEXTURE0);
+	if(!didShadows)
+	{
+
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, getShadowMap());
+			didShadows = true;
+	}
+	else
+	{
+		didShadows = false;
+	}
     // Draw Mesh
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);

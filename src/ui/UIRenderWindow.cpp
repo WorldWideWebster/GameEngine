@@ -31,6 +31,26 @@ void UIRenderWindow::showRenderBuffer(void)
 			ImVec2(0, 1), ImVec2(1, 0), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));
 }
 
+void UIRenderWindow::renderTexture(unsigned int target_texture)
+{
+
+
+//	ImGui::Text("Location: %f %f %f     Direction: %f %f %f", camera.Position.x, camera.Position.y, camera.Position.z,
+//				camera.Front.x, camera.Front.y, camera.Front.z);
+
+	// Set render window position
+	ImGui::SetWindowPos(this->getName().c_str(), ImVec2(0, 0), ImGuiCond_FirstUseEver);
+	// Set render window size
+	ImGui::SetWindowSize(this->getName().c_str(), ImVec2(RENDER_WINDOW_DEFAULT_X, RENDER_WINDOW_DEFAULT_Y),
+						 ImGuiCond_FirstUseEver);
+	ImGui::SetNextWindowSize(ImVec2(RENDER_WINDOW_DEFAULT_X, RENDER_WINDOW_DEFAULT_Y), ImGuiCond_FirstUseEver);
+	// Window for rendering scene
+	ImGui::Image(
+			(void *) (uintptr_t) target_texture,
+			ImVec2(RENDER_WINDOW_DEFAULT_X, RENDER_WINDOW_DEFAULT_Y),
+			ImVec2(0, 1), ImVec2(1, 0), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));
+}
+
 void UIRenderWindow::showWidgets(void)
 {
 	this->showRenderBuffer();
@@ -64,3 +84,13 @@ void UIRenderWindow::showWidgets(void)
 
             ImGui::End();
  */
+
+void UIRenderWindow::renderTargetImage(unsigned int target_texture)
+{
+	if(this->isOpen())
+	{
+		this->start();
+		renderTexture(target_texture);
+		this->stop();
+	}
+}

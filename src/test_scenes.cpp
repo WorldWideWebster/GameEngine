@@ -81,7 +81,7 @@ void setUpTestScene3(std::shared_ptr<Scene> targetScene)
 	cubeTex = TextureFromFile("container2.png", "../resources/");
 
 	targetScene->setActiveScene();
-	targetScene->addLight(std::make_shared<DirectionalLight>(DirectionalLight("dirLights[0]")));
+//	targetScene->addLight(std::make_shared<DirectionalLight>(DirectionalLight("dirLights[0]")));
 //	targetScene->addLight(std::make_shared<Light>(Light(glm::vec3(0.3f), glm::vec3 (0.2f), glm::vec3(0.5f), "dirLights[0]")));
 
 	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Cube, cubeTex), glm::vec3(0,2,0), "cube")));
@@ -98,9 +98,9 @@ void setUpTestScene3(std::shared_ptr<Scene> targetScene)
 
 void doTestScene3(std::shared_ptr<Scene> targetScene)
 {
-	lightPos = glm::vec3(1 * cos(glfwGetTime()), 0, 1 * sin(glfwGetTime()));
-	lightDir = glm::vec3(0, 100 * sin(glfwGetTime()), 100 * cos(glfwGetTime()));
-	targetScene->setLightDirection("dirLights[0]", lightDir);
+//	lightPos = glm::vec3(1 * cos(glfwGetTime()), 0, 1 * sin(glfwGetTime()));
+//	lightDir = glm::vec3(0, 100 * sin(glfwGetTime()), 100 * cos(glfwGetTime()));
+//	targetScene->setLightDirection("dirLights[0]", lightDir);
 
 
 }

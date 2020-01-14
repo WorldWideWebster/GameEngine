@@ -30,7 +30,6 @@
 #include "main_defs.h"
 #include "mesh.h"
 #include "model.h"
-#include "buffer-objects/FrameBuffer.h"
 #include "Scene.h"
 #include <shader/shader.h>
 #include "texture.h"
@@ -39,6 +38,9 @@
 #include "window.h"
 #include "test_scenes.h"
 #include "Entity.h"
+
+/** Buffer Objects **/
+#include "buffer-objects/FrameBuffer.h"
 
 /** Primitives **/
 #include "primitives/depreciated/cube.h"

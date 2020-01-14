@@ -36,7 +36,7 @@ void ShadowDepthBuffer::setUp()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void ShadowDepthBuffer::bind(glm::vec3 lightPos, Shader simpleDepthShader)
+void ShadowDepthBuffer::bind(glm::mat4 view)
 {
 	glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
 	glBindFramebuffer(GL_FRAMEBUFFER, this->m_ID);
@@ -57,11 +57,15 @@ void ShadowDepthBuffer::doDebugDepth(void)
 
 }
 
-GLuint ShadowDepthBuffer::getTextureBuffer()
+GLuint *ShadowDepthBuffer::getShadowMap()
 {
-    return this->m_depthMap;
+    return &this->m_depthMap;
 }
 
+GLuint ShadowDepthBuffer::getTextureBuffer()
+{
+	return this->m_depthMap;
+}
 
 
 

@@ -18,7 +18,9 @@ class UIRenderWindow : public UIWindow
 public:
 	UIRenderWindow(BufferObject *targetBufferObject, std::string Name);
 	virtual void showRenderBuffer(void);
+	virtual void renderTexture(unsigned int target_texture);
 	virtual void showWidgets(void);
+	void renderTargetImage(unsigned int target_texture);
 private:
 	BufferObject *m_bufferObject;
 };
