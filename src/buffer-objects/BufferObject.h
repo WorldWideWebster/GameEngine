@@ -24,7 +24,8 @@ public:
 	 */
 	virtual void bind(glm::mat4 view){};
 	virtual void unbind(void){};
-	virtual GLuint getTextureBuffer(){return 1;};
+	virtual GLuint getTextureBuffer(){ return 1; };
+	virtual glm::mat4 getProjection(){ return glm::mat4(1);}
 };
 
 

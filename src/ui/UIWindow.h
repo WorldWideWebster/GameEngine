@@ -23,7 +23,7 @@ public:
 	virtual void showWidgets(void);
 
 	//virtual void setup(void);
-	void render(void);
+	virtual void render(void);
 private:
 	bool m_open;
 	int m_width;

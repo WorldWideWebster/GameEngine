@@ -87,13 +87,13 @@ void Scene::render(Shader *shader, BufferObject *buffer)
 	if(this->m_active)
 	{
 		glm::mat4 view = this->m_default_camera->GetViewMatrix();
-		shader->setMat4("view", view);
+//		shader->setMat4("projection", buffer->getProjection());
 		// TODO: Framebuffer has to be decoupled from scene
 		shader->use();
-		buffer->bind(view);
 		setShaderPointLights(shader);
 		setShaderDirLights(shader);
 		setShaderSpotLights(shader);
+		shader->setMat4("view", view);
 
 		// TODO: Move this to a function
 		shader->setFloat("material.shininess", 1.0f);
@@ -101,6 +101,8 @@ void Scene::render(Shader *shader, BufferObject *buffer)
 		// TODO: Move this to a separate function
 		// TODO: Allow for multiple cameras
 		shader->setVec3("viewPos", this->m_default_camera->Position);
+
+		buffer->bind(view);
 
 		for (int i = 0; i < m_entities.size(); i++)
 		{

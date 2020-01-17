@@ -148,8 +148,8 @@ void Mesh::Draw(Shader shader)
 	if(!didShadows)
 	{
 
-			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, getShadowMap());
+//			glActiveTexture(GL_TEXTURE1);
+//			glBindTexture(GL_TEXTURE_2D, getShadowMap());
 			didShadows = true;
 	}
 	else

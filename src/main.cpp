@@ -79,11 +79,12 @@ int main()
 
     screenShader.use();
     screenShader.setInt("screenTexture", 0);
+	FrameBuffer frameBuffer;
 
 	ShadowDepthBuffer sb;
 	setShadowMap(sb.getShadowMap());
-    FrameBuffer frameBuffer;
-    FrameBuffer testBuffer;
+	//FIXME: 2 frame buffers cancel eachother out
+
 	UIRenderWindow renderWindow(&frameBuffer, "Render Window");
 	UIRenderWindow testRenderWindow(&sb, "Test Render Window");
 	renderWindow.open();
@@ -152,7 +153,6 @@ int main()
     while (!window.shouldClose())
     {
         // TODO: move render loop to separate file
-		glClear(GL_DEPTH_BUFFER_BIT);
 
         // per-frame time logic
         // --------------------
@@ -184,6 +184,8 @@ int main()
 		// Render scene from light's point of view
 		simpleDepthShader.use();
 		simpleDepthShader.setMat4("lightSpaceMatrix", lightSpaceMatrix);
+		shadowShader.use();
+		shadowShader.setMat4("lightSpaceMatrix", lightSpaceMatrix);
 
 
 /*
@@ -226,11 +228,15 @@ int main()
 		// Render Window
 
 
+
 		newScene->render(&simpleDepthShader, &sb);
 		testRenderWindow.renderTargetImage(getShadowMap());
 
+		newScene->render(&lightingShader, &frameBuffer);
 //		newScene->render(&shadowShader, &frameBuffer);
-//		renderWindow.render();
+		renderWindow.renderTargetImage(frameBuffer.getTextureBuffer());
+		// FIXME: When switching to lightingShader, renderwindow shows scene,
+
 
 		// Capture input for render window, allow ESC to drop context(?)
 		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Escape)))

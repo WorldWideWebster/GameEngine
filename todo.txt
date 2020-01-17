@@ -138,10 +138,12 @@
 // Fixed cube in scene 3 not rendering                              - Done 12/09/2019
 // Fix transformations for entities                                 - Done 12/09/2019
 // Fix Test scene 3                                                 - Done 12/10/2019
-// Fixed Setting a directional light's direction                    - Done 12/25/2019
+// Fixed Setting a directional light's direction                            - Done 12/25/2019
+// Fixed issue: when removing renderwindow, shadow map shows properly       - Done 01/15/2020
+// ShadowDepth Buffer Class based on Shadow tutorial and FrameBuffer Class  - Done 01/15/2020
+
 /******************NOT REQUIRED*********************/
 // Add destructors to all classes                    -- Smart pointers have auto garbage collection
 
 /******************IN PROGRESS*********************/
 Shadows
-ShadowDepth Buffer Class based on Shadow tutorial and FrameBuffer Class

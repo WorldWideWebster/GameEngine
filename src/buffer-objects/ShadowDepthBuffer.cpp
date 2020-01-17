@@ -18,6 +18,8 @@ void ShadowDepthBuffer::setUp()
 {
 	// Configure DepthMap FBO
 	glGenFramebuffers(1, &this->m_ID);
+	glBindFramebuffer(GL_FRAMEBUFFER, this->m_ID);
+
 	// create depth texture;
 	glGenTextures(1, &this->m_depthMap);
 	glBindTexture(GL_TEXTURE_2D, this->m_depthMap);
@@ -41,6 +43,7 @@ void ShadowDepthBuffer::bind(glm::mat4 view)
 	glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
 	glBindFramebuffer(GL_FRAMEBUFFER, this->m_ID);
 	glClear(GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_DEPTH_TEST); // enable depth testing (is disabled for rendering screen-space quad)
 }
 
 void ShadowDepthBuffer::unbind(void)
@@ -50,6 +53,8 @@ void ShadowDepthBuffer::unbind(void)
 	// reset viewport
 	glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+
 }
 
 void ShadowDepthBuffer::doDebugDepth(void)
