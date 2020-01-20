@@ -142,11 +142,8 @@ int main()
 	shadowShader.use();
 	shadowShader.setInt("diffuseTexture", 0);
 	shadowShader.setInt("shadowMap", 1);
-	debugDepthQuad.use();
-	debugDepthQuad.setInt("depthMap", 0);
 	/** Shadow Stuff */
 
-	glm::vec3 lightPos(-2.0f, 4.0f, -1.0f);
 
 	UITestWindow *testWindow = new UITestWindow(&show_demo_window, &show_render_window, &noise_map_viewer, &show_scene_window);
 	testWindow->open();
@@ -170,23 +167,6 @@ int main()
 
 		// be sure to activate shader when setting uniforms/drawing objects
 		doTestScene3(newScene);
-		lightPos = glm::vec3(1 * cos(glfwGetTime()), 0, 1 * sin(glfwGetTime()));
-
-		// 1. Render Depth of scene to texture (from lights perspective)
-		glm::mat4 lightProjection, lightView;
-		glm::mat4 lightSpaceMatrix;
-		float near_plane = 1.0, far_plane = 7.5f;
-		//lightProjection = glm::perspective(glm::radians(45.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, near_plane, far_plane);
-		// note that if you use a perspective projection matrix you'll have to change the light position as the current light position isn't enough to reflect the whole scene
-		lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
-		lightView = glm::lookAt(lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
-		lightSpaceMatrix = lightProjection * lightView;
-		// Render scene from light's point of view
-		simpleDepthShader.use();
-		simpleDepthShader.setMat4("lightSpaceMatrix", lightSpaceMatrix);
-		shadowShader.use();
-		shadowShader.setMat4("lightSpaceMatrix", lightSpaceMatrix);
-
 
 /*
  * TODO: figure out what to do with the view and projection matrices
@@ -226,14 +206,9 @@ int main()
 		}
 
 		// Render Window
-
-
-
-		newScene->render(&simpleDepthShader, &sb);
+		newScene->renderWithShadows(&shadowShader, &simpleDepthShader,  &frameBuffer, &sb);
 		testRenderWindow.renderTargetImage(getShadowMap());
 
-		newScene->render(&lightingShader, &frameBuffer);
-//		newScene->render(&shadowShader, &frameBuffer);
 		renderWindow.renderTargetImage(frameBuffer.getTextureBuffer());
 		// FIXME: When switching to lightingShader, renderwindow shows scene,
 

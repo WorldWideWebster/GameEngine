@@ -4,6 +4,7 @@
 
 #include <iterator>
 #include "Scene.h"
+#include <GLFW/glfw3.h>
 
 // Max light definitions
 #define MAX_POINT_LIGHTS 10
@@ -90,6 +91,79 @@ void Scene::render(Shader *shader, BufferObject *buffer)
 //		shader->setMat4("projection", buffer->getProjection());
 		// TODO: Framebuffer has to be decoupled from scene
 		shader->use();
+		setShaderPointLights(shader);
+		setShaderDirLights(shader);
+		setShaderSpotLights(shader);
+		shader->setMat4("view", view);
+
+		// TODO: Move this to a function
+		shader->setFloat("material.shininess", 1.0f);
+
+		// TODO: Move this to a separate function
+		// TODO: Allow for multiple cameras
+		shader->setVec3("viewPos", this->m_default_camera->Position);
+
+		buffer->bind(view);
+
+		for (int i = 0; i < m_entities.size(); i++)
+		{
+			m_entities[i]->render(shader);
+		}
+
+		for (int i = 0; i < m_lights.size(); i++)
+		{
+			m_lights[i]->render(shader);
+		}
+		buffer->unbind();
+	}
+}
+
+glm::vec3 lightPos(-5.0f, 1.0f, -1.0f);
+
+void Scene::renderWithShadows(Shader *shader, Shader *shadowShader, BufferObject *buffer, BufferObject *shadowBuffer)
+{
+	if(this->m_active)
+	{
+		const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+
+		lightPos.x = 1 + sin(glfwGetTime()) * 3.0f;
+		lightPos.z = cos(glfwGetTime()) * 2.0f;
+		lightPos.y = 5.0 + cos(glfwGetTime()) * 1.0f;
+		// 1. Render Depth of scene to texture (from lights perspective)
+		glm::mat4 lightProjection, lightView;
+		glm::mat4 lightSpaceMatrix;
+		float near_plane = 1.0, far_plane = 10.5f;
+//		lightProjection = glm::perspective(glm::radians(45.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, near_plane, far_plane);
+		// note that if you use a perspective projection matrix you'll have to change the light position as the current light position isn't enough to reflect the whole scene
+		lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
+		lightView = glm::lookAt(lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+		lightSpaceMatrix = lightProjection * lightView;
+		// Render scene from light's point of view
+
+
+		glm::mat4 view = this->m_default_camera->GetViewMatrix();
+
+		// TODO: Allow for multiple lights with shaders
+		// Shadow Section
+		shadowShader->use();
+		shadowShader->use();
+		shadowShader->setMat4("lightSpaceMatrix", lightSpaceMatrix);
+		shadowBuffer->bind(view);
+
+		for (int i = 0; i < m_entities.size(); i++)
+		{
+			m_entities[i]->render(shadowShader);
+		}
+		shadowBuffer->unbind();
+
+		// Not shadow Section
+//		shader->setMat4("projection", buffer->getProjection());
+		// TODO: Framebuffer has to be decoupled from scene
+		shader->use();
+		shader->use();
+		shader->setMat4("lightSpaceMatrix", lightSpaceMatrix);
+		shader->setVec3("lightPos", lightPos);
+		shader->setMat4("projection", buffer->getProjection());
 		setShaderPointLights(shader);
 		setShaderDirLights(shader);
 		setShaderSpotLights(shader);
