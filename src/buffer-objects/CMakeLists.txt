@@ -4,6 +4,9 @@ set(buffer_objects_source_files
         BufferObject.cpp
         BufferObject.h
         ShadowDepthBuffer.cpp
-        ShadowDepthBuffer.h)
+        ShadowDepthBuffer.h
+        ShadowCubeDepthBuffer.cpp
+        ShadowCubeDepthBuffer.h
+        )
 
 add_library(buffer_objects ${buffer_objects_source_files})

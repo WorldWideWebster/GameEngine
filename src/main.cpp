@@ -89,28 +89,11 @@ int main()
 	UIRenderWindow testRenderWindow(&sb, "Test Render Window");
 	renderWindow.open();
 	testRenderWindow.open();
-	/**********************************************/
-	// TODO: Move this to window creation
-    // Setup Dear ImGui context
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO &io = ImGui::GetIO();
-    (void) io;
-    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;  // Enable Keyboard Controls
-    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;   // Enable Gamepad Controls
 
-    // Setup Dear ImGui style
-    ImGui::StyleColorsDark();
-    //ImGui::StyleColorsClassic();
-    /**********************************************/
+	MainWindow mainIMGUIWindow(&window);
 
-    // Setup Platform/Renderer bindings
-    const char *glsl_version = "#version 130";
 
-    ImGui_ImplGlfw_InitForOpenGL(window.m_glfwWindow, true);
-    ImGui_ImplOpenGL3_Init(glsl_version);
-
-    bool show_demo_window = true;
+	bool show_demo_window = true;
     bool show_render_window = false;
     bool show_scene_window = true;
     bool noise_map_viewer = false;
@@ -124,17 +107,8 @@ int main()
 		//SkyBox skybox (cubemapTexture, newScene->getDefaultCamera(), &frameBuffer);
 
 		window.setCamera(newScene->getDefaultCamera());
-		setUpTestScene3(newScene);
+		setUpTestScene1(newScene);
 
-	// TODO: move terrain to special entity
-	// Terrain Generation
-	// Create Noise map
-/*
- * FIXME: Texture from this somehow overwrites other textures
-	NoiseMap *nm = new NoiseMap;
-	// Create texture from noise map
-	Texture tx = TextureFromNoiseMap(*nm);
-*/
 
 	/** Shadow Stuff */
 	// shadow shader configuration
@@ -166,27 +140,11 @@ int main()
         // TODO: Figure out how to have a single light effect multiple shaders
 
 		// be sure to activate shader when setting uniforms/drawing objects
-		doTestScene3(newScene);
-
-/*
- * TODO: figure out what to do with the view and projection matrices
- *
- *
- /// Stuff for displaying normals
-        glm::mat4 model;
-        normalDisplayShader.use();
-        normalDisplayShader.setMat4("projection", frameBuffer.getProjection());
-        normalDisplayShader.setMat4("view", view);
-        normalDisplayShader.setMat4("model", model);
-*/
+		doTestScene1(newScene);
 
         // TODO: Move renderbuffer to inside scene?
 
-        // UI stuff
-        // Start the Dear ImGui frame
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
+        mainIMGUIWindow.startFrame();
 
         testWindow->render();
         // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
@@ -207,11 +165,9 @@ int main()
 
 		// Render Window
 		newScene->renderWithShadows(&shadowShader, &simpleDepthShader,  &frameBuffer, &sb);
+		// TODO: Show multiple shadowmaps, selectable, move to menu
 		testRenderWindow.renderTargetImage(getShadowMap());
-
 		renderWindow.renderTargetImage(frameBuffer.getTextureBuffer());
-		// FIXME: When switching to lightingShader, renderwindow shows scene,
-
 
 		// Capture input for render window, allow ESC to drop context(?)
 		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Escape)))
@@ -228,49 +184,17 @@ int main()
 			glfwSetInputMode(window.m_glfwWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 		}
 
-
-
-        // 3. Show another simple window.
-		// TODO move to separate file
-
-/*        if (noise_map_viewer)
-        {
-
-			ImGui::Begin("Noise Map Viewer", &noise_map_viewer);       // Create a window called "Hello, world!" and append into it.
-
-            if (ImGui::Button("GenNoise"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-            {
-				int rando = rand()%100;
-				nm->reSeed(rando);
-				std::cout << rando << std::endl;
-				//tri->setHeightMap(nm->getData(), nm->getWidth(), nm->getHeight());
-				//m = new Mesh(tri);
-			}
-            // Set render window position
-            ImGui::SetWindowPos("Image Viewer", ImVec2(RENDER_WINDOW_DEFAULT_X, 0), ImGuiCond_FirstUseEver);
-            // Set render window size
-            ImGui::SetWindowSize("Image Viewer", ImVec2(RENDER_WINDOW_DEFAULT_X, RENDER_WINDOW_DEFAULT_Y),
-                                 ImGuiCond_FirstUseEver);
-            ImGui::SetNextWindowSize(ImVec2(RENDER_WINDOW_DEFAULT_X, RENDER_WINDOW_DEFAULT_Y), ImGuiCond_FirstUseEver);
-            // Window for rendering scene
-            // FIXME: texture doesn't move with window
-            ImGui::Image((void *)(uintptr_t)  nm->getTexID(), ImVec2(nm->getWidth(), nm->getHeight()),
-                    ImVec2(0,1), ImVec2(1,0), ImColor(255,255,255,255), ImColor(255,255,255,128));
-            ImGui::End();
-        }*/
-
         ImVec2 pos = ImGui::GetCursorScreenPos();
 
         // Rendering
-        ImGui::Render();
         int display_w, display_h;
         glfwMakeContextCurrent(window.m_glfwWindow);
         glfwGetFramebufferSize(window.m_glfwWindow, &display_w, &display_h);
         glViewport(0, 0, display_w, display_h);
         glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
         glClear(GL_COLOR_BUFFER_BIT);
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
+        mainIMGUIWindow.render();
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
         window.update();
@@ -283,9 +207,7 @@ int main()
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
     // Cleanup
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
+	mainIMGUIWindow.shutDown();
 
     glfwDestroyWindow(window.m_glfwWindow);
     glfwTerminate();

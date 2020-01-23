@@ -18,8 +18,6 @@
 
 // TODO: Move terrain meshes to entity
 
-// TODO: Make UI Render Window Class
-
 // TODO: MAKE UI 3D Render Window Class
 
 // TODO: Replace all pointers with smart pointers
@@ -70,7 +68,7 @@
 
 // TODO: Add gamma correction https://learnopengl.com/Advanced-Lighting/Gamma-Correction
 
-// TODO: Add Shadows
+// TODO: Add omni-directional Shadows
 
 // TODO: Add water
 
@@ -138,12 +136,17 @@
 // Fixed cube in scene 3 not rendering                              - Done 12/09/2019
 // Fix transformations for entities                                 - Done 12/09/2019
 // Fix Test scene 3                                                 - Done 12/10/2019
+// Make UI Render Window Class                                              - Done 12/15/2019
 // Fixed Setting a directional light's direction                            - Done 12/25/2019
 // Fixed issue: when removing renderwindow, shadow map shows properly       - Done 01/15/2020
 // ShadowDepth Buffer Class based on Shadow tutorial and FrameBuffer Class  - Done 01/15/2020
+// Add Shadows                                                              - Done 01/21/2020
+// figure out what to do with the view and projection matrices              - Done 01/22/2020
+// Moved main window creation to class                                      - Done 01/23/2020
 
 /******************NOT REQUIRED*********************/
 // Add destructors to all classes                    -- Smart pointers have auto garbage collection
 
 /******************IN PROGRESS*********************/
-Shadows
+Clean up main function
+clean up render loop

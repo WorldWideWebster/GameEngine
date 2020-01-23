@@ -43,12 +43,13 @@ set(HEADER_FILES
         src/Renderer.h
         src/test_scenes.h
         src/test_scenes.cpp
-        src/ShadowMap.h)
+        src/ShadowMap.h src/tools/NoiseMapViewer.cpp src/tools/NoiseMapViewer.h)
 
 set(dir ${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${dir}/build)
 
 include_directories(dependencies/include)
+include_directories(dependencies/GLFW/include)
 
 #Include library files
 include_directories(GLAD/include)

@@ -126,13 +126,13 @@ void Scene::renderWithShadows(Shader *shader, Shader *shadowShader, BufferObject
 	{
 		const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 
-		lightPos.x = 1 + sin(glfwGetTime()) * 3.0f;
+		lightPos.x = 1 + sin(glfwGetTime()) * 300.0f;
 		lightPos.z = cos(glfwGetTime()) * 2.0f;
-		lightPos.y = 5.0 + cos(glfwGetTime()) * 1.0f;
+		lightPos.y = 1.0 + cos(glfwGetTime()) * 1.0f;
 		// 1. Render Depth of scene to texture (from lights perspective)
 		glm::mat4 lightProjection, lightView;
 		glm::mat4 lightSpaceMatrix;
-		float near_plane = 1.0, far_plane = 10.5f;
+		float near_plane = 1.0, far_plane = 1000.5f;
 //		lightProjection = glm::perspective(glm::radians(45.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, near_plane, far_plane);
 		// note that if you use a perspective projection matrix you'll have to change the light position as the current light position isn't enough to reflect the whole scene
 		lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);

@@ -14,7 +14,6 @@
 #include "BufferObject.h"
 
 
-
 /**
  * @brief Class to hold shadow depth buffer objects and related functions
  *
@@ -23,13 +22,13 @@
  *
  * setup -> renderloop[prime shadow buffer -> render scene from light POV - > uinbind shadow buffer -> render scene normally]
  */
-class ShadowDepthBuffer : public BufferObject
+class ShadowCubeDepthBuffer : public BufferObject
 {
 public:
 	/**
-	 * @brief Default FrameBuffer ShadowDepthBuffer, runs setUp() function
+	 * @brief Default FrameBuffer ShadowCubeDepthBuffer, runs setUp() function
 	 */
-	ShadowDepthBuffer();
+	ShadowCubeDepthBuffer();
 
 	/**
 	 * @brief sets up frame buffer with ID and buffer objects
@@ -54,7 +53,7 @@ public:
 
 private:
 	GLuint m_ID;
-	unsigned int m_depthMap;
+	unsigned int m_depthCubeMap;
 };
 
 

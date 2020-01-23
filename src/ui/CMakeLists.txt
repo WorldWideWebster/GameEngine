@@ -4,6 +4,6 @@ set(ui_source_files
         UITestWindow.cpp
         UITestWindow.h
         UIWindow.cpp
-        UIWindow.h)
+        UIWindow.h MainWindow.cpp MainWindow.h)
 
 add_library(ui ${ui_source_files})

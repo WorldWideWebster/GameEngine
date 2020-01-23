@@ -51,7 +51,6 @@ void ShadowDepthBuffer::unbind(void)
 	// Unbind the buffer
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	// reset viewport
-	glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
 
