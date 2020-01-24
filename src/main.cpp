@@ -207,6 +207,8 @@ int main()
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
     // Cleanup
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
 	mainIMGUIWindow.shutDown();
 
     glfwDestroyWindow(window.m_glfwWindow);

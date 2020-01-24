@@ -47,8 +47,6 @@ void MainWindow::endFrame(void)
 
 void MainWindow::shutDown(void)
 {
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
 }
 
