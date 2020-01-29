@@ -24,7 +24,16 @@ Model rock((char *) "resources/objects/rock/rock.obj");
 Model planet((char *) "resources/objects/planet/planet.obj");
 
 */
-
+/*******************TEXTURE SETUP***************************/
+//GLuint diffuseMap = loadTexture("../resources/container2.png");
+//GLuint specularMap = loadTexture("../resources/container2_specular.png");
+//GLuint emissionMap = loadTexture("../resources/matrix.jpg");
+//GLuint floorTexture = loadTexture("../resources/metal.png");
+//GLuint cubeTexture = loadTexture("../resources/container2.png");
+//GLuint transparentTexture = loadTexture("../resources/window.png");
+//
+//Texture cubemapTexture = CubemapTextureFromFile(faces);
+/*******************TEXTURE SETUP***************************/
 
 bool flashlight = false;
 

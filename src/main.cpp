@@ -4,7 +4,6 @@
 #include "libs.h"
 #include <shader/shader.h>
 #include <buffer-objects/ShadowDepthBuffer.h>
-#include "ShadowMap.h"
 
 // timing
 float deltaTime = 0.0f;    // time between current frame and last frame
@@ -55,17 +54,6 @@ int main()
     glUniformBlockBinding(terrainColorShader.ID, uniformBlockIndexTerrain, 0);
 	/*******************SHADER SETUP***************************/
 
-	/*******************TEXTURE SETUP***************************/
-	GLuint diffuseMap = loadTexture("../resources/container2.png");
-    GLuint specularMap = loadTexture("../resources/container2_specular.png");
-    GLuint emissionMap = loadTexture("../resources/matrix.jpg");
-    GLuint floorTexture = loadTexture("../resources/metal.png");
-    GLuint cubeTexture = loadTexture("../resources/container2.png");
-    GLuint transparentTexture = loadTexture("../resources/window.png");
-
-    Texture cubemapTexture = CubemapTextureFromFile(faces);
-	/*******************TEXTURE SETUP***************************/
-
     // tell opengl for each sampler to which texture unit it belongs to (only has to be done once)
     // -------------------------------------------------------------------------------------------
     lightingShader.use();
@@ -82,13 +70,12 @@ int main()
 	FrameBuffer frameBuffer;
 
 	ShadowDepthBuffer sb;
-	setShadowMap(sb.getShadowMap());
-	//FIXME: 2 frame buffers cancel eachother out
 
 	UIRenderWindow renderWindow(&frameBuffer, "Render Window");
 	UIRenderWindow testRenderWindow(&sb, "Test Render Window");
 	renderWindow.open();
 	testRenderWindow.open();
+
 
 	MainWindow mainIMGUIWindow(&window);
 
@@ -109,7 +96,8 @@ int main()
 		window.setCamera(newScene->getDefaultCamera());
 		setUpTestScene1(newScene);
 
-
+	UIDataWindow dataWindow("Data Window", newScene);
+	dataWindow.open();
 	/** Shadow Stuff */
 	// shadow shader configuration
 	// --------------------
@@ -137,36 +125,23 @@ int main()
         window.processInput(deltaTime);
 
         // TODO: Move renderbuffer
-        // TODO: Figure out how to have a single light effect multiple shaders
 
-		// be sure to activate shader when setting uniforms/drawing objects
 		doTestScene1(newScene);
-
-        // TODO: Move renderbuffer to inside scene?
-
         mainIMGUIWindow.startFrame();
-
         testWindow->render();
-        // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
         if (show_demo_window)
-            ImGui::ShowDemoWindow(&show_demo_window);
-
-
+		{
+			ImGui::ShowDemoWindow(&show_demo_window);
+		}
 		if (show_scene_window)
 		{
-			std::vector<std::string> sceneDetails = newScene->showSceneDetails();
-			ImGui::Begin("Scene Window",  &show_scene_window);
-			for (int i = 0; i < sceneDetails.size(); i++)
-			{
-					ImGui::Text(sceneDetails[i].c_str());
-			}
-			ImGui::End();
+			dataWindow.render();
 		}
 
 		// Render Window
 		newScene->renderWithShadows(&shadowShader, &simpleDepthShader,  &frameBuffer, &sb);
 		// TODO: Show multiple shadowmaps, selectable, move to menu
-		testRenderWindow.renderTargetImage(getShadowMap());
+		testRenderWindow.renderTargetImage(*sb.getShadowMap());
 		renderWindow.renderTargetImage(frameBuffer.getTextureBuffer());
 
 		// Capture input for render window, allow ESC to drop context(?)

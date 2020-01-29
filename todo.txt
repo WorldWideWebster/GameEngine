@@ -75,6 +75,8 @@
 // TODO: Get center point of mesh/entity
 
 // TODO: Add guide lines
+
+// TODO: Terrain->select->add noise
 /****************Architecture**************/
 // TODO: Figure out where to put renderbuffer instances
 
@@ -90,6 +92,8 @@
 /****************Research**************/
 
 // TODO: L-systems
+
+// TODO: Figure out how to have a single light effect multiple shaders
 
 // TODO: Roads based on L-systems
 
@@ -143,6 +147,7 @@
 // Add Shadows                                                              - Done 01/21/2020
 // figure out what to do with the view and projection matrices              - Done 01/22/2020
 // Moved main window creation to class                                      - Done 01/23/2020
+// Moved Data Window to separate class                                      - Done 01/27/2020
 
 /******************NOT REQUIRED*********************/
 // Add destructors to all classes                    -- Smart pointers have auto garbage collection

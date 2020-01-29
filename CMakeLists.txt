@@ -43,7 +43,7 @@ set(HEADER_FILES
         src/Renderer.h
         src/test_scenes.h
         src/test_scenes.cpp
-        src/ShadowMap.h src/tools/NoiseMapViewer.cpp src/tools/NoiseMapViewer.h)
+        src/tools/NoiseMapViewer.cpp src/tools/NoiseMapViewer.h)
 
 set(dir ${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${dir}/build)

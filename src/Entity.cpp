@@ -82,3 +82,15 @@ void Entity::render(Shader *targetShader)
 	targetShader->setMat4("model", this->model);
 	this->mesh->Draw(*targetShader);
 }
+
+void Entity::render(Shader *targetShader, unsigned int depthMap)
+{
+	if(this->needsUpdate)
+	{
+		this->update();
+	}
+	targetShader->use();
+
+	targetShader->setMat4("model", this->model);
+	this->mesh->Draw(*targetShader, depthMap);
+}

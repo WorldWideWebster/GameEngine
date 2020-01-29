@@ -4,9 +4,6 @@
 
 #include "mesh.h"
 
-#include "ShadowMap.h"
-
-
 /* Constructor */
 Mesh::Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices, std::vector <Texture> textures)
 {
@@ -143,19 +140,19 @@ void Mesh::Draw(Shader shader)
 
     }
 
-    // DO SHADOW MAP TEXTURE HERE
-	glActiveTexture(GL_TEXTURE0);
-	if(!didShadows)
-	{
-
-			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, getShadowMap());
-			didShadows = true;
-	}
-	else
-	{
-		didShadows = false;
-	}
+//    // DO SHADOW MAP TEXTURE HERE
+//	glActiveTexture(GL_TEXTURE0);
+//	if(!didShadows)
+//	{
+//
+//			glActiveTexture(GL_TEXTURE1);
+//			glBindTexture(GL_TEXTURE_2D, getShadowMap());
+//			didShadows = true;
+//	}
+//	else
+//	{
+//		didShadows = false;
+//	}
     // Draw Mesh
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
@@ -163,7 +160,68 @@ void Mesh::Draw(Shader shader)
 
 }
 
+void Mesh::Draw(Shader shader, unsigned int depthMap)
+{
+	// Check if there are any textures
+	if(textures.size())
+	{
+		// bind appropriate textures
+		GLuint diffuseNr = 1;
+		GLuint specularNr = 1;
+		GLuint normalNr = 1;
+		GLuint heightNr = 1;
 
+		for (GLuint i = 0; i < textures.size(); i++)
+		{
+			glActiveTexture(GL_TEXTURE0 + i); //activate proper texture unit before binding
+			// retrieve texture number (the N in diffuse_textureN)
+			std::string number;
+			std::string name = textures[i].type;
+			if (name == "texture_diffuse")
+				number = std::to_string(diffuseNr++);
+			else if (name == "texture_specular")
+				number = std::to_string(specularNr++); // transfer GLuint to stream
+			else if (name == "texture_normal")
+				number = std::to_string(normalNr++); // transfer GLuint to stream
+			else if (name == "texture_height")
+				number = std::to_string(heightNr++); // transfer GLuint to stream
+			if(name != "")
+			{
+				// Set the sampler
+				shader.setFloat(("material." + name + number).c_str(), i);
+			}
+
+			// Bind the texture
+			glBindTexture(GL_TEXTURE_2D, textures[i].id);
+		}
+	}
+	else
+	{
+		// If there are no textures, use default texture
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, DEFAULT_TEXTURE);
+
+	}
+
+	// DO SHADOW MAP TEXTURE HERE
+	glActiveTexture(GL_TEXTURE0);
+	if(!didShadows)
+	{
+
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, depthMap);
+		didShadows = true;
+	}
+	else
+	{
+		didShadows = false;
+	}
+	// Draw Mesh
+	glBindVertexArray(VAO);
+	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+	glBindVertexArray(0);
+
+}
 //FIXME: The crash probably lies here with my crappy pointers
 unsigned int Mesh::getVAO(void)
 {

@@ -180,7 +180,7 @@ void Scene::renderWithShadows(Shader *shader, Shader *shadowShader, BufferObject
 
 		for (int i = 0; i < m_entities.size(); i++)
 		{
-			m_entities[i]->render(shader);
+			m_entities[i]->render(shader, shadowBuffer->getTextureBuffer());
 		}
 
 		for (int i = 0; i < m_lights.size(); i++)

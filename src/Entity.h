@@ -38,6 +38,7 @@ public:
 
 	void update();
 	void render(Shader *targetShader);
+	void render(Shader *targetShader, unsigned int depthMap);
 
 	std::string m_ID;
 private:

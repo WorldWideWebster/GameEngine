@@ -65,7 +65,7 @@
 #include "ui/UITestWindow.h"
 #include "ui/UIRenderWindow.h"
 #include "ui/MainWindow.h"
-
+#include "ui/UIDataWindow.h"
 /******* EXTERNAL LIBRARIES ********/
 // STBI
 #include "stb_image.h"
