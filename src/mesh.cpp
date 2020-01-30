@@ -140,19 +140,6 @@ void Mesh::Draw(Shader shader)
 
     }
 
-//    // DO SHADOW MAP TEXTURE HERE
-//	glActiveTexture(GL_TEXTURE0);
-//	if(!didShadows)
-//	{
-//
-//			glActiveTexture(GL_TEXTURE1);
-//			glBindTexture(GL_TEXTURE_2D, getShadowMap());
-//			didShadows = true;
-//	}
-//	else
-//	{
-//		didShadows = false;
-//	}
     // Draw Mesh
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);

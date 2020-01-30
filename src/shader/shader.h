@@ -12,6 +12,7 @@
 class Shader
 {
 public:
+	Shader(){}
     unsigned int ID;
     std::string m_name;
     // constructor generates the shader on the fly

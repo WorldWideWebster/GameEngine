@@ -41,7 +41,7 @@ public:
 	 * @param lightPos position of directional light
 	 * @param simpleDepthShader depth shader to be used
 	 */
-	void bind(glm::mat4 view);
+	void bind();
 
 	/**
 	 * @brief Unbinds the shadow depth buffer so we don't keep writing to it

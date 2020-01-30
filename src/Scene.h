@@ -16,7 +16,7 @@
 #include "lighting/DirectionalLight.h"
 #include "lighting/SpotLight.h"
 #include "buffer-objects/FrameBuffer.h"
-
+#include "shader/shader.h"
 class Scene
 {
 public:
@@ -48,6 +48,12 @@ public:
 	void setEntityRotationDeg(std::string targetID, float targetRotAngle, glm::vec3 targetRotation);
 	void setEntityScale(std::string targetID, glm::vec3 targetScale);
 
+	void renderEntities(Shader* shader);
+	void renderLights(Shader* shader);
+
+	inline Shader *getDefaultShader(void){return &m_defaultShader;}
+	inline Shader *getShadowShader(void){return &m_shadowShader;}
+
 	std::vector<std::string> showSceneDetails(void);
 private:
 	std::vector<std::shared_ptr<Entity>> m_entities;
@@ -58,6 +64,8 @@ private:
 	int m_num_point_lights;
 	int m_num_dir_lights;
 	int m_num_spot_lights;
+	Shader m_defaultShader;
+	Shader m_shadowShader;
 	// std::unique_ptr<Camera> m_default_camera;
 };
 

@@ -81,6 +81,27 @@ void Scene::addCamera(void)
 	//this->m_cameras.push_back(std::unique_ptr<Camera>);
 }
 
+// TODO: Should entities be grouped by shader?
+void Scene::renderEntities(Shader* shader)
+{
+	for (int i = 0; i < this->m_entities.size(); i++)
+	{
+		this->m_entities[i]->render(shader);
+	}
+}
+
+void Scene::renderLights(Shader* shader)
+{
+	shader->use();
+	setShaderPointLights(shader);
+	setShaderDirLights(shader);
+	setShaderSpotLights(shader);
+	for (int i = 0; i < m_lights.size(); i++)
+	{
+		m_lights[i]->render(shader);
+	}
+}
+
 
 // TODO: Clean up this function (scene should not own render -> buffer manipulation belongs in renderer)
 void Scene::render(Shader *shader, BufferObject *buffer)
@@ -146,7 +167,6 @@ void Scene::renderWithShadows(Shader *shader, Shader *shadowShader, BufferObject
 		// TODO: Allow for multiple lights with shaders
 		// Shadow Section
 		shadowShader->use();
-		shadowShader->use();
 		shadowShader->setMat4("lightSpaceMatrix", lightSpaceMatrix);
 		shadowBuffer->bind(view);
 
@@ -159,7 +179,6 @@ void Scene::renderWithShadows(Shader *shader, Shader *shadowShader, BufferObject
 		// Not shadow Section
 //		shader->setMat4("projection", buffer->getProjection());
 		// TODO: Framebuffer has to be decoupled from scene
-		shader->use();
 		shader->use();
 		shader->setMat4("lightSpaceMatrix", lightSpaceMatrix);
 		shader->setVec3("lightPos", lightPos);

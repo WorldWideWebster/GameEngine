@@ -38,6 +38,7 @@
 #include "window.h"
 #include "test_scenes.h"
 #include "Entity.h"
+#include "Renderer.h"
 
 /** Buffer Objects **/
 #include "buffer-objects/FrameBuffer.h"

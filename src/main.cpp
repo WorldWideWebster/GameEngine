@@ -106,6 +106,7 @@ int main()
 	shadowShader.setInt("shadowMap", 1);
 	/** Shadow Stuff */
 
+	Renderer renderer;
 
 	UITestWindow *testWindow = new UITestWindow(&show_demo_window, &show_render_window, &noise_map_viewer, &show_scene_window);
 	testWindow->open();
