@@ -165,7 +165,10 @@ void Mesh::Draw(Shader shader, unsigned int depthMap)
 			std::string number;
 			std::string name = textures[i].type;
 			if (name == "texture_diffuse")
+			{
 				number = std::to_string(diffuseNr++);
+//				shader.setInt("diffuseTexture", textures[i].id);
+			}
 			else if (name == "texture_specular")
 				number = std::to_string(specularNr++); // transfer GLuint to stream
 			else if (name == "texture_normal")
@@ -192,17 +195,10 @@ void Mesh::Draw(Shader shader, unsigned int depthMap)
 
 	// DO SHADOW MAP TEXTURE HERE
 	glActiveTexture(GL_TEXTURE0);
-	if(!didShadows)
-	{
+	glActiveTexture(GL_TEXTURE1 + textures.size());
+	glBindTexture(GL_TEXTURE_2D, depthMap);
 
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, depthMap);
-		didShadows = true;
-	}
-	else
-	{
-		didShadows = false;
-	}
+
 	// Draw Mesh
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);

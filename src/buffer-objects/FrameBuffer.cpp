@@ -93,3 +93,8 @@ GLuint FrameBuffer::getTextureBuffer()
 {
     return this->m_textureColorbuffer;
 }
+
+GLuint* FrameBuffer::getTextureBufferPtr()
+{
+    return &this->m_textureColorbuffer;
+}

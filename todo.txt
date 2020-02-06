@@ -3,6 +3,7 @@
 // TODO: move file loading to separate texture library/shader library
 
 // TODO: Fix skybox class
+// TODO: move skybox to special entity
 
 // TODO: Move render loop to render class
 
@@ -148,6 +149,10 @@
 // figure out what to do with the view and projection matrices              - Done 01/22/2020
 // Moved main window creation to class                                      - Done 01/23/2020
 // Moved Data Window to separate class                                      - Done 01/27/2020
+// Framebuffer has to be decoupled from scene                               - Done 02/04/2020
+// Move renderbuffer                                                        - Done 02/04/2020
+// scene should not own render -> buffer manipulation belongs in renderer   - Done 02/04/2020
+// Fixed shadows drawing using bumpmap of texture instead of shadow         - Done 02/06/2020
 
 /******************NOT REQUIRED*********************/
 // Add destructors to all classes                    -- Smart pointers have auto garbage collection

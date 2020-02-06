@@ -62,7 +62,6 @@ void Entity::setID(std::string ID)
 	this->m_ID = ID;
 }
 
-
 void Entity::update()
 {
 	this->model = glm::mat4();

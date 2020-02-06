@@ -67,14 +67,6 @@ int main()
 
     screenShader.use();
     screenShader.setInt("screenTexture", 0);
-	FrameBuffer frameBuffer;
-
-	ShadowDepthBuffer sb;
-
-	UIRenderWindow renderWindow(&frameBuffer, "Render Window");
-	UIRenderWindow testRenderWindow(&sb, "Test Render Window");
-	renderWindow.open();
-	testRenderWindow.open();
 
 
 	MainWindow mainIMGUIWindow(&window);
@@ -88,25 +80,18 @@ int main()
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
 	 /// Render loop setup
-		auto newScene = std::make_shared<Scene>();
-
-		// TODO: move skybox to special entity
-		//SkyBox skybox (cubemapTexture, newScene->getDefaultCamera(), &frameBuffer);
-
-		window.setCamera(newScene->getDefaultCamera());
-		setUpTestScene1(newScene);
-
-	UIDataWindow dataWindow("Data Window", newScene);
-	dataWindow.open();
-	/** Shadow Stuff */
-	// shadow shader configuration
-	// --------------------
-	shadowShader.use();
-	shadowShader.setInt("diffuseTexture", 0);
-	shadowShader.setInt("shadowMap", 1);
-	/** Shadow Stuff */
-
 	Renderer renderer;
+	UIRenderWindow renderWindow(renderer.getRenderBufferPtr(), "Game");
+	UIRenderWindow testRenderWindow(renderer.getShadowBufferPtr(), "ShadowMap");
+	renderWindow.open();
+	testRenderWindow.open();
+
+	renderer.addScene(Scene());
+	setUpTestScene3(renderer.getActiveScene());
+	window.setCamera(renderer.getActiveScene()->getDefaultCamera());
+
+	UIDataWindow dataWindow("Data Window", renderer.getActiveScene());
+	dataWindow.open();
 
 	UITestWindow *testWindow = new UITestWindow(&show_demo_window, &show_render_window, &noise_map_viewer, &show_scene_window);
 	testWindow->open();
@@ -125,9 +110,7 @@ int main()
         // -----
         window.processInput(deltaTime);
 
-        // TODO: Move renderbuffer
-
-		doTestScene1(newScene);
+		doTestScene3(renderer.getActiveScene());
         mainIMGUIWindow.startFrame();
         testWindow->render();
         if (show_demo_window)
@@ -139,11 +122,12 @@ int main()
 			dataWindow.render();
 		}
 
-		// Render Window
-		newScene->renderWithShadows(&shadowShader, &simpleDepthShader,  &frameBuffer, &sb);
+		// Render the scene
+		renderer.renderActiveScene();
+
 		// TODO: Show multiple shadowmaps, selectable, move to menu
-		testRenderWindow.renderTargetImage(*sb.getShadowMap());
-		renderWindow.renderTargetImage(frameBuffer.getTextureBuffer());
+		renderWindow.render();
+		testRenderWindow.render();
 
 		// Capture input for render window, allow ESC to drop context(?)
 		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Escape)))

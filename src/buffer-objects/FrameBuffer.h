@@ -33,6 +33,7 @@ public:
 	void unbind(void);
     glm::mat4 getProjection();
     GLuint getTextureBuffer();
+    GLuint *getTextureBufferPtr();
 private:
     GLuint m_ID;
     GLuint m_rbo;

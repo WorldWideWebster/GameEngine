@@ -16,15 +16,19 @@ class Renderer
 public:
 	Renderer();
 	void addScene(Scene m_scene);
-	void setActiveScene(Scene *targetScene);
+	void setActiveScene(std::shared_ptr<Scene> targetScene);
 	void setActiveScene(int targetSceneID);
-	Scene* getActiveScene(void);
+	void renderActiveScene(void);
+
+	std::shared_ptr<Scene>  getActiveScene(void);
 	unsigned int getRenderBufferTexture(void);
+	FrameBuffer* getRenderBufferPtr(void){return &this->m_frameBuffer;}
+	ShadowDepthBuffer* getShadowBufferPtr(void){return &this->m_shadowBuffer;}
 	unsigned int *getRenderBufferTexturePtr(void);
 private:
-	void render(Scene *targetScene);
+	void render(std::shared_ptr<Scene> targetScene);
 	std::vector<Scene> m_scenes;
-	Scene* m_currentActiveScene;
+	std::shared_ptr<Scene> m_currentActiveScene;
 	FrameBuffer m_frameBuffer;
 	ShadowDepthBuffer m_shadowBuffer;
 };

@@ -14,14 +14,17 @@ Renderer::Renderer()
 void Renderer::addScene(Scene targetScene)
 {
 	this->m_scenes.push_back(targetScene);
-	if(!m_currentActiveScene)
+	if(m_currentActiveScene == nullptr)
 	{
-		setActiveScene(&this->m_scenes.back());
+		setActiveScene(std::make_shared<Scene>(this->m_scenes.back()));
 	}
 }
-void Renderer::setActiveScene(Scene* targetScene)
+void Renderer::setActiveScene(std::shared_ptr<Scene> targetScene)
 {
-	this->m_currentActiveScene->setInactiveScene();
+	if(m_currentActiveScene != nullptr)
+	{
+		this->m_currentActiveScene->setInactiveScene();
+	}
 	this->m_currentActiveScene = targetScene;
 	this->m_currentActiveScene->setActiveScene();
 }
@@ -31,25 +34,24 @@ void Renderer::setActiveScene(int targetSceneID)
 	this->m_scenes[targetSceneID].setActiveScene();
 }
 
-Scene* Renderer::getActiveScene(void)
+std::shared_ptr<Scene> Renderer::getActiveScene(void)
 {
 	return this->m_currentActiveScene;
 }
 
-glm::vec3 lightPos(-5.0f, 1.0f, -1.0f);
+static glm::vec3 lightPos(-5.0f, 1.0f, -1.0f);
 
-void Renderer::render(Scene *targetScene)
+void Renderer::render(std::shared_ptr<Scene> targetScene)
 {
-
 	// Setup for shadow pass
-	lightPos.x = 1 + sin(glfwGetTime()) * 300.0f;
+	lightPos.x = sin(glfwGetTime()) * 3.0f;
 	lightPos.z = cos(glfwGetTime()) * 2.0f;
-	lightPos.y = 1.0 + cos(glfwGetTime()) * 1.0f;
+	lightPos.y = 5.0 + cos(glfwGetTime()) * 1.0f;
 	// 1. Render Depth of scene to texture (from lights perspective)
 	glm::mat4 lightProjection, lightView;
 	glm::mat4 lightSpaceMatrix;
-	float near_plane = 1.0, far_plane = 1000.5f;
-//		lightProjection = glm::perspective(glm::radians(45.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, near_plane, far_plane);
+	float near_plane = 1.0f, far_plane = 7.5f;
+//	lightProjection = glm::perspective(glm::radians(45.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, near_plane, far_plane);
 	// note that if you use a perspective projection matrix you'll have to change the light position as the current light position isn't enough to reflect the whole scene
 	lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
 	lightView = glm::lookAt(lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
@@ -72,7 +74,6 @@ void Renderer::render(Scene *targetScene)
 
 	// Not shadow Section
 //		shader->setMat4("projection", buffer->getProjection());
-	// TODO: Framebuffer has to be decoupled from scene
 	targetScene->getDefaultShader()->use();
 	targetScene->getDefaultShader()->setMat4("lightSpaceMatrix", lightSpaceMatrix);
 	targetScene->getDefaultShader()->setVec3("lightPos", lightPos);
@@ -88,10 +89,15 @@ void Renderer::render(Scene *targetScene)
 
 	m_frameBuffer.bind(view);
 
-	targetScene->renderEntities(targetScene->getDefaultShader());
+	targetScene->renderEntities(targetScene->getDefaultShader(), this->m_shadowBuffer.getTextureBuffer());
 	targetScene->renderLights(targetScene->getDefaultShader());
 
 	m_frameBuffer.unbind();
+}
+
+void Renderer::renderActiveScene(void)
+{
+	this->render(this->m_currentActiveScene);
 }
 
 unsigned int Renderer::getRenderBufferTexture(void)
@@ -100,5 +106,5 @@ unsigned int Renderer::getRenderBufferTexture(void)
 }
 unsigned int* Renderer::getRenderBufferTexturePtr(void)
 {
-	return *this->m_frameBuffer.getTextureBuffer();
+	return this->m_frameBuffer.getTextureBufferPtr();
 }
