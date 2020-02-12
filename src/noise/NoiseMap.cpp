@@ -65,6 +65,7 @@ void NoiseMap::createTexture(void)
 
 {
 	GLenum format = GL_RGB;
+	glGenTextures(1, &this->texID);
 
 
 	glBindTexture(GL_TEXTURE_2D, this->texID);

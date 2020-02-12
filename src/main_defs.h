@@ -28,7 +28,7 @@
 #define  RENDER_WINDOW_DEFAULT_Y 1080
 
 // Shadow Defines
-#define SHADOW_WIDTH  	1024
-#define SHADOW_HEIGHT   1024
+#define SHADOW_WIDTH  	1024 * 4
+#define SHADOW_HEIGHT   1024 * 4
 
 #endif //OPENGLSETUP_MAIN_DEFS_H

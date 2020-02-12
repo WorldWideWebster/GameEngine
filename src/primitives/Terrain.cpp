@@ -20,9 +20,9 @@ Terrain::Terrain() : Primitive()
     scale = 0.5;
     size = 512*4;
 
-    std::string filename = "../resources/heightmap.png";
+    std::string filename = "../resources/heightmapc.png";
 
-    //setImageAsHeightMap(filename);
+//    setImageAsHeightMap(filename);
 
 	NoiseMap nm;
     setArrayAsHeightMap(nm.getData(), nm.getHeight(), nm.getWidth());

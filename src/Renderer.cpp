@@ -44,16 +44,16 @@ static glm::vec3 lightPos(-5.0f, 1.0f, -1.0f);
 void Renderer::render(std::shared_ptr<Scene> targetScene)
 {
 	// Setup for shadow pass
-	lightPos.x = sin(glfwGetTime()) * 3.0f;
-	lightPos.z = cos(glfwGetTime()) * 2.0f;
-	lightPos.y = 5.0 + cos(glfwGetTime()) * 1.0f;
+	lightPos.x = sin(glfwGetTime()/10) * 3000.0f;
+	lightPos.z = cos(glfwGetTime()/10) * 3000.0f;
+	lightPos.y = 100.0 + cos(glfwGetTime()) * 1.0f;
 	// 1. Render Depth of scene to texture (from lights perspective)
 	glm::mat4 lightProjection, lightView;
 	glm::mat4 lightSpaceMatrix;
-	float near_plane = 1.0f, far_plane = 7.5f;
+	float near_plane = 1.0f, far_plane = 15000.5f;
 //	lightProjection = glm::perspective(glm::radians(45.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, near_plane, far_plane);
 	// note that if you use a perspective projection matrix you'll have to change the light position as the current light position isn't enough to reflect the whole scene
-	lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
+	lightProjection = glm::ortho(-1500.0f, 1500.0f, -1500.0f, 1500.0f, near_plane, far_plane);
 	lightView = glm::lookAt(lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
 	lightSpaceMatrix = lightProjection * lightView;
 	// Render scene from light's point of view

@@ -194,8 +194,9 @@ void Mesh::Draw(Shader shader, unsigned int depthMap)
 	}
 
 	// DO SHADOW MAP TEXTURE HERE
-	glActiveTexture(GL_TEXTURE0);
 	glActiveTexture(GL_TEXTURE1 + textures.size());
+	// TODO: Move this when I need to find another place for it
+//	shader.setInt("shadowMap", depthMap);
 	glBindTexture(GL_TEXTURE_2D, depthMap);
 
 

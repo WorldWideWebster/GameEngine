@@ -44,9 +44,11 @@ void toggleFlashLight(void)
 
 void setUpTestScene1(std::shared_ptr<Scene> targetScene)
 {
-	woodTex = TextureFromFile("Sand.png", "../resources", 1);
+	woodTex = TextureFromFile("desert_sand.jpg", "../resources", 1);
+	cubeTex = TextureFromFile("wood.png", "../resources", 1);
+
 	targetScene->setActiveScene();
-	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Sphere(25, 25, 25)), glm::vec3(0.0f), "sphere")));
+	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Sphere(25, 25, 25), cubeTex), glm::vec3(20.0f, 0, 0), "sphere")));
 	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Terrain(), woodTex), glm::vec3(-1000.0f, -100, -1000), "terrain")));
 //	targetScene->addLight(std::make_shared<PointLight>(PointLight("pointLights[0]")));
 //	targetScene->addLight(std::make_shared<Light>(Light(glm::vec3(0.5f), glm::vec3 (0.8f), glm::vec3(1.0f), "dirLights[0]")));

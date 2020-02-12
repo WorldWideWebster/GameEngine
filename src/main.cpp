@@ -87,12 +87,12 @@ int main()
 	testRenderWindow.open();
 
 	renderer.addScene(Scene());
-	setUpTestScene3(renderer.getActiveScene());
+	setUpTestScene1(renderer.getActiveScene());
 	window.setCamera(renderer.getActiveScene()->getDefaultCamera());
 
 	UIDataWindow dataWindow("Data Window", renderer.getActiveScene());
 	dataWindow.open();
-
+	glDisable( GL_CULL_FACE );
 	UITestWindow *testWindow = new UITestWindow(&show_demo_window, &show_render_window, &noise_map_viewer, &show_scene_window);
 	testWindow->open();
     while (!window.shouldClose())
@@ -110,7 +110,7 @@ int main()
         // -----
         window.processInput(deltaTime);
 
-		doTestScene3(renderer.getActiveScene());
+		doTestScene1(renderer.getActiveScene());
         mainIMGUIWindow.startFrame();
         testWindow->render();
         if (show_demo_window)

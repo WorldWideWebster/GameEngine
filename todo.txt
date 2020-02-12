@@ -153,6 +153,8 @@
 // Move renderbuffer                                                        - Done 02/04/2020
 // scene should not own render -> buffer manipulation belongs in renderer   - Done 02/04/2020
 // Fixed shadows drawing using bumpmap of texture instead of shadow         - Done 02/06/2020
+// Figured out why terrain does not shadow itself                           - Done 02/11/2020
+// Fixed texture issue caused by noisemap texture                           - Done 02/11/2020
 
 /******************NOT REQUIRED*********************/
 // Add destructors to all classes                    -- Smart pointers have auto garbage collection
@@ -160,3 +162,4 @@
 /******************IN PROGRESS*********************/
 Clean up main function
 clean up render loop
+TexCoords on terrain
