@@ -10,6 +10,16 @@ This is a personal openGL rendering project used to learn openGL
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
+
+
+## Progress:
+2/14/2020
+![](2_14_2020_capture.gif)
+
+
+
+
+
 ## Acknowledgments
 **OpenGL Tutorials:**
 

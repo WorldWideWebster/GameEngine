@@ -20,13 +20,13 @@ Terrain::Terrain() : Primitive()
     scale = 0.5;
     size = 512*4;
 
-    std::string filename = "../resources/heightmap6.png";
+//    std::string filename = "../resources/heightmap.png";
 
-    setImageAsHeightMap(filename);
+//    setImageAsHeightMap(filename);
 
-//	NoiseMap nm;
-//    setArrayAsHeightMap(nm.getData(), nm.getHeight(), nm.getWidth());
-//
+	NoiseMap nm;
+    setArrayAsHeightMap(nm.getData(), nm.getHeight(), nm.getWidth());
+
 
     vertex_count = height;
     int count = vertex_count * vertex_count;
@@ -70,7 +70,7 @@ void Terrain::calculateNormals(std::vector< std::vector<unsigned char>> heightMa
             float heightR = heightMap[gy][gx < vertex_count-1 ? gx + 1 : gx];
             float heightU = heightMap[gy ? gy - 1 : gy][gx];
             float heightD = heightMap[gy < vertex_count-1 ? gy + 1 : gy][gx];
-            glm::vec3 norm = glm::vec3((heightL - heightR), 2.0f, heightU - heightD);
+            glm::vec3 norm = glm::vec3((heightL - heightR), 1.0f, heightU - heightD);
             norm = glm::normalize(norm);
             vertices[vertexPointer].Normal = norm;
             vertexPointer++;
