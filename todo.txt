@@ -7,25 +7,13 @@
 
 // TODO: Move render loop to render class
 
-// TODO: Make image viewer class
-
 // TODO: Get some code cleanup tools
 
 // TODO: Create objects to link shaders to - Object.addshader(shader?)
 
 // TODO: Add unit primitive for each shape
 
-// TODO: Move all Meshes to entities
-
-// TODO: Move terrain meshes to entity
-
-// TODO: MAKE UI 3D Render Window Class
-
-// TODO: Replace all pointers with smart pointers
-
 // TODO: Attach shaders to Entity? Entities to shader? Active shader(s) render?
-
-// TODO: Renderbuffer should use OPENGL stuff
 
 // TODO: Each mesh should have a name to return for entity use
 
@@ -153,13 +141,12 @@
 // Move renderbuffer                                                        - Done 02/04/2020
 // scene should not own render -> buffer manipulation belongs in renderer   - Done 02/04/2020
 // Fixed shadows drawing using bumpmap of texture instead of shadow         - Done 02/06/2020
-// Figured out why terrain does not shadow itself                           - Done 02/11/2020
+// Figured out the reason terrain does not shadow itself                    - Done 02/11/2020
 // Fixed texture issue caused by noisemap texture                           - Done 02/11/2020
-
+// Fixed UV coords on terrain                                               - Done 02/12/2020
 /******************NOT REQUIRED*********************/
 // Add destructors to all classes                    -- Smart pointers have auto garbage collection
 
 /******************IN PROGRESS*********************/
 Clean up main function
 clean up render loop
-TexCoords on terrain

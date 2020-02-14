@@ -20,13 +20,13 @@ Terrain::Terrain() : Primitive()
     scale = 0.5;
     size = 512*4;
 
-    std::string filename = "../resources/heightmapc.png";
+    std::string filename = "../resources/heightmap6.png";
 
-//    setImageAsHeightMap(filename);
+    setImageAsHeightMap(filename);
 
-	NoiseMap nm;
-    setArrayAsHeightMap(nm.getData(), nm.getHeight(), nm.getWidth());
-
+//	NoiseMap nm;
+//    setArrayAsHeightMap(nm.getData(), nm.getHeight(), nm.getWidth());
+//
 
     vertex_count = height;
     int count = vertex_count * vertex_count;
@@ -40,7 +40,7 @@ Terrain::Terrain() : Primitive()
             vertices[vertexPointer] =
                     {glm::vec3(((float)gx/((float)vertex_count - 1) * size), (float)heightMap[gy][gx]*scale, ((float)gy/((float)vertex_count - 1) * size)),
                      glm::vec3(0, 1, 0),
-                     glm::vec2((float)gx/((float)vertex_count - 1), (float)gy/((float)vertex_count - 1))};
+                     glm::vec2(gx, gy)};
             vertexPointer++;
         }
     }
@@ -58,8 +58,6 @@ Terrain::Terrain() : Primitive()
     this->set(vertices, nrOfVertices, indices, nrOfIndices);
 }
 
-// FIXME: Normal x-y directions are backwards?
-// Switch D-U/ L-R?
 void Terrain::calculateNormals(std::vector< std::vector<unsigned char>> heightMap, Vertex *vertices)
 {
     // Generate Normals
