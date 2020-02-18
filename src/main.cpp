@@ -87,7 +87,7 @@ int main()
 	testRenderWindow.open();
 
 	renderer.addScene(Scene());
-	setUpTestScene1(renderer.getActiveScene());
+	setUpTestScene3(renderer.getActiveScene());
 	window.setCamera(renderer.getActiveScene()->getDefaultCamera());
 
 	UIDataWindow dataWindow("Data Window", renderer.getActiveScene());
@@ -110,7 +110,7 @@ int main()
         // -----
         window.processInput(deltaTime);
 
-		doTestScene1(renderer.getActiveScene());
+		doTestScene3(renderer.getActiveScene());
         mainIMGUIWindow.startFrame();
         testWindow->render();
         if (show_demo_window)

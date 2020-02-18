@@ -99,9 +99,11 @@ void setUpTestScene3(std::shared_ptr<Scene> targetScene)
 	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Cube, cubeTex), glm::vec3(3,0,5), "cube_2")));
 
 	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Quad, woodTex), glm::vec3(0, 0, -0.025), "quad")));
+	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Quad, woodTex), glm::vec3(0, 0, -0.025), "quad2")));
 
 	targetScene->setEntityRotationDeg("quad", -90, glm::vec3(1, 0, 0));
 	targetScene->setEntityScale("quad", glm::vec3(20,20,20));
+	targetScene->setEntityScale("quad2", glm::vec3(20,20,20));
 
 }
 

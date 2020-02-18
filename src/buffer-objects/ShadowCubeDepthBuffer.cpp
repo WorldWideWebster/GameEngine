@@ -41,7 +41,7 @@ void ShadowCubeDepthBuffer::setUp()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void ShadowCubeDepthBuffer::bind(glm::mat4 view)
+void ShadowCubeDepthBuffer::bind()
 {
 	glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
 	glBindFramebuffer(GL_FRAMEBUFFER, this->m_ID);

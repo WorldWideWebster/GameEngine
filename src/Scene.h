@@ -21,6 +21,7 @@ class Scene
 {
 public:
 	Scene();
+	void setDepthBuffer(unsigned int *depthBuffer);
 	void addEntity(std::shared_ptr<Entity> targetEntity);
 	void addLight(std::shared_ptr<Light> targetLight);
 	void addCamera(void);

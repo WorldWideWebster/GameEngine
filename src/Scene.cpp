@@ -28,17 +28,22 @@ Scene::Scene()
 	/** Shadow Stuff */
 	// shadow shader configuration
 	// --------------------
-	m_defaultShader = Shader("../shaders/shadow_mapping.vert", "../shaders/shadow_mapping.frag");
-	m_shadowShader = Shader("../shaders/shadow_mapping_depth.vert", "../shaders/shadow_mapping_depth.frag");
+//	m_defaultShader = Shader("../shaders/shadow_mapping.vert", "../shaders/shadow_mapping.frag");
+//	m_shadowShader = Shader("../shaders/shadow_mapping_depth.vert", "../shaders/shadow_mapping_depth.frag");
+	m_defaultShader = Shader("../shaders/point_shadows.vert", "../shaders/point_shadows.frag");
+	m_shadowShader = Shader("../shaders/point_shadows_depth.vert", "../shaders/point_shadows_depth.frag", "../shaders/point_shadows_depth.geom");
 	m_defaultShader.use();
 	m_defaultShader.setInt("diffuseTexture", 0);
 
-	// TODO: Move this when I need to find another place for it
-	m_defaultShader.setInt("shadowMap", 2);
 	/** Shadow Stuff */
 
 }
-
+// TODO: Move this when I need to find another place for it
+void Scene::setDepthBuffer(unsigned int *depthBuffer)
+{
+	m_defaultShader.use();
+	m_defaultShader.setInt("depthMap", *depthBuffer);
+}
 
 
 void Scene::addEntity(std::shared_ptr<Entity> targetEntity)

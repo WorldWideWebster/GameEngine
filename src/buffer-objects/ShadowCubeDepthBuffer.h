@@ -2,8 +2,8 @@
 // Created by Sean on 4/16/2019.
 //
 
-#ifndef SHADOWDEPTHBUFFER_H
-#define SHADOWDEPTHBUFFER_H
+#ifndef SHADOWCUBEDEPTHBUFFER_H
+#define SHADOWCUBEDEPTHBUFFER_H
 // OpenGL includes
 #include <glad/glad.h> // holds all OpenGL type declarations
 #include <glm/glm.hpp>
@@ -40,7 +40,7 @@ public:
 	 * @param lightPos position of directional light
 	 * @param simpleDepthShader depth shader to be used
 	 */
-	void bind(glm::mat4 view);
+	void bind();
 
 	/**
 	 * @brief Unbinds the shadow depth buffer so we don't keep writing to it
@@ -57,5 +57,5 @@ private:
 };
 
 
-#endif //SHADOWDEPTHBUFFER_H
+#endif //SHADOWCUBEDEPTHBUFFER_H
 

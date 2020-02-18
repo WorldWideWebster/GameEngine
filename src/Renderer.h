@@ -9,6 +9,7 @@
 
 #include "Scene.h"
 #include "buffer-objects/ShadowDepthBuffer.h"
+#include "buffer-objects/ShadowCubeDepthBuffer.h"
 #include "buffer-objects/FrameBuffer.h"
 
 class Renderer
@@ -23,14 +24,14 @@ public:
 	std::shared_ptr<Scene>  getActiveScene(void);
 	unsigned int getRenderBufferTexture(void);
 	FrameBuffer* getRenderBufferPtr(void){return &this->m_frameBuffer;}
-	ShadowDepthBuffer* getShadowBufferPtr(void){return &this->m_shadowBuffer;}
+	ShadowCubeDepthBuffer* getShadowBufferPtr(void){return &this->m_shadowBuffer;}
 	unsigned int *getRenderBufferTexturePtr(void);
 private:
 	void render(std::shared_ptr<Scene> targetScene);
 	std::vector<Scene> m_scenes;
 	std::shared_ptr<Scene> m_currentActiveScene;
 	FrameBuffer m_frameBuffer;
-	ShadowDepthBuffer m_shadowBuffer;
+	ShadowCubeDepthBuffer m_shadowBuffer;
 };
 
 
