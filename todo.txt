@@ -66,6 +66,10 @@
 // TODO: Add guide lines
 
 // TODO: Terrain->select->add noise
+
+// TODO: FBX file loading
+
+// TODO: Animations
 /****************Architecture**************/
 // TODO: Figure out where to put renderbuffer instances
 
