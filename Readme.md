@@ -13,7 +13,12 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 
 ## Progress:
-2/14/2020
+2/14/2020 - Omnidirectional Shadows Working!
+![](2_20_2020_capture.gif)
+
+
+
+2/14/2020 - Directional Shadows Working!
 ![](2_14_2020_capture.gif)
 
 

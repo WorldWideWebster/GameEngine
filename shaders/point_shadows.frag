@@ -14,7 +14,6 @@ uniform vec3 lightPos;
 uniform vec3 viewPos;
 
 uniform float far_plane;
-uniform bool shadows;
 
 
 // array of offset direction for sampling

@@ -14,7 +14,7 @@ Renderer::Renderer()
 
 void Renderer::addScene(Scene targetScene)
 {
-	targetScene.setDepthBuffer(this->getShadowBufferPtr()->getShadowMap());
+	targetScene.setDepthBuffer(this->getShadowBufferPtr()->getTextureBuffer());
 	this->m_scenes.push_back(targetScene);
 	if(m_currentActiveScene == nullptr)
 	{
@@ -47,9 +47,9 @@ static glm::vec3 lightPos(-5.0f, 1.0f, -1.0f);
 void Renderer::render(std::shared_ptr<Scene> targetScene)
 {
 //	// Setup for shadow pass
-//	lightPos.x = sin(glfwGetTime()/10) * 3000.0f;
-//	lightPos.z = cos(glfwGetTime()/10) * 3000.0f;
-//	lightPos.y = 100.0 + cos(glfwGetTime()) * 1.0f;
+	lightPos.x = sin(glfwGetTime()/10) * 1000.0f;
+	lightPos.z = cos(glfwGetTime()/10) * 1000.0f;
+	lightPos.y = 100.0 + cos(glfwGetTime()) * 1.0f;
 //	// 1. Render Depth of scene to texture (from lights perspective)
 //
 //	/***	Directional Shadow Map Stuff	***/
@@ -67,14 +67,15 @@ void Renderer::render(std::shared_ptr<Scene> targetScene)
 //	targetScene->getShadowShader()->use();
 //	targetScene->getShadowShader()->setMat4("lightSpaceMatrix", lightSpaceMatrix);
 	/***	/Directional Shadow Map Stuff	***/
-	lightPos.z = sin(glfwGetTime() * 0.5) * 3.0;
-	lightPos.y = 5.0;
+//	lightPos.x = sin(glfwGetTime() * 0.5) * 3.0;
+//	lightPos.y = 0.5;
+//	lightPos.z = 1.0;
 
 	/***	Point Light Shadow Map Stuff	***/
 	// 0. create depth cubemap transformation matrices
 	// -----------------------------------------------
 	float near_plane = 1.0f;
-	float far_plane = 25.0f;
+	float far_plane = 2500.0f;
 	glm::mat4 shadowProj = glm::perspective(glm::radians(90.0f), (float)SHADOW_WIDTH / (float)SHADOW_HEIGHT, near_plane, far_plane);
 	std::vector<glm::mat4> shadowTransforms;
 	shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
@@ -84,24 +85,21 @@ void Renderer::render(std::shared_ptr<Scene> targetScene)
 	shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
 	shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
 
+
+
+
+	this->m_shadowBuffer.bind();
 	targetScene->getShadowShader()->use();
 	for (unsigned int i = 0; i < 6; ++i)
 		targetScene->getShadowShader()->setMat4("shadowMatrices[" + std::to_string(i) + "]", shadowTransforms[i]);
 	targetScene->getShadowShader()->setFloat("far_plane", far_plane);
 	targetScene->getShadowShader()->setVec3("lightPos", lightPos);
 	/***	/Point Light Shadow Map Stuff	***/
-
-	glm::mat4 view = targetScene->getDefaultCamera()->GetViewMatrix();
-
-
-
-
-
-	this->m_shadowBuffer.bind();
 	targetScene->renderEntities(targetScene->getShadowShader());
 	this->m_shadowBuffer.unbind();
 
 	// Not shadow Section
+	glm::mat4 view = targetScene->getDefaultCamera()->GetViewMatrix();
 	targetScene->getDefaultShader()->use();
 	targetScene->getDefaultShader()->setMat4("projection", m_frameBuffer.getProjection());
 	targetScene->getDefaultShader()->setMat4("view", view);
@@ -110,7 +108,7 @@ void Renderer::render(std::shared_ptr<Scene> targetScene)
 	targetScene->getDefaultShader()->setFloat("far_plane", far_plane);
 
 	// TODO: Move this to a function
-	targetScene->getDefaultShader()->setFloat("material.shininess", 1.0f);
+//	targetScene->getDefaultShader()->setFloat("material.shininess", 1.0f);
 
 	// TODO: Move this to a separate function
 	// TODO: Allow for multiple cameras
