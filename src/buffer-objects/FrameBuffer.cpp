@@ -17,7 +17,7 @@ FrameBuffer::FrameBuffer()
 void FrameBuffer::setUp()
 {
 	// TODO: Move this?
-	this->m_projection = glm::perspective(45.0f, (float)SCR_WIDTH / (float)SCR_HEIGHT, RENDER_DISTANCE_NEAR, RENDER_DISTANCE_FAR);
+	this->m_projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, RENDER_DISTANCE_NEAR, RENDER_DISTANCE_FAR);
 
     // framebuffer configuration
     // -------------------------
@@ -58,9 +58,9 @@ void FrameBuffer::setUp()
 
 void FrameBuffer::bind(glm::mat4 view)
 {
-    glBindBuffer(GL_UNIFORM_BUFFER, this->m_uboMatrices);
-    glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(view));
-    glBindBuffer(GL_UNIFORM_BUFFER, 0);
+//    glBindBuffer(GL_UNIFORM_BUFFER, this->m_uboMatrices);
+//    glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(view));
+//    glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
     // render
     // ------

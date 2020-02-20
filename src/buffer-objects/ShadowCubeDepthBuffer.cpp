@@ -18,14 +18,13 @@ void ShadowCubeDepthBuffer::setUp()
 {
 	// Configure DepthMap FBO
 	glGenFramebuffers(1, &this->m_ID);
-	glBindFramebuffer(GL_FRAMEBUFFER, this->m_ID);
 
 	// create depth texture;
 	glGenTextures(1, &this->m_depthCubeMap);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, this->m_depthCubeMap);
 	for(unsigned int i = 0; i < 6; i++)
 	{
-		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0,
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_DEPTH_COMPONENT32F, SHADOW_WIDTH, SHADOW_HEIGHT, 0,
 					 GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
 	}
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -43,16 +42,19 @@ void ShadowCubeDepthBuffer::setUp()
 
 void ShadowCubeDepthBuffer::bind()
 {
+	glEnable(GL_DEPTH_TEST); // enable depth testing (is disabled for rendering screen-space quad)
+
 	glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
 	glBindFramebuffer(GL_FRAMEBUFFER, this->m_ID);
 	glClear(GL_DEPTH_BUFFER_BIT);
-	glEnable(GL_DEPTH_TEST); // enable depth testing (is disabled for rendering screen-space quad)
 }
 
 void ShadowCubeDepthBuffer::unbind(void)
 {
 	// Unbind the buffer
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	// reset viewport
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
 }
 

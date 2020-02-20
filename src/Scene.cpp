@@ -39,10 +39,10 @@ Scene::Scene()
 
 }
 // TODO: Move this when I need to find another place for it
-void Scene::setDepthBuffer(unsigned int *depthBuffer)
+void Scene::setDepthBuffer(unsigned int depthBuffer)
 {
 	m_defaultShader.use();
-	m_defaultShader.setInt("depthMap", *depthBuffer);
+	m_defaultShader.setInt("depthMap", depthBuffer);
 }
 
 

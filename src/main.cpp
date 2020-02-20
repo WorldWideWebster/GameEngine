@@ -81,15 +81,16 @@ int main()
 
 	 /// Render loop setup
 	Renderer renderer;
+
+
+
+	renderer.addScene(Scene());
+	setUpTestScene1(renderer.getActiveScene());
+	window.setCamera(renderer.getActiveScene()->getDefaultCamera());
 	UIRenderWindow renderWindow(renderer.getRenderBufferPtr(), "Game");
 	UIRenderWindow testRenderWindow(renderer.getShadowBufferPtr(), "ShadowMap");
 	renderWindow.open();
 	testRenderWindow.open();
-
-	renderer.addScene(Scene());
-	setUpTestScene3(renderer.getActiveScene());
-	window.setCamera(renderer.getActiveScene()->getDefaultCamera());
-
 	UIDataWindow dataWindow("Data Window", renderer.getActiveScene());
 	dataWindow.open();
 	glDisable( GL_CULL_FACE );
@@ -110,7 +111,7 @@ int main()
         // -----
         window.processInput(deltaTime);
 
-		doTestScene3(renderer.getActiveScene());
+		doTestScene1(renderer.getActiveScene());
         mainIMGUIWindow.startFrame();
         testWindow->render();
         if (show_demo_window)
