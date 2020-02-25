@@ -148,6 +148,7 @@
 // Figured out the reason terrain does not shadow itself                    - Done 02/11/2020
 // Fixed texture issue caused by noisemap texture                           - Done 02/11/2020
 // Fixed UV coords on terrain                                               - Done 02/12/2020
+// Omnidirectional shadows                                                  - Done 02/20/2020
 /******************NOT REQUIRED*********************/
 // Add destructors to all classes                    -- Smart pointers have auto garbage collection
 
@@ -156,4 +157,4 @@ Clean up main function
 clean up render loop
 Clean Up terrain -
     constructor for file, constructor for random gen
-Shadow cube
+Combine all shadow maps into one shader
