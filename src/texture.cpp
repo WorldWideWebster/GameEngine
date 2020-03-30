@@ -117,14 +117,14 @@ Texture CubemapTextureFromFile(std::vector<std::string> faces)
 	return texture;
 }
 
-Texture TextureFromFile(const char *path, const std::string &directory, bool gamma)
+Texture TextureFromFile(const char *path, const std::string &directory, std::string type, bool gamma)
 {
     std::string filename = std::string(path);
     filename = directory + '/' + filename;
 
     Texture texture;
     texture.path = filename;
-    texture.type = "texture_diffuse";	// Default this to diffuse texture
+    texture.type = type;	// Default this to diffuse texture
     glGenTextures(1, &texture.id);
 
 

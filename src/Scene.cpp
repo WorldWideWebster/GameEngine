@@ -33,7 +33,6 @@ Scene::Scene()
 	m_defaultShader = Shader("../shaders/point_shadows.vert", "../shaders/point_shadows.frag");
 	m_shadowShader = Shader("../shaders/point_shadows_depth.vert", "../shaders/point_shadows_depth.frag", "../shaders/point_shadows_depth.geom");
 	m_defaultShader.use();
-	m_defaultShader.setInt("diffuseTexture", 0);
 
 	/** Shadow Stuff */
 
