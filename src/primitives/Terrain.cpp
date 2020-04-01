@@ -49,6 +49,50 @@ Terrain::Terrain() : Primitive()
     GLuint *indices = new GLuint[6*(vertex_count-1)*(vertex_count-1)];
     calculateIndices(indices, width, height);
 
+//
+//	for(unsigned int i = 0; i < (width -1) * (height-1); i = i+3){
+//
+//		glm::vec3 vertex0 = vertices[indices[i]].Position;
+//		glm::vec3 vertex1 = vertices[indices[i + 1]].Position;
+//		glm::vec3 vertex2 = vertices[indices[i + 2]].Position;
+//
+//		glm::vec3 normal = glm::cross((vertex1 - vertex0),(vertex2 - vertex0));
+//
+//		glm::vec3 deltaPos;
+//		if(vertex0 == vertex1)
+//			deltaPos = vertex2 - vertex0;
+//		else
+//			deltaPos = vertex1 - vertex0;
+//
+//		glm::vec2 uv0 = vertices[indices[i]].TexCoords;
+//		glm::vec2 uv1 = vertices[indices[i + 1]].TexCoords;
+//		glm::vec2 uv2 = vertices[indices[i + 2]].TexCoords;
+//
+//		glm::vec2 deltaUV1 = uv1 - uv0;
+//		glm::vec2 deltaUV2 = uv2 - uv0;
+//
+//		glm::vec3 tan; // tangents
+//		glm::vec3 bit; // bitangent
+//
+//		// avoid divion with 0
+//		if(deltaUV1.s != 0)
+//			tan = deltaPos / deltaUV1.s;
+//		else
+//			tan = deltaPos / 1.0f;
+//
+//		tan = glm::normalize(tan - glm::dot(normal,tan)*normal);
+//
+//		bit = glm::normalize(glm::cross(tan, normal));
+//
+//		// write into array - for each vertex of the face the same value
+//		vertices[indices[i]].Tangent = tan;
+//		vertices[indices[i + 1]].Tangent = tan;
+//		vertices[indices[i + 2]].Tangent = tan;
+//
+//		vertices[indices[i]].Bitangent = bit;
+//		vertices[indices[i + 1]].Bitangent = bit;
+//		vertices[indices[i + 2]].Bitangent = bit;
+//	}
     unsigned nrOfVertices = (vertex_count)*(vertex_count);
 
     VertTanCalc(vertices, nrOfVertices);
@@ -77,6 +121,27 @@ void Terrain::calculateNormals(std::vector< std::vector<unsigned char>> heightMa
         }
     }
 }
+
+void Terrain::calculateBTs(GLuint *indices, Vertex *vertices)
+{
+	// Generate Normals
+	int vertexPointer = 0;
+	for(int gy=0;gy<vertex_count;gy++)
+	{
+		for (int gx = 0; gx < vertex_count; gx++)
+		{
+			float heightL = heightMap[gy][gx ? gx - 1 : gx];
+			float heightR = heightMap[gy][gx < vertex_count-1 ? gx + 1 : gx];
+			float heightU = heightMap[gy ? gy - 1 : gy][gx];
+			float heightD = heightMap[gy < vertex_count-1 ? gy + 1 : gy][gx];
+			glm::vec3 norm = glm::vec3((heightL - heightR), 1.0f, heightU - heightD);
+			norm = glm::normalize(norm);
+			vertices[vertexPointer].Normal = norm;
+			vertexPointer++;
+		}
+	}
+}
+
 
 void Terrain::calculateIndices(GLuint *indices, int width, int height)
 {

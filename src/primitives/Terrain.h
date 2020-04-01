@@ -27,6 +27,7 @@ public:
     Terrain();
 
     void calculateNormals(std::vector< std::vector<unsigned char>> heightMap, Vertex *vertices);
+    void calculateBTs(GLuint *indices, Vertex *vertices);
     void calculateIndices(GLuint *indices, int width, int height);
     void setImageAsHeightMap(std::string filename);
     void setArrayAsHeightMap(unsigned char *data, int width, int height);

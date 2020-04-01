@@ -5,9 +5,14 @@ in VS_OUT {
     vec3 FragPos;
     vec3 Normal;
     vec2 TexCoords;
+    vec3 TangentLightPos;
+    vec3 TangentViewPos;
+    vec3 TangentFragPos;
+    mat3 TBN;
 } fs_in;
 
 uniform sampler2D texture_diffuse;
+uniform sampler2D texture_normal;
 uniform samplerCube depthMap;
 
 uniform vec3 lightPos;
@@ -81,7 +86,10 @@ float ShadowCalculation(vec3 fragPos)
 void main()
 {
     vec3 color = texture(texture_diffuse, fs_in.TexCoords).rgb;
-    vec3 normal = normalize(fs_in.Normal);
+    // obtain normal from normal map in range [0,1]
+    vec3 normal = texture(texture_normal, fs_in.TexCoords).rgb;
+    // transform normal vector to range [-1,1]
+    normal = normalize((normal * 2.0 - 1.0) * fs_in.Normal);  // this normal is in tangent space
     vec3 lightColor = vec3(0.3);
     // ambient
     vec3 ambient = 0.3 * color;
@@ -97,8 +105,9 @@ void main()
     spec = pow(max(dot(normal, halfwayDir), 0.0), 64.0);
     vec3 specular = spec * lightColor;
     // calculate shadow
-    float shadow = ShadowCalculation(fs_in.FragPos);
-    vec3 lighting = (ambient + (1.0 - shadow) * (diffuse + specular)) * color;
+    FragColor = vec4(ambient + diffuse + specular, 1.0);
 
-    FragColor = vec4(lighting, 1.0);
+
+
+
 }

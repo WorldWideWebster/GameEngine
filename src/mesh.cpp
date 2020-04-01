@@ -165,10 +165,7 @@ void Mesh::Draw(Shader shader, unsigned int depthMap)
 			std::string number;
 			std::string name = textures[i].type;
 			if (name == "texture_diffuse")
-			{
 				number = std::to_string(diffuseNr++);
-//				shader.setInt("diffuseTexture", textures[i].id);
-			}
 			else if (name == "texture_specular")
 				number = std::to_string(specularNr++); // transfer GLuint to stream
 			else if (name == "texture_normal")
@@ -178,7 +175,7 @@ void Mesh::Draw(Shader shader, unsigned int depthMap)
 			if(name != "")
 			{
 				// Set the sampler
-				shader.setFloat(("material." + name + number).c_str(), i);
+				shader.setInt((name).c_str(), i);
 			}
 
 			// Bind the texture
@@ -192,11 +189,11 @@ void Mesh::Draw(Shader shader, unsigned int depthMap)
 		glBindTexture(GL_TEXTURE_2D, DEFAULT_TEXTURE);
 
 	}
-
 	// DO SHADOW MAP TEXTURE HERE
 	glActiveTexture(GL_TEXTURE1 + textures.size());
+	shader.setInt("depthMap", textures.size() + 1);
+
 	// TODO: Move this when I need to find another place for it
-//	shader.setInt("shadowMap", depthMap);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, depthMap);
 
 
