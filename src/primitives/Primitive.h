@@ -47,7 +47,6 @@ public:
 
         unsigned nrOfVertices = sizeof(vertices) / sizeof(Vertex);
 
-        VertTanCalc(vertices, nrOfVertices);
 
         GLuint indices[] =
         {
@@ -55,6 +54,7 @@ public:
         };
 
         unsigned nrOfIndices = sizeof(indices) / sizeof(GLuint);
+		ImprovedVertTanCalc(vertices, nrOfVertices, indices, nrOfIndices);
 
         this->set(vertices, nrOfVertices, indices, nrOfIndices);
     }
@@ -76,7 +76,6 @@ public:
 
         unsigned nrOfVertices = sizeof(vertices) / sizeof(Vertex);
 
-        VertTanCalc(vertices, nrOfVertices);
 
         GLuint indices[] =
         {
@@ -85,6 +84,7 @@ public:
         };
 
         unsigned nrOfIndices = sizeof(indices) / sizeof(GLuint);
+		ImprovedVertTanCalc(vertices, nrOfVertices, indices, nrOfIndices);
 
         this->set(vertices, nrOfVertices, indices, nrOfIndices);
     }
@@ -136,7 +136,6 @@ public:
             {glm::vec3(-0.5f,  0.5f, -0.5f),		glm::vec3(-1.f, 0.f, 0.f),		glm::vec2(1.f, 1.f)}
         };
         unsigned nrOfVertices = sizeof(vertices) / sizeof(Vertex);
-        VertTanCalc(vertices, nrOfVertices);
 
         GLuint indices[] =
         {
@@ -148,6 +147,7 @@ public:
             20, 21, 22,     20, 22, 23    // left
         };
         unsigned nrOfIndices = sizeof(indices) / sizeof(GLuint);
+		ImprovedVertTanCalc(vertices, nrOfVertices, indices, nrOfIndices);
 
         this->set(vertices, nrOfVertices, indices, nrOfIndices);
     }

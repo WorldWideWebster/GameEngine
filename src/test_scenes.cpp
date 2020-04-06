@@ -53,7 +53,7 @@ void setUpTestScene1(std::shared_ptr<Scene> targetScene)
 	tex_vec.push_back(brick);
 	tex_vec.push_back(brickNorm);
 	targetScene->setActiveScene();
-//	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Sphere(25, 25, 25), tex_vec), glm::vec3(20.0f, 0, 0), "sphere")));
+	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Sphere(25, 25, 25), tex_vec), glm::vec3(20.0f, 0, 0), "sphere")));
 	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Terrain(), tex_vec), glm::vec3(-1000.0f, -100, -1000), "terrain")));
 //	targetScene->addLight(std::make_shared<PointLight>(PointLight("pointLights[0]")));
 //	targetScene->addLight(std::make_shared<Light>(Light(glm::vec3(0.5f), glm::vec3 (0.8f), glm::vec3(1.0f), "dirLights[0]")));
@@ -94,20 +94,22 @@ void setUpTestScene2(void)
 
 void setUpTestScene3(std::shared_ptr<Scene> targetScene)
 {
-	woodTex = TextureFromFile("wood.png", "../resources");
-	cubeTex = TextureFromFile("container2.png", "../resources/");
-	sand = TextureFromFile("penny.jpg", "../resources/");
+	brick = TextureFromFile("brickwall.jpg", "../resources");
+	brickNorm = TextureFromFile("brickwall_normal.jpg", "../resources", "texture_normal");
+	std::vector<Texture> tex_vec;
+	tex_vec.push_back(brick);
+	tex_vec.push_back(brickNorm);
 
 	targetScene->setActiveScene();
 //	targetScene->addLight(std::make_shared<DirectionalLight>(DirectionalLight("dirLights[0]")));
 //	targetScene->addLight(std::make_shared<Light>(Light(glm::vec3(0.3f), glm::vec3 (0.2f), glm::vec3(0.5f), "dirLights[0]")));
 
-	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Cube, cubeTex), glm::vec3(0,0,0), "cube")));
-	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Cube, cubeTex), glm::vec3(2,0,0), "cube_1")));
-	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Cube, sand), glm::vec3(3,0,5), "cube_2")));
+	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Cube, tex_vec), glm::vec3(0,0,0), "cube")));
+	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Cube, tex_vec), glm::vec3(2,0,0), "cube_1")));
+	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Cube, tex_vec), glm::vec3(3,0,5), "cube_2")));
 //	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Cube, sand), glm::vec3(3,0,5), "cube_3")));
 
-	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Quad, woodTex), glm::vec3(0, 0, -0.025), "quad")));
+	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Quad, tex_vec), glm::vec3(0, 0, -0.025), "quad")));
 
 	targetScene->setEntityRotationDeg("quad", -90, glm::vec3(1, 0, 0));
 	targetScene->setEntityScale("quad", glm::vec3(20,20,20));

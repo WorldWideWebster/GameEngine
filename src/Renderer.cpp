@@ -47,8 +47,8 @@ static glm::vec3 lightPos(-5.0f, 1.0f, -1.0f);
 void Renderer::render(std::shared_ptr<Scene> targetScene)
 {
 //	// Setup for shadow pass
-	lightPos.x = sin(glfwGetTime()/10) * 1000.0f;
-	lightPos.z = cos(glfwGetTime()/10) * 1000.0f;
+	lightPos.x = sin(glfwGetTime() / 10) * 1000.0f;
+	lightPos.z = cos(glfwGetTime() / 10) * 1000.0f;
 	lightPos.y = 100.0 + cos(glfwGetTime()) * 1.0f;
 //	// 1. Render Depth of scene to texture (from lights perspective)
 //

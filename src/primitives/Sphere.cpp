@@ -3,7 +3,6 @@
 //
 
 #include "Sphere.h"
-
 // Default Constructor
 Sphere::Sphere() : Primitive()
 {
@@ -13,11 +12,11 @@ Sphere::Sphere() : Primitive()
 
     std::vector<Vertex> vertices = calcVertices();
     unsigned nrOfVertices = vertices.size();
-    VertTanCalc(vertices.data(), nrOfVertices);
 
     // generate CCW index list of sphere triangles
     std::vector<GLuint> indices = calcIndices();
     unsigned nrOfIndices = indices.size();
+	ImprovedVertTanCalc(vertices.data(), nrOfVertices, indices.data(), nrOfIndices);
 
     this->set(vertices.data(), nrOfVertices, indices.data(), nrOfIndices);
 }
@@ -30,11 +29,11 @@ Sphere::Sphere(int secCount, int staCount, float rad) : Primitive()
 
     std::vector<Vertex> vertices = calcVertices();
     unsigned nrOfVertices = vertices.size();
-    VertTanCalc(vertices.data(), nrOfVertices);
 
     // generate CCW index list of sphere triangles
     std::vector<GLuint> indices = calcIndices();
     unsigned nrOfIndices = indices.size();
+	ImprovedVertTanCalc(vertices.data(), nrOfVertices, indices.data(), nrOfIndices);
 
     this->set(vertices.data(), nrOfVertices, indices.data(), nrOfIndices);
 }

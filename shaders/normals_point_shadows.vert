@@ -29,13 +29,12 @@ void main()
     bool reverse_normals = false;
     vs_out.FragPos = vec3(model * vec4(aPos, 1.0));
     if(reverse_normals) // a slight hack to make sure the outer large cube displays lighting from the 'inside' instead of the default 'outside'.
-        vs_out.Normal = transpose(inverse(mat3(model))) * (-1.0 * aNormal);
+    vs_out.Normal = transpose(inverse(mat3(model))) * (-1.0 * aNormal);
     else
-        vs_out.Normal = transpose(inverse(mat3(model))) * aNormal;
-
-
+    vs_out.Normal = transpose(inverse(mat3(model))) * aNormal;
 
     vs_out.TexCoords = aTexCoords;
+
     mat3 normalMatrix = transpose(inverse(mat3(model)));
     vec3 T = normalize(vec3(model * vec4(aTangent, 0.0)));
     vec3 N = normalize(vec3(model * vec4(aNormal, 0.0)));
@@ -44,11 +43,10 @@ void main()
     // then retrieve perpendicular vector B with the cross product of T and N
     vec3 B = cross(N, T);
 
-    mat3 TBN = mat3(T, B, N);
+    mat3 TBN = transpose(mat3(T, B, N));
     vs_out.TangentLightPos = TBN * lightPos;
     vs_out.TangentViewPos  = TBN * viewPos;
     vs_out.TangentFragPos  = TBN * vs_out.FragPos;
 
-    vs_out.TBN = TBN;
     gl_Position = projection * view * model * vec4(aPos, 1.0);
 }
