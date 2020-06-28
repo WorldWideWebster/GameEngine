@@ -120,6 +120,16 @@ void Scene::renderLights(Shader* shader)
 		m_lights[i]->render(shader);
 	}
 }
+
+void Scene::setShadowLightPos(Shader* shadowShader)
+{
+	shadowShader->use();
+
+	for (int i = 0; i < m_lights.size(); i++)
+	{
+		shadowShader->setVec3("lightPos", m_lights[i]->getDirection());
+	}
+}
 void Scene::renderEntities(Shader* shader, unsigned int depthMap)
 {
 	for (int i = 0; i < this->m_entities.size(); i++)

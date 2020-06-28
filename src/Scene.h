@@ -49,6 +49,7 @@ public:
 
 	void renderEntities(Shader* shader);
 	void renderLights(Shader* shader);
+	void setShadowLightPos(Shader* shadowShader);
 	void renderEntities(Shader* shader, unsigned int depthMap);
 
 	inline Shader *getDefaultShader(void){return &m_defaultShader;}

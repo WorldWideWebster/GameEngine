@@ -56,7 +56,7 @@ void setUpTestScene1(std::shared_ptr<Scene> targetScene)
 	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Sphere(25, 25, 25), tex_vec), glm::vec3(20.0f, 0, 0), "sphere")));
 	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Terrain(), tex_vec), glm::vec3(-1000.0f, -100, -1000), "terrain")));
 //	targetScene->addLight(std::make_shared<PointLight>(PointLight("pointLights[0]")));
-//	targetScene->addLight(std::make_shared<Light>(Light(glm::vec3(0.5f), glm::vec3 (0.8f), glm::vec3(1.0f), "dirLights[0]")));
+	targetScene->addLight(std::make_shared<DirectionalLight>(DirectionalLight(glm::vec3(0), glm::vec3(0.5f), glm::vec3 (0.8f), glm::vec3(1.0f), "dirLights[0]")));
 //	targetScene->addLight(std::make_shared<SpotLight>(SpotLight("spotLights[0]")));
 //	targetScene->getLightByID("pointLights[0]")->attachToEntity(targetScene->getEntityByID("sphere"), glm::vec3(0,20,0));
 //	targetScene->setEntityScale("sphere", glm::vec3(20,20,20));
@@ -65,9 +65,11 @@ void setUpTestScene1(std::shared_ptr<Scene> targetScene)
 
 void doTestScene1(std::shared_ptr<Scene> targetScene)
 {
-//	// Time based variables
-//	lightPos = glm::vec3(1000 * cos(glfwGetTime()), 0, 1000 * sin(glfwGetTime()));
-//	lightDir = glm::vec3(2, sin(glfwGetTime() / 10), cos(glfwGetTime() / 10));
+	// Time based variables
+	glm::vec3 lightPos;
+	lightPos.x = sin(glfwGetTime() / 10) * 1000.0f;
+	lightPos.z = cos(glfwGetTime() / 10) * 1000.0f;
+	lightPos.y = 100.0 + cos(glfwGetTime()) * 1.0f;
 //
 //	targetScene->setEntityPosition("sphere", lightPos);
 //	if (flashlight)
@@ -80,7 +82,7 @@ void doTestScene1(std::shared_ptr<Scene> targetScene)
 //	}
 //
 //	targetScene->setLightPosition("spotLights[0]", targetScene->getDefaultCamera()->Position);
-//	targetScene->setLightDirection("spotLights[0]", targetScene->getDefaultCamera()->Front);
+	targetScene->setLightDirection("dirLights[0]", lightPos);
 }
 
 void setUpTestScene2(void)

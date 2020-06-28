@@ -93,7 +93,8 @@ void Renderer::render(std::shared_ptr<Scene> targetScene)
 	for (unsigned int i = 0; i < 6; ++i)
 		targetScene->getShadowShader()->setMat4("shadowMatrices[" + std::to_string(i) + "]", shadowTransforms[i]);
 	targetScene->getShadowShader()->setFloat("far_plane", far_plane);
-	targetScene->getShadowShader()->setVec3("lightPos", lightPos);
+//	targetScene->getShadowShader()->setVec3("lightPos", lightPos);
+	targetScene->setShadowLightPos(targetScene->getShadowShader());
 	/***	/Point Light Shadow Map Stuff	***/
 	targetScene->renderEntities(targetScene->getShadowShader());
 	this->m_shadowBuffer.unbind();
@@ -103,9 +104,9 @@ void Renderer::render(std::shared_ptr<Scene> targetScene)
 	targetScene->getDefaultShader()->use();
 	targetScene->getDefaultShader()->setMat4("projection", m_frameBuffer.getProjection());
 	targetScene->getDefaultShader()->setMat4("view", view);
-	targetScene->getDefaultShader()->setVec3("lightPos", lightPos);
 	targetScene->getDefaultShader()->setVec3("viewPos", targetScene->getDefaultCamera()->Position);
 	targetScene->getDefaultShader()->setFloat("far_plane", far_plane);
+	targetScene->renderLights(targetScene->getDefaultShader());
 
 	// TODO: Move this to a function
 //	targetScene->getDefaultShader()->setFloat("material.shininess", 1.0f);
@@ -116,7 +117,6 @@ void Renderer::render(std::shared_ptr<Scene> targetScene)
 	m_frameBuffer.bind(view);
 
 	targetScene->renderEntities(targetScene->getDefaultShader(), this->m_shadowBuffer.getTextureBuffer());
-	targetScene->renderLights(targetScene->getDefaultShader());
 
 	m_frameBuffer.unbind();
 }
