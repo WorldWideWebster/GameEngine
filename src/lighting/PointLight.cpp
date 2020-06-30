@@ -9,10 +9,10 @@ PointLight::PointLight(std::string ID) : Light(ID)
 {
 	this->m_position = glm::vec3(0,0,0);
 
-	this->m_constant = 1.0f;
-	this->m_linear = 0.009;
+	this->m_constant = 0.001f;
+	this->m_linear = 0.0009;
 	// Smaller is further
-	this->m_quadratic = 0.000032;
+	this->m_quadratic = 0.0000032;
 }
 
 PointLight::PointLight(glm::vec3 position, std::string ID) : Light(ID)
@@ -20,8 +20,8 @@ PointLight::PointLight(glm::vec3 position, std::string ID) : Light(ID)
 	this->m_position = position;
 
 	this->m_constant = 1.0f;
-	this->m_linear = 0.09;
-	this->m_quadratic = 0.032;
+	this->m_linear = 0.009;
+	this->m_quadratic = 0.000032;
 }
 
 PointLight::PointLight(glm::vec3 position, float constant, float linear, float quadratic, std::string ID) : Light(ID)
