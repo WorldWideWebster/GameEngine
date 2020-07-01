@@ -127,7 +127,7 @@ void Scene::setShadowLightPos(Shader* shadowShader)
 
 	for (int i = 0; i < m_lights.size(); i++)
 	{
-		shadowShader->setVec3("lightPos", m_lights[i]->getDirection());
+		shadowShader->setVec3("lightPos", typeid(*m_lights[i]) == typeid(DirectionalLight) ? m_lights[i]->getDirection() : m_lights[i]->getPosition());
 	}
 }
 void Scene::renderEntities(Shader* shader, unsigned int depthMap)

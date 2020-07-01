@@ -6,8 +6,8 @@
 
 SpotLight::SpotLight(std::string ID) : Light(ID), DirectionalLight(ID), PointLight(ID)
 {
-	this->m_cutOff = glm::cos(glm::radians(12.5f));
-	this->m_outerCutOff = glm::cos(glm::radians(15.0f));
+	this->m_cutOff = glm::cos(glm::radians(32.5f));
+	this->m_outerCutOff = glm::cos(glm::radians(45.0f));
 }
 
 SpotLight::SpotLight(float cutOff, float outerCutOff, std::string ID) : Light(ID), DirectionalLight(ID), PointLight(ID)

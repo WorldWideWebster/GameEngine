@@ -81,7 +81,8 @@ void doTestScene1(std::shared_ptr<Scene> targetScene)
 //		targetScene->toggleLight("spotLights[0]", false);
 //	}
 //
-//	targetScene->setLightPosition("spotLights[0]", targetScene->getDefaultCamera()->Position);
+//	targetScene->setLightPosition("spotLights[0]", lightPos);
+//	targetScene->setLightDirection("spotLights[0]", targetScene->getDefaultCamera()->Front);
 //	targetScene->setLightPosition("pointLights[0]", lightPos);
 	targetScene->setLightDirection("dirLights[0]", lightPos);
 }
