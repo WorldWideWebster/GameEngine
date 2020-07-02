@@ -41,6 +41,7 @@ void Light::render(Shader *targetShader)
 	setShaderAmbient(targetShader);
 	setShaderDiffuse(targetShader);
 	setShaderSpecular(targetShader);
+	setShaderShadowCast(targetShader);
 }
 
 
@@ -64,6 +65,11 @@ void Light::setShaderSpecular(Shader *targetShader)
 		targetShader->setVec3(this->m_ID + ".specular", this->m_specular);
 	else
 		targetShader->setVec3(this->m_ID + ".specular", glm::vec3(0));
+}
+
+void Light::setShaderShadowCast(Shader *targetShader)
+{
+	targetShader->setBool(this->m_ID + ".castsShadow", this->m_casts_shadow);
 }
 
 void Light::toggle(bool toggle)
@@ -101,4 +107,9 @@ glm::vec3 Light::getPosition(void)
 glm::vec3 Light::getDirection(void)
 {
 	return glm::vec3(0);
+}
+
+void Light::toggleShadowCast(bool status)
+{
+	this->m_casts_shadow = status;
 }

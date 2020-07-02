@@ -12,6 +12,7 @@ in VS_OUT {
 } fs_in;
 
 struct DirLight {
+    bool castsShadow;
     vec3 direction;
     vec3 ambient;
     vec3 diffuse;
@@ -19,6 +20,7 @@ struct DirLight {
 };
 
 struct PointLight {
+    bool castsShadow;
     vec3 position;
 
     vec3 ambient;
@@ -31,6 +33,7 @@ struct PointLight {
 };
 
 struct SpotLight {
+    bool castsShadow;
     vec3 position;
     vec3 direction;
     float cutOff;
@@ -140,7 +143,6 @@ void main()
 
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 color, vec3 viewDir)
 {
-    bool castsShadow = true;
     vec3 lightColor = vec3(0.3);
     // ambient
     // diffuse
@@ -154,7 +156,7 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 color, vec3 viewDir)
     vec3 ambient = 0.3 * color;
     vec3 diffuse = diff * lightColor;
     vec3 specular = lightColor * spec;
-    float shadow = castsShadow ? ShadowCalculation(fs_in.FragPos, light.direction) : 0.0;
+    float shadow = light.castsShadow ? ShadowCalculation(fs_in.FragPos, light.direction) : 0.0;
 
 
     return (ambient + (1.0 - shadow) * (diffuse + specular))*color;
@@ -164,8 +166,6 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 color, vec3 viewDir)
 // calculates the color when using a point light.
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 color, vec3 fragPos, vec3 viewDir)
 {
-    bool castsShadow = false;
-
     vec3 lightColor = vec3(0.3);
 
     vec3 lightDir = normalize(light.position * fs_in.TBN - fs_in.TangentFragPos);
@@ -182,7 +182,7 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 color, vec3 fragPos, vec
     vec3 diffuse = diff * lightColor;
     vec3 specular = lightColor * spec;
 
-    float shadow = castsShadow ? ShadowCalculation(fs_in.FragPos, light.position) : 0.0;
+    float shadow = light.castsShadow ? ShadowCalculation(fs_in.FragPos, light.position) : 0.0;
 
     return ((ambient + (1.0 - shadow) * (diffuse + specular)) * color) * attenuation;
 }
@@ -190,8 +190,6 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 color, vec3 fragPos, vec
 // calculates the color when using a spot light.
 vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 color, vec3 fragPos, vec3 viewDir)
 {
-    bool castsShadow = false;
-
     vec3 lightColor = vec3(0.3);
 
 
@@ -212,7 +210,7 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 color, vec3 fragPos, vec3 
     vec3 ambient = 1.0 * color;
     vec3 diffuse = diff * lightColor;
     vec3 specular = lightColor * spec;
-    float shadow = castsShadow ? ShadowCalculation(fs_in.FragPos, light.position) : 0.0;
+    float shadow = light.castsShadow ? ShadowCalculation(fs_in.FragPos, light.position) : 0.0;
 
     return ((ambient + (1.0 - shadow) * (diffuse + specular)) * color) * attenuation * intensity;
 }

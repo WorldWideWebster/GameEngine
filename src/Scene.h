@@ -42,6 +42,12 @@ public:
 	void setLightPosition(std::string targetID, glm::vec3 targetPosition);
 	void setLightDirection(std::string targetID, glm::vec3 targetDirection);
 	void toggleLight(std::string targetID, bool toggle);
+	/**
+	 * @brief Toggles shadow of target light
+	 * @param targetID - ID of light
+	 * @param toggle - Boolean value of toggle
+	 */
+	void toggleLightShadow(std::string targetID, bool toggle);
 
 	void setEntityPosition(std::string targetID, glm::vec3 targetPosition);
 	void setEntityRotationDeg(std::string targetID, float targetRotAngle, glm::vec3 targetRotation);

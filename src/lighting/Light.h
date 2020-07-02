@@ -28,7 +28,8 @@ private:
     glm::vec3 m_specular;
     std::shared_ptr<Entity> m_targetEntity = nullptr;
 
-    bool m_on;
+    bool m_casts_shadow = false; 	/// Whether light casts shadow
+    bool m_on;				/// Is light on?
 public:
 	Light(std::string ID);
 	Light(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, std::string ID);
@@ -51,6 +52,11 @@ public:
 	void setShaderAmbient(Shader *targetShader);
 	void setShaderDiffuse(Shader *targetShader);
 	void setShaderSpecular(Shader *targetShader);
+	/**
+	 * @brief Sets shader shadow cast to light object's status
+	 * @param targetShader - Shader to send light shadow to
+	 */
+	void setShaderShadowCast(Shader *targetShader);
 
     glm::vec3 getAmbient(void);
     glm::vec3 getDiffuse(void);
@@ -58,6 +64,11 @@ public:
 	virtual glm::vec3 getPosition(void);
 	virtual glm::vec3 getDirection(void);
 
+	/**
+	 * @brief Toggles shadow casting of light
+	 * @param status - boolean to determine if light is being turned on/off
+	 */
+	void toggleShadowCast(bool status);
 };
 
 

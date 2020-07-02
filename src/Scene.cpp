@@ -316,3 +316,15 @@ std::vector<std::string> Scene::showSceneDetails(void)
 	}
 	return returnString;
 }
+
+void Scene::toggleLightShadow(std::string targetID, bool toggle)
+{
+	for (int i = 0; i < m_lights.size(); i++)
+	{
+		if(m_lights[i]->m_ID == targetID)
+		{
+			m_lights[i]->toggleShadowCast(toggle);
+			return;
+		}
+	}
+}

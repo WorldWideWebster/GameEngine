@@ -57,6 +57,7 @@ void setUpTestScene1(std::shared_ptr<Scene> targetScene)
 	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Terrain(), tex_vec), glm::vec3(-1000.0f, -100, -1000), "terrain")));
 //	targetScene->addLight(std::make_shared<PointLight>(PointLight("pointLights[0]")));
 	targetScene->addLight(std::make_shared<DirectionalLight>(DirectionalLight(glm::vec3(0), glm::vec3(0.5f), glm::vec3 (0.8f), glm::vec3(1.0f), "dirLights[0]")));
+	targetScene->toggleLightShadow("dirLights[0]", true);
 //	targetScene->addLight(std::make_shared<SpotLight>(SpotLight("spotLights[0]")));
 //	targetScene->getLightByID("pointLights[0]")->attachToEntity(targetScene->getEntityByID("sphere"), glm::vec3(0,20,0));
 //	targetScene->setEntityScale("sphere", glm::vec3(20,20,20));
