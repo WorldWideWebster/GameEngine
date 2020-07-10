@@ -10,12 +10,19 @@
 
 
 Texture woodTex;
-Texture brick;
-Texture brickNorm;
+Texture stonebrick;
+Texture stonebrickNorm;
 Texture sand;
 Texture cubeTex;
 
+Texture brick;
+Texture brickNorm;
+Texture brickHeight;
+Texture blankHeight;
 
+Texture stone;
+Texture stoneNorm;
+Texture stoneHeight;
 
 /*
 
@@ -47,16 +54,40 @@ void toggleFlashLight(void)
 void setUpTestScene1(std::shared_ptr<Scene> targetScene)
 {
 	woodTex = TextureFromFile("desert_sand.jpg", "../resources");
-	brick = TextureFromFile("brickwall.jpg", "../resources");
-	brickNorm = TextureFromFile("brickwall_normal.jpg", "../resources", "texture_normal");
-	std::vector<Texture> tex_vec;
-	tex_vec.push_back(brick);
-	tex_vec.push_back(brickNorm);
+	stonebrick = TextureFromFile("brickwall.jpg", "../resources");
+	stonebrickNorm = TextureFromFile("brickwall_normal.jpg", "../resources", "texture_normal");
+	blankHeight = TextureFromFile("blank_height_map.jpg", "../resources", "texture_height");
+	std::vector<Texture> brickTex;
+	brickTex.push_back(stonebrick);
+	brickTex.push_back(stonebrickNorm);
+	brickTex.push_back(blankHeight);
+
+
+	stone = TextureFromFile("stone_antelopeCayon_01_basecolor.jpg", "../resources");
+	stoneNorm = TextureFromFile("stone_antelopeCayon_01_normal.jpg", "../resources", "texture_normal");
+	stoneHeight = TextureFromFile("stone_antelopeCayon_01_height.jpg", "../resources", "texture_height");
+	std::vector<Texture> stoneTex;
+	stoneTex.push_back(stone);
+	stoneTex.push_back(stoneNorm);
+	stoneTex.push_back(blankHeight);
+
+
+	brick = TextureFromFile("bricks2.jpg", "../resources");
+	brickNorm = TextureFromFile("bricks2_normal.jpg", "../resources", "texture_normal");
+	brickHeight = TextureFromFile("bricks2_disp.jpg", "../resources", "texture_height");
+	std::vector<Texture> redBrickTex;
+	redBrickTex.push_back(brick);
+	redBrickTex.push_back(brickNorm);
+	redBrickTex.push_back(brickHeight);
+
 	targetScene->setActiveScene();
-	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Sphere(25, 25, 25), tex_vec), glm::vec3(20.0f, 0, 0), "sphere")));
-	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Terrain(), tex_vec), glm::vec3(-1000.0f, -100, -1000), "terrain")));
-//	targetScene->addLight(std::make_shared<PointLight>(PointLight("pointLights[0]")));
-	targetScene->addLight(std::make_shared<DirectionalLight>(DirectionalLight(glm::vec3(0), glm::vec3(0.5f), glm::vec3 (0.8f), glm::vec3(1.0f), "dirLights[0]")));
+	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Sphere(25, 25, 25), brickTex), glm::vec3(20.0f, 0, 0), "sphere")));
+	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Terrain(), stoneTex), glm::vec3(-1000.0f, -100, -1000), "terrain")));
+	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Cube, redBrickTex), glm::vec3(0,0,20), "cube")));
+
+	targetScene->setEntityScale("cube", glm::vec3(20,20,20));
+	//	targetScene->addLight(std::make_shared<PointLight>(PointLight("pointLights[0]")));
+	targetScene->addLight(std::make_shared<DirectionalLight>(DirectionalLight(glm::vec3(1.0f), "dirLights[0]")));
 	targetScene->toggleLightShadow("dirLights[0]", true);
 //	targetScene->addLight(std::make_shared<SpotLight>(SpotLight("spotLights[0]")));
 //	targetScene->getLightByID("pointLights[0]")->attachToEntity(targetScene->getEntityByID("sphere"), glm::vec3(0,20,0));
@@ -99,11 +130,11 @@ void setUpTestScene2(void)
 
 void setUpTestScene3(std::shared_ptr<Scene> targetScene)
 {
-	brick = TextureFromFile("brickwall.jpg", "../resources");
-	brickNorm = TextureFromFile("brickwall_normal.jpg", "../resources", "texture_normal");
+	stonebrick = TextureFromFile("brickwall.jpg", "../resources");
+	stonebrickNorm = TextureFromFile("brickwall_normal.jpg", "../resources", "texture_normal");
 	std::vector<Texture> tex_vec;
-	tex_vec.push_back(brick);
-	tex_vec.push_back(brickNorm);
+	tex_vec.push_back(stonebrick);
+	tex_vec.push_back(stonebrickNorm);
 
 	targetScene->setActiveScene();
 //	targetScene->addLight(std::make_shared<DirectionalLight>(DirectionalLight("dirLights[0]")));

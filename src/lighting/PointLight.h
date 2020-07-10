@@ -14,7 +14,7 @@ public:
 	PointLight(glm::vec3 position, std::string ID);
 	PointLight(glm::vec3 position, float constant, float linear, float quadratic, std::string ID);
 	PointLight(glm::vec3 position, float constant, float linear, float quadratic,
-			   glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, std::string ID);
+			   glm::vec3 color, std::string ID);
 	void updateFalloff(float constant, float linear, float quadratic);
 	virtual void updatePosition(glm::vec3 position);
 	virtual void render(Shader *targetShader);
@@ -22,7 +22,9 @@ public:
 	void setShaderconstant(Shader *targetShader);
 	void setShaderLinear(Shader *targetShader);
 	void setShaderQuadratic(Shader *targetShader);
-
+	void setShaderRadius(Shader *targetShader);
+	void calcLightRadius(void);
+	void setID(std::string ID);
 
 	glm::vec3 getPosition(void);
 	float getConstant(void);
@@ -33,6 +35,8 @@ private:
 	float m_constant;
 	float m_linear;
 	float m_quadratic;
+	float m_radius;
+	const std::string m_lightType = "PointLight";
 };
 
 

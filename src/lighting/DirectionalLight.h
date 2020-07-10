@@ -14,7 +14,7 @@ private:
 public:
 	DirectionalLight(std::string ID);
 	DirectionalLight(glm::vec3 direction, std::string ID);
-	DirectionalLight(glm::vec3 direction, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, std::string ID);
+	DirectionalLight(glm::vec3 direction, glm::vec3 color, std::string ID);
 
 	virtual void updateDirection(glm::vec3 direction);
 

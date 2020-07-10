@@ -14,6 +14,8 @@
 #include "../Entity.h"
 
 
+const glm::vec3 DEFAULT_COLOR (0.5f, 0.5f, 0.5f);
+
 /* @brief: Light Class - ambient light object
  *
  *
@@ -22,26 +24,18 @@
  */
 class Light
 {
-private:
-    glm::vec3 m_ambient;
-    glm::vec3 m_diffuse;
-    glm::vec3 m_specular;
-    std::shared_ptr<Entity> m_targetEntity = nullptr;
-
-    bool m_casts_shadow = false; 	/// Whether light casts shadow
-    bool m_on;				/// Is light on?
 public:
+	Light();
 	Light(std::string ID);
-	Light(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, std::string ID);
+	Light(glm::vec3 color, std::string ID);
 
 	std::string m_ID;
 	glm::vec3 m_attached_entity_offset_position;
 	glm::vec3 m_attached_entity_offset_rotation;
 
-    void setAmbient(glm::vec3 ambient);
-    void setDiffuse(glm::vec3 diffuse);
-    void setSpecular(glm::vec3 specular);
+    void setColor(glm::vec3 color);
 
+	void setID(std::string ID);
 	virtual void render(Shader *targetShader);
 	void toggle(bool toggle);
 	inline virtual void updatePosition(glm::vec3 position){}
@@ -49,18 +43,16 @@ public:
 	virtual void attachToEntity(std::shared_ptr<Entity> targetEntity, glm::vec3 offset = glm::vec3(0), glm::vec3 rotation = glm::vec3(0));
 	inline virtual std::shared_ptr<Entity> getAttachedEntity(void){return m_targetEntity;};
 
-	void setShaderAmbient(Shader *targetShader);
-	void setShaderDiffuse(Shader *targetShader);
-	void setShaderSpecular(Shader *targetShader);
+	void setShaderColor(Shader *targetShader);
+
 	/**
 	 * @brief Sets shader shadow cast to light object's status
 	 * @param targetShader - Shader to send light shadow to
 	 */
 	void setShaderShadowCast(Shader *targetShader);
 
-    glm::vec3 getAmbient(void);
-    glm::vec3 getDiffuse(void);
-    glm::vec3 getSpecular(void);
+    glm::vec3 getColor(void);
+
 	virtual glm::vec3 getPosition(void);
 	virtual glm::vec3 getDirection(void);
 
@@ -69,6 +61,12 @@ public:
 	 * @param status - boolean to determine if light is being turned on/off
 	 */
 	void toggleShadowCast(bool status);
+private:
+	glm::vec3 m_color;
+	std::shared_ptr<Entity> m_targetEntity = nullptr;
+
+	bool m_casts_shadow = false; 	/// Whether light casts shadow
+	bool m_on;				/// Is light on?
 };
 
 

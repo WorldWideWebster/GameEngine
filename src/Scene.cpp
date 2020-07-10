@@ -91,6 +91,7 @@ void Scene::addLight(std::shared_ptr<Light> targetLight)
 	else
 	{
 		std::cout << "not a known light type!" << std::endl;
+		return;
 	}
 	this->m_lights.push_back(targetLight);
 }

@@ -19,6 +19,8 @@
 
 // TODO: Clean up shader files
 
+// TODO: Figure out what to do with light ID -> number + name?
+
 /****************Features**************/
 
 // TODO: Add update to render loop

@@ -9,10 +9,11 @@ PointLight::PointLight(std::string ID) : Light(ID)
 {
 	this->m_position = glm::vec3(0,0,0);
 
-	this->m_constant = 0.001f;
-	this->m_linear = 0.0009;
+	this->m_constant = 1.0f;
+	this->m_linear = 0.009;
 	// Smaller is further
-	this->m_quadratic = 0.0000032;
+	this->m_quadratic = 0.000032;
+	calcLightRadius();
 }
 
 PointLight::PointLight(glm::vec3 position, std::string ID) : Light(ID)
@@ -20,8 +21,9 @@ PointLight::PointLight(glm::vec3 position, std::string ID) : Light(ID)
 	this->m_position = position;
 
 	this->m_constant = 1.0f;
-	this->m_linear = 0.009;
-	this->m_quadratic = 0.000032;
+	this->m_linear = 0.09;
+	this->m_quadratic = 0.032;
+	calcLightRadius();
 }
 
 PointLight::PointLight(glm::vec3 position, float constant, float linear, float quadratic, std::string ID) : Light(ID)
@@ -31,16 +33,18 @@ PointLight::PointLight(glm::vec3 position, float constant, float linear, float q
 	this->m_constant = constant;
 	this->m_linear = linear;
 	this->m_quadratic = quadratic;
+	calcLightRadius();
 }
 
 PointLight::PointLight(glm::vec3 position, float constant, float linear, float quadratic,
-					   	glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, std::string ID) : Light(ambient, diffuse, specular, ID)
+					   	glm::vec3 color, std::string ID) : Light(color, ID)
 {
 	this->m_position = position;
 
 	this->m_constant = constant;
 	this->m_linear = linear;
 	this->m_quadratic = quadratic;
+	calcLightRadius();
 }
 
 void PointLight::updateFalloff(float constant, float linear, float quadratic)
@@ -48,6 +52,7 @@ void PointLight::updateFalloff(float constant, float linear, float quadratic)
 	this->m_constant = constant;
 	this->m_linear = linear;
 	this->m_quadratic = quadratic;
+	calcLightRadius();
 }
 
 void PointLight::updatePosition(glm::vec3 position)
@@ -62,13 +67,12 @@ void PointLight::render(Shader *targetShader)
 	{
 		this->m_position = getAttachedEntity()->getPosition() + this->m_attached_entity_offset_position;
 	}
-	setShaderAmbient(targetShader);
-	setShaderDiffuse(targetShader);
-	setShaderSpecular(targetShader);
+	setShaderColor(targetShader);
 	setShaderPosition(targetShader);
-	setShaderconstant(targetShader);
+//	setShaderconstant(targetShader);
 	setShaderLinear(targetShader);
 	setShaderQuadratic(targetShader);
+	setShaderRadius(targetShader);
 }
 
 void PointLight::setShaderPosition(Shader *targetShader)
@@ -87,6 +91,10 @@ void PointLight::setShaderQuadratic(Shader *targetShader)
 {
 	targetShader->setFloat(this->m_ID + ".quadratic", this->m_quadratic);
 }
+void PointLight::setShaderRadius(Shader *targetShader)
+{
+	targetShader->setFloat(this->m_ID + ".radius", this->m_radius);
+}
 
 glm::vec3 PointLight::getPosition(void)
 {
@@ -104,4 +112,16 @@ float PointLight::getLinear(void)
 float PointLight::getQuadratic(void)
 {
 	return this->m_quadratic;
+}
+void PointLight::calcLightRadius(void)
+{
+	const float maxBrightness = std::fmaxf(std::fmaxf(this->getColor().r, this->getColor().g), this->getColor().b);
+	this->m_radius = (-this->m_linear + std::sqrt(this->m_linear * this->m_linear - 4 * this->m_quadratic *
+																					(this->m_constant - (256.0f / 5.0f) * maxBrightness))) / (2.0f * this->m_quadratic);
+}
+
+
+void PointLight::setID(std::string ID)
+{
+	this->m_ID = this->m_lightType + "[" + ID + "]";
 }

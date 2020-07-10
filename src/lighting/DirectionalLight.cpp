@@ -16,11 +16,9 @@ DirectionalLight::DirectionalLight(glm::vec3 direction, std::string ID) : Light(
 }
 
 DirectionalLight::DirectionalLight(glm::vec3 direction,
-								   glm::vec3 ambient,
-								   glm::vec3 diffuse,
-								   glm::vec3 specular,
+								   glm::vec3 color,
 								   std::string ID)
-								   : Light(ambient, diffuse, specular, ID)
+								   : Light(color, ID)
 {
 	m_direction = direction;
 }
