@@ -105,7 +105,6 @@ int main()
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
-        float angle = 360.0f * sin(glfwGetTime() / 100);
 
         // input
         // -----

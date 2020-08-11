@@ -46,6 +46,9 @@ static glm::vec3 lightPos(-5.0f, 1.0f, -1.0f);
 
 void Renderer::render(std::shared_ptr<Scene> targetScene)
 {
+#ifdef DEFERRED_RENDERING
+	/** 		FORWARD RENDERING			**/
+
 //	// Setup for shadow pass
 	lightPos.x = sin(glfwGetTime() / 10) * 1000.0f;
 	lightPos.z = cos(glfwGetTime() / 10) * 1000.0f;
@@ -114,11 +117,20 @@ void Renderer::render(std::shared_ptr<Scene> targetScene)
 	// TODO: Move this to a separate function
 	// TODO: Allow for multiple cameras
 
-	m_frameBuffer.bind(view);
+	m_frameBuffer.bind();
 
 	targetScene->renderEntities(targetScene->getDefaultShader(), this->m_shadowBuffer.getTextureBuffer());
 
 	m_frameBuffer.unbind();
+
+#else
+	/** 		DEFERRED RENDERING			**/
+	geometryPass(targetScene);
+//	lightingPass(targetScene);
+	targetScene->getDefaultShader()->setVec3("viewPos", targetScene->getDefaultCamera()->Position);
+
+	this->m_gBuffer.writeToExternalBuffer(this->m_frameBuffer.getID(), this->m_frameBuffer.getTextureBuffer());
+#endif
 }
 
 void Renderer::renderActiveScene(void)
@@ -133,4 +145,25 @@ unsigned int Renderer::getRenderBufferTexture(void)
 unsigned int* Renderer::getRenderBufferTexturePtr(void)
 {
 	return this->m_frameBuffer.getTextureBufferPtr();
+}
+
+void Renderer::geometryPass(std::shared_ptr<Scene> targetScene)
+{
+	glm::mat4 view = targetScene->getDefaultCamera()->GetViewMatrix();
+	glm::mat4 projection = glm::perspective(glm::radians(targetScene->getDefaultCamera()->Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+
+	targetScene->getGeomShader()->use();
+	targetScene->getGeomShader()->setMat4("projection", m_frameBuffer.getProjection());
+	targetScene->getGeomShader()->setMat4("view", view);
+	this->m_gBuffer.bind();
+	targetScene->renderEntities(targetScene->getGeomShader());
+	this->m_gBuffer.unbind();
+}
+void Renderer::lightingPass(std::shared_ptr<Scene> targetScene)
+{
+	this->m_frameBuffer.bind();
+	this->m_gBuffer.bindTextures();
+	targetScene->renderLights(targetScene->getLightingShader());
+	targetScene->getLightingShader()->setVec3("viewPos", targetScene->getDefaultCamera()->Position);
+	this->m_frameBuffer.unbind();
 }

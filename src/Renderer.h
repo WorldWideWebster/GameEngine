@@ -6,6 +6,7 @@
 #define OPENGLSETUP_RENDERER_H
 
 #include <memory>
+#include <buffer-objects/gBuffer.h>
 
 #include "Scene.h"
 #include "buffer-objects/ShadowDepthBuffer.h"
@@ -31,7 +32,11 @@ private:
 	std::vector<Scene> m_scenes;
 	std::shared_ptr<Scene> m_currentActiveScene;
 	FrameBuffer m_frameBuffer;
+	gBuffer m_gBuffer;
 	ShadowCubeDepthBuffer m_shadowBuffer;
+
+	void geometryPass(std::shared_ptr<Scene> targetScene);
+	void lightingPass(std::shared_ptr<Scene> targetScene);
 };
 
 

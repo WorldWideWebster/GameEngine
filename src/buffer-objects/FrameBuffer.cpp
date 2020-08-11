@@ -56,7 +56,7 @@ void FrameBuffer::setUp()
 
 }
 
-void FrameBuffer::bind(glm::mat4 view)
+void FrameBuffer::bind()
 {
 //    glBindBuffer(GL_UNIFORM_BUFFER, this->m_uboMatrices);
 //    glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(view));

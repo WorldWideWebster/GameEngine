@@ -22,7 +22,7 @@ public:
 	 * @brief Binds uniform buffer object and translates based on view
 	 * @param view - view to be used in rendering
 	 */
-	virtual void bind(glm::mat4 view){};
+	virtual void bind(){};
 	virtual void unbind(void){};
 	virtual GLuint getTextureBuffer(){ return 1; };
 	virtual glm::mat4 getProjection(){ return glm::mat4(1);}

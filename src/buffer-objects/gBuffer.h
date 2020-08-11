@@ -2,8 +2,8 @@
 // Created by Sean on 4/16/2019.
 //
 
-#ifndef OPENGLSETUP_FRAMEBUFFER_H
-#define OPENGLSETUP_FRAMEBUFFER_H
+#ifndef gBuffer_H
+#define gBuffer_H
 // OpenGL includes
 #include <glad/glad.h> // holds all OpenGL type declarations
 #include <glm/glm.hpp>
@@ -14,13 +14,13 @@
 /**
  * @brief Class to hold frame buffer objects and related functions
  */
-class FrameBuffer : public BufferObject
+class gBuffer : public BufferObject
 {
 public:
 	/**
-	 * @brief Default FrameBuffer constructor, runs setUp() function
+	 * @brief Default gBuffer constructor, runs setUp() function
 	 */
-    FrameBuffer();
+    gBuffer();
     /**
      * @brief sets up frame buffer with ID and buffer objects
      */
@@ -29,19 +29,21 @@ public:
      * @brief Binds uniform buffer object and translates based on view
      * @param view - view to be used in rendering
      */
-    void bind();
+    void bind(void);
 	void unbind(void);
-    glm::mat4 getProjection();
-    GLuint getTextureBuffer();
-    GLuint *getTextureBufferPtr();
-    GLuint getID(void) {return this->m_ID;}
+	void writeToExternalBuffer(GLuint buffer, GLuint bufferTex);
+	void bindTextures(void);
+
+	GLuint getPosition(void) {return this->m_position;}
+	GLuint getNormal(void) {return this->m_normal;}
+	GLuint getAlbedoSpec(void) {return this->m_albedoSpec;}
 private:
     GLuint m_ID;
     GLuint m_rbo;
-    GLuint m_uboMatrices;
-    GLuint m_textureColorbuffer;
-    glm::mat4 m_projection;
+    GLuint m_position;
+    GLuint m_normal;
+    GLuint m_albedoSpec;
 };
 
 
-#endif //OPENGLSETUP_FRAMEBUFFER_H
+#endif //gBuffer_H

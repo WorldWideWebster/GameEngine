@@ -59,6 +59,8 @@ public:
 	void renderEntities(Shader* shader, unsigned int depthMap);
 
 	inline Shader *getDefaultShader(void){return &m_defaultShader;}
+	inline Shader *getGeomShader(void){return &m_geomPass;}
+	inline Shader *getLightingShader(void){return &m_lightingPass;}
 	inline Shader *getShadowShader(void){return &m_shadowShader;}
 
 	std::vector<std::string> showSceneDetails(void);
@@ -71,8 +73,10 @@ private:
 	int m_num_point_lights;
 	int m_num_dir_lights;
 	int m_num_spot_lights;
-	Shader m_defaultShader;
 	Shader m_shadowShader;
+	Shader m_geomPass;
+	Shader m_lightingPass;
+	Shader m_defaultShader;
 	// std::unique_ptr<Camera> m_default_camera;
 };
 
