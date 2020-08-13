@@ -130,7 +130,8 @@ void Mesh::Draw(Shader shader)
 				// Set the sampler
 				shader.setFloat((name + number).c_str(), i);
 			}
-
+			// now set the sampler to the correct texture unit
+			glUniform1i(glGetUniformLocation(shader.ID, (name + number).c_str()), i);
             // Bind the texture
             glBindTexture(GL_TEXTURE_2D, textures[i].id);
         }

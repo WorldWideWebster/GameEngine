@@ -46,7 +46,7 @@ static glm::vec3 lightPos(-5.0f, 1.0f, -1.0f);
 
 void Renderer::render(std::shared_ptr<Scene> targetScene)
 {
-#ifdef DEFERRED_RENDERING
+#ifndef DEFERRED_RENDERING
 	/** 		FORWARD RENDERING			**/
 
 //	// Setup for shadow pass
@@ -126,10 +126,10 @@ void Renderer::render(std::shared_ptr<Scene> targetScene)
 #else
 	/** 		DEFERRED RENDERING			**/
 	geometryPass(targetScene);
-//	lightingPass(targetScene);
-	targetScene->getDefaultShader()->setVec3("viewPos", targetScene->getDefaultCamera()->Position);
+	lightingPass(targetScene);
+//	targetScene->getDefaultShader()->setVec3("viewPos", targetScene->getDefaultCamera()->Position);
 
-	this->m_gBuffer.writeToExternalBuffer(this->m_frameBuffer.getID(), this->m_frameBuffer.getTextureBuffer());
+//	this->m_gBuffer.writeToExternalBuffer(this->m_frameBuffer.getID(), this->m_frameBuffer.getTextureBuffer());
 #endif
 }
 
@@ -142,6 +142,11 @@ unsigned int Renderer::getRenderBufferTexture(void)
 {
 	return this->m_frameBuffer.getTextureBuffer();
 }
+
+unsigned int Renderer::getGBufferTex(void)
+{
+	return this->m_gBuffer.getAlbedoSpec();
+}
 unsigned int* Renderer::getRenderBufferTexturePtr(void)
 {
 	return this->m_frameBuffer.getTextureBufferPtr();
@@ -149,15 +154,14 @@ unsigned int* Renderer::getRenderBufferTexturePtr(void)
 
 void Renderer::geometryPass(std::shared_ptr<Scene> targetScene)
 {
+
+	this->m_gBuffer.bind();
 	glm::mat4 view = targetScene->getDefaultCamera()->GetViewMatrix();
 	glm::mat4 projection = glm::perspective(glm::radians(targetScene->getDefaultCamera()->Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-
 	targetScene->getGeomShader()->use();
 	targetScene->getGeomShader()->setMat4("projection", m_frameBuffer.getProjection());
 	targetScene->getGeomShader()->setMat4("view", view);
-	this->m_gBuffer.bind();
 	targetScene->renderEntities(targetScene->getGeomShader());
-	this->m_gBuffer.unbind();
 }
 void Renderer::lightingPass(std::shared_ptr<Scene> targetScene)
 {

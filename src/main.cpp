@@ -87,8 +87,8 @@ int main()
 	renderer.addScene(Scene());
 	setUpTestScene1(renderer.getActiveScene());
 	window.setCamera(renderer.getActiveScene()->getDefaultCamera());
-	UIRenderWindow renderWindow(renderer.getRenderBufferPtr(), "Game");
-	UIRenderWindow testRenderWindow(renderer.getShadowBufferPtr(), "ShadowMap");
+	UIRenderWindow renderWindow(&renderer, "Game");
+	UIRenderWindow testRenderWindow(&renderer, "ShadowMap");
 	renderWindow.open();
 	testRenderWindow.open();
 	UIDataWindow dataWindow("Data Window", renderer.getActiveScene());
@@ -127,7 +127,7 @@ int main()
 
 		// TODO: Show multiple shadowmaps, selectable, move to menu
 		renderWindow.render();
-		testRenderWindow.render();
+		testRenderWindow.renderTargetImage(renderer.getGBufferTex());
 
 		// Capture input for render window, allow ESC to drop context(?)
 		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Escape)))

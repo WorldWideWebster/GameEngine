@@ -31,8 +31,8 @@ Scene::Scene()
 //	m_defaultShader = Shader("../shaders/shadow_mapping.vert", "../shaders/shadow_mapping.frag");
 //	m_shadowShader = Shader("../shaders/shadow_mapping_depth.vert", "../shaders/shadow_mapping_depth.frag");
 	m_defaultShader = Shader("../shaders/normals_point_shadows.vert", "../shaders/normals_point_shadows.frag");
-//	m_geomPass = Shader("../shaders/g_buffer.vert", "../shaders/g_buffer.frag");
-//	m_lightingPass = Shader("../shaders/deferred_shader.vert", "../shaders/deferred_shader.frag");
+	m_geomPass = Shader("../shaders/g_buffer.vert", "../shaders/g_buffer.frag");
+	m_lightingPass = Shader("../shaders/deferred_shader.vert", "../shaders/deferred_shader.frag");
 	m_shadowShader = Shader("../shaders/point_shadows_depth.vert", "../shaders/point_shadows_depth.frag", "../shaders/point_shadows_depth.geom");
 	m_defaultShader.use();
 }

@@ -155,11 +155,11 @@
 // Add destructors to all classes                    -- Smart pointers have auto garbage collection
 
 /******************IN PROGRESS*********************/
-Clean up main function
 clean up render loop
 Clean Up terrain -
     constructor for file, constructor for random gen
-Combine all shadow maps into one shader
 
-add tan/bit to all primitives
-(this was already done tp terrain? why did lighting stop working?
+
+
+UI render window should be able to render gbuffer
+gbuffer outputs each attribute as texture, try rendering each texture separately
