@@ -53,37 +53,38 @@ void toggleFlashLight(void)
 
 void setUpTestScene1(std::shared_ptr<Scene> targetScene)
 {
-	woodTex = TextureFromFile("desert_sand.jpg", "../resources");
-	stonebrick = TextureFromFile("brickwall.jpg", "../resources");
-	stonebrickNorm = TextureFromFile("brickwall_normal.jpg", "../resources", "texture_normal");
-	blankHeight = TextureFromFile("blank_height_map.jpg", "../resources", "texture_height");
-	std::vector<Texture> brickTex;
-	brickTex.push_back(stonebrick);
-	brickTex.push_back(stonebrickNorm);
-	brickTex.push_back(blankHeight);
+////	woodTex = TextureFromFile("desert_sand.jpg", "../resources");
+//	stonebrick = TextureFromFile("brickwall.jpg", "../resources");
+//	stonebrickNorm = TextureFromFile("brickwall_normal.jpg", "../resources", "texture_normal");
+//	blankHeight = TextureFromFile("blank_height_map.jpg", "../resources", "texture_height");
+//	std::vector<Texture> brickTex;
+//	brickTex.push_back(stonebrick);
+//	brickTex.push_back(stonebrickNorm);
+//	brickTex.push_back(blankHeight);
 
 
 	stone = TextureFromFile("stone_antelopeCayon_01_basecolor.jpg", "../resources");
 	stoneNorm = TextureFromFile("stone_antelopeCayon_01_normal.jpg", "../resources", "texture_normal");
 	stoneHeight = TextureFromFile("stone_antelopeCayon_01_height.jpg", "../resources", "texture_height");
+	stoneHeight = TextureFromFile("stone_antelopeCayon_01_metallic.jpg", "../resources", "texture_specular");
 	std::vector<Texture> stoneTex;
 	stoneTex.push_back(stone);
 	stoneTex.push_back(stoneNorm);
 	stoneTex.push_back(blankHeight);
 
 
-	brick = TextureFromFile("bricks2.jpg", "../resources");
-	brickNorm = TextureFromFile("bricks2_normal.jpg", "../resources", "texture_normal");
-	brickHeight = TextureFromFile("bricks2_disp.jpg", "../resources", "texture_height");
-	std::vector<Texture> redBrickTex;
-	redBrickTex.push_back(brick);
-	redBrickTex.push_back(brickNorm);
-	redBrickTex.push_back(brickHeight);
+//	brick = TextureFromFile("bricks2.jpg", "../resources");
+//	brickNorm = TextureFromFile("bricks2_normal.jpg", "../resources", "texture_normal");
+//	brickHeight = TextureFromFile("bricks2_disp.jpg", "../resources", "texture_height");
+//	std::vector<Texture> redBrickTex;
+//	redBrickTex.push_back(brick);
+//	redBrickTex.push_back(brickNorm);
+//	redBrickTex.push_back(brickHeight);
 
 	targetScene->setActiveScene();
-	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Sphere(25, 25, 25), brickTex), glm::vec3(20.0f, 0, 0), "sphere")));
+	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Sphere(25, 25, 25), stoneTex), glm::vec3(20.0f, 0, 0), "sphere")));
 	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Terrain(), stoneTex), glm::vec3(-1000.0f, -100, -1000), "terrain")));
-	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Cube, redBrickTex), glm::vec3(0,0,20), "cube")));
+	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Cube, stoneTex), glm::vec3(0,0,20), "cube")));
 
 	targetScene->setEntityScale("cube", glm::vec3(20,20,20));
 	//	targetScene->addLight(std::make_shared<PointLight>(PointLight("pointLights[0]")));

@@ -29,7 +29,8 @@ public:
      * @brief Binds uniform buffer object and translates based on view
      * @param view - view to be used in rendering
      */
-    void bind(void);
+    void bindForWriting(void);
+    void bindForReading(void);
 	void unbind(void);
 	void writeToExternalBuffer(GLuint buffer, GLuint bufferTex);
 	void bindTextures(void);
@@ -37,6 +38,7 @@ public:
 	GLuint getPosition(void) {return this->m_position;}
 	GLuint getNormal(void) {return this->m_normal;}
 	GLuint getAlbedoSpec(void) {return this->m_albedoSpec;}
+	GLuint getID(void) {return this->m_ID;}
 private:
     GLuint m_ID;
     GLuint m_rbo;

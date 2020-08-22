@@ -30,6 +30,7 @@ public:
      * @param view - view to be used in rendering
      */
     void bind();
+    void bindForWriting();
 	void unbind(void);
     glm::mat4 getProjection();
     GLuint getTextureBuffer();

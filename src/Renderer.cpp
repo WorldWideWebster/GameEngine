@@ -10,6 +10,7 @@ Renderer::Renderer()
 {
 
 }
+void renderQuad();
 
 
 void Renderer::addScene(Scene targetScene)
@@ -127,9 +128,6 @@ void Renderer::render(std::shared_ptr<Scene> targetScene)
 	/** 		DEFERRED RENDERING			**/
 	geometryPass(targetScene);
 	lightingPass(targetScene);
-//	targetScene->getDefaultShader()->setVec3("viewPos", targetScene->getDefaultCamera()->Position);
-
-//	this->m_gBuffer.writeToExternalBuffer(this->m_frameBuffer.getID(), this->m_frameBuffer.getTextureBuffer());
 #endif
 }
 
@@ -155,7 +153,7 @@ unsigned int* Renderer::getRenderBufferTexturePtr(void)
 void Renderer::geometryPass(std::shared_ptr<Scene> targetScene)
 {
 
-	this->m_gBuffer.bind();
+	this->m_gBuffer.bindForWriting();
 	glm::mat4 view = targetScene->getDefaultCamera()->GetViewMatrix();
 	glm::mat4 projection = glm::perspective(glm::radians(targetScene->getDefaultCamera()->Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 	targetScene->getGeomShader()->use();
@@ -166,8 +164,40 @@ void Renderer::geometryPass(std::shared_ptr<Scene> targetScene)
 void Renderer::lightingPass(std::shared_ptr<Scene> targetScene)
 {
 	this->m_frameBuffer.bind();
+	targetScene->getLightingShader()->use();
 	this->m_gBuffer.bindTextures();
 	targetScene->renderLights(targetScene->getLightingShader());
 	targetScene->getLightingShader()->setVec3("viewPos", targetScene->getDefaultCamera()->Position);
+	renderQuad();
 	this->m_frameBuffer.unbind();
+}
+// renderQuad() renders a 1x1 XY quad in NDC
+// -----------------------------------------
+unsigned int quadVAO = 0;
+unsigned int quadVBO;
+void renderQuad()
+{
+	if (quadVAO == 0)
+	{
+		float quadVertices[] = {
+				// positions        // texture Coords
+				-1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
+				-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+				1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
+				1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+		};
+		// setup plane VAO
+		glGenVertexArrays(1, &quadVAO);
+		glGenBuffers(1, &quadVBO);
+		glBindVertexArray(quadVAO);
+		glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+	}
+	glBindVertexArray(quadVAO);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	glBindVertexArray(0);
 }

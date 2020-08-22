@@ -34,7 +34,10 @@ Scene::Scene()
 	m_geomPass = Shader("../shaders/g_buffer.vert", "../shaders/g_buffer.frag");
 	m_lightingPass = Shader("../shaders/deferred_shader.vert", "../shaders/deferred_shader.frag");
 	m_shadowShader = Shader("../shaders/point_shadows_depth.vert", "../shaders/point_shadows_depth.frag", "../shaders/point_shadows_depth.geom");
-	m_defaultShader.use();
+	m_lightingPass.use();
+	m_lightingPass.setInt("gPosition", 0);
+	m_lightingPass.setInt("gNormal", 1);
+	m_lightingPass.setInt("gAlbedoSpec", 2);
 }
 // TODO: Move this when I need to find another place for it
 void Scene::setDepthBuffer(unsigned int depthBuffer)
@@ -111,7 +114,7 @@ void Scene::renderEntities(Shader* shader)
 
 void Scene::renderLights(Shader* shader)
 {
-	shader->use();
+//	shader->use();
 	setShaderPointLights(shader);
 	setShaderDirLights(shader);
 	setShaderSpotLights(shader);

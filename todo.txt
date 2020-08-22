@@ -163,3 +163,5 @@ Clean Up terrain -
 
 UI render window should be able to render gbuffer
 gbuffer outputs each attribute as texture, try rendering each texture separately
+normal forward shader can render each channel as its own thing by changing the frag output, why can't gbuffer do the same
+Does every texture need a spec channel?

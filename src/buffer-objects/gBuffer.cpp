@@ -66,11 +66,8 @@ void gBuffer::setUp()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void gBuffer::bind(void)
+void gBuffer::bindForWriting(void)
 {
-	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-
-
     // render
     // ------
     // bind to framebuffer and draw scene as we normally would to color texture
@@ -80,10 +77,14 @@ void gBuffer::bind(void)
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
+void gBuffer::bindForReading(void)
+{
+	glBindFramebuffer(GL_READ_FRAMEBUFFER, this->m_ID);
+}
 
 void gBuffer::unbind(void)
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
 }
 
 void gBuffer::writeToExternalBuffer(GLuint buffer, GLuint bufferTex)

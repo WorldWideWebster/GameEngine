@@ -151,8 +151,8 @@ int main()
         glfwMakeContextCurrent(window.m_glfwWindow);
         glfwGetFramebufferSize(window.m_glfwWindow, &display_w, &display_h);
         glViewport(0, 0, display_w, display_h);
-        glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
-        glClear(GL_COLOR_BUFFER_BIT);
+//        glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
+//        glClear(GL_COLOR_BUFFER_BIT);
 
         mainIMGUIWindow.render();
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)

@@ -25,7 +25,7 @@ public:
 	std::shared_ptr<Scene>  getActiveScene(void);
 	unsigned int getRenderBufferTexture(void);
 	unsigned int getGBufferTex(void);
-	BufferObject* getRenderBufferPtr(void){return &this->m_gBuffer;}
+	BufferObject* getRenderBufferPtr(void){return &this->m_frameBuffer;}
 	ShadowCubeDepthBuffer* getShadowBufferPtr(void){return &this->m_shadowBuffer;}
 	unsigned int *getRenderBufferTexturePtr(void);
 private:
