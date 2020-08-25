@@ -37,7 +37,8 @@ Scene::Scene()
 	m_lightingPass.use();
 	m_lightingPass.setInt("gPosition", 0);
 	m_lightingPass.setInt("gNormal", 1);
-	m_lightingPass.setInt("gAlbedoSpec", 2);
+	m_lightingPass.setInt("gAlbedo", 2);
+	m_lightingPass.setInt("gSpec", 3);
 }
 // TODO: Move this when I need to find another place for it
 void Scene::setDepthBuffer(unsigned int depthBuffer)

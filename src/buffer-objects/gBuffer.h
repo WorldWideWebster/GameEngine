@@ -37,14 +37,16 @@ public:
 
 	GLuint getPosition(void) {return this->m_position;}
 	GLuint getNormal(void) {return this->m_normal;}
-	GLuint getAlbedoSpec(void) {return this->m_albedoSpec;}
+	GLuint getAlbedo(void) {return this->m_albedo;}
+	GLuint getSpec(void) {return this->m_spec;}
 	GLuint getID(void) {return this->m_ID;}
 private:
     GLuint m_ID;
     GLuint m_rbo;
     GLuint m_position;
     GLuint m_normal;
-    GLuint m_albedoSpec;
+    GLuint m_albedo;
+    GLuint m_spec;
 };
 
 
