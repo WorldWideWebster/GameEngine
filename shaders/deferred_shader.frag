@@ -8,16 +8,25 @@ uniform sampler2D gNormal;
 uniform sampler2D gAlbedo;
 uniform sampler2D gSpec;
 
-struct Light {
-    vec3 Position;
-    vec3 Color;
+struct PointLight
+{
+//    bool castsShadow;
+    vec3 position;
+    float radius;
+    vec3 color;
 
-    float Linear;
-    float Quadratic;
-    float Radius;
+    float constant;
+    float linear;
+    float quadratic;
 };
-const int NR_LIGHTS = 32;
-uniform Light PointLight[NR_LIGHTS];
+
+#define MAX_POINT_LIGHTS 5
+uniform int u_num_point_lights = 0;
+int num_point_lights = 0;
+uniform PointLight pointLights[MAX_POINT_LIGHTS];
+
+vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir, vec3 Diffuse, float Specular);
+
 uniform vec3 viewPos;
 uniform int nrOfLights;
 void main()
@@ -51,5 +60,39 @@ void main()
 //            lighting += diffuse + specular;
 //        }
 //    }
-    FragColor = vec4(Normal.rgb, 1.0);
+    vec3 result = vec3(0.0);
+
+    // Phase 2: Point Lights
+    for(int i = 0; i < u_num_point_lights; i++)
+        lighting += CalcPointLight(pointLights[i], Normal, FragPos, viewDir, Diffuse, Specular);
+
+//    FragColor = vec4(Normal.rgb, 1.0);
+    FragColor = vec4(lighting, 1.0);
+
+}
+
+
+// calculates the color when using a point light.
+vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir, vec3 Diffuse, float Specular)
+{
+    vec3 lighting = vec3(0.0);
+    float distance = distance(light.position, fragPos);
+    if(distance < light.radius)
+    {
+        vec3 lightDir = normalize(light.position - fragPos);
+        // diffuse shading
+        vec3 diffuse = max(dot(normal, lightDir), 0.0) * Diffuse * light.color;
+        // specular shading
+        vec3 reflectDir = reflect(-lightDir, normal);
+        float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
+        vec3 specular = light.color * spec * Specular;
+        // attenuation
+        float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
+        // combine results
+        ////    float shadow = light.castsShadow ? ShadowCalculation(fragPos, light.position) : 0.0;
+        diffuse *= attenuation;
+        specular *= attenuation;
+        lighting += diffuse + specular;
+    }
+    return lighting;
 }

@@ -8,11 +8,10 @@
 PointLight::PointLight(std::string ID) : Light(ID)
 {
 	this->m_position = glm::vec3(0,0,0);
-
-	this->m_constant = 1.0f;
+	this->m_constant = 0.0001f;
 	this->m_linear = 0.009;
 	// Smaller is further
-	this->m_quadratic = 0.000032;
+	this->m_quadratic = 0.00032;
 	calcLightRadius();
 }
 
@@ -117,7 +116,7 @@ void PointLight::calcLightRadius(void)
 {
 	const float maxBrightness = std::fmaxf(std::fmaxf(this->getColor().r, this->getColor().g), this->getColor().b);
 	this->m_radius = (-this->m_linear + std::sqrt(this->m_linear * this->m_linear - 4 * this->m_quadratic *
-																					(this->m_constant - (256.0f / 5.0f) * maxBrightness))) / (2.0f * this->m_quadratic);
+							(this->m_constant - (256.0f / 5.0f) * maxBrightness))) / (2.0f * this->m_quadratic);
 }
 
 

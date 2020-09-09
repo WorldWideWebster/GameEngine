@@ -143,7 +143,7 @@ unsigned int Renderer::getRenderBufferTexture(void)
 
 unsigned int Renderer::getGBufferTex(void)
 {
-	return this->m_gBuffer.getAlbedo();
+	return this->m_gBuffer.getPosition();
 }
 unsigned int* Renderer::getRenderBufferTexturePtr(void)
 {
