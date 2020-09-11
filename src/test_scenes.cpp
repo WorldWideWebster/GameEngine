@@ -92,6 +92,7 @@ void setUpTestScene1(std::shared_ptr<Scene> targetScene)
 //	targetScene->toggleLightShadow("dirLights[0]", true);
 //	targetScene->addLight(std::make_shared<SpotLight>(SpotLight("spotLights[0]")));
 //	targetScene->getLightByID("pointLights[0]")->attachToEntity(targetScene->getEntityByID("sphere"), glm::vec3(0,20,0));
+	targetScene->toggleLightShadow("pointLights[0]", true);
 //	targetScene->setEntityScale("sphere", glm::vec3(20,20,20));
 
 }
@@ -102,9 +103,9 @@ void doTestScene1(std::shared_ptr<Scene> targetScene)
 	glm::vec3 lightPos;
 	lightPos.x = sin(glfwGetTime() / 1) * 100.0f;
 	lightPos.z = cos(glfwGetTime() / 1) * 100.0f;
-	lightPos.y = 10.0f;
+	lightPos.y = 100.0f;
 //
-	targetScene->setEntityPosition("sphere", lightPos);
+//	targetScene->setEntityPosition("sphere", lightPos);
 //	if (flashlight)
 //	{
 //		targetScene->toggleLight("spotLights[0]", true);
@@ -114,7 +115,7 @@ void doTestScene1(std::shared_ptr<Scene> targetScene)
 //		targetScene->toggleLight("spotLights[0]", false);
 //	}
 //
-//	targetScene->setLightPosition("spotLights[0]", lightPos);
+//	targetScene->setLightPosition("spotLights[0]", targetScene->getDefaultCamera()->Position);
 //	targetScene->setLightDirection("spotLights[0]", targetScene->getDefaultCamera()->Front);
 	targetScene->setLightPosition("pointLights[0]", lightPos);
 //	targetScene->setLightDirection("dirLights[0]", lightPos);

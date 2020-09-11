@@ -161,6 +161,7 @@ void Renderer::geometryPass(std::shared_ptr<Scene> targetScene)
 	targetScene->getGeomShader()->setMat4("view", view);
 	targetScene->renderEntities(targetScene->getGeomShader());
 }
+
 void Renderer::lightingPass(std::shared_ptr<Scene> targetScene)
 {
 	this->m_frameBuffer.bind();
@@ -170,6 +171,34 @@ void Renderer::lightingPass(std::shared_ptr<Scene> targetScene)
 	targetScene->getLightingShader()->setVec3("viewPos", targetScene->getDefaultCamera()->Position);
 	renderQuad();
 	this->m_frameBuffer.unbind();
+}
+
+void Renderer::shadowPass(std::shared_ptr<Scene> targetScene)
+{
+	/***	Point Light Shadow Map Stuff	***/
+	// 0. create depth cubemap transformation matrices
+	// -----------------------------------------------
+	float near_plane = 1.0f;
+	float far_plane = 2500.0f;
+	glm::mat4 shadowProj = glm::perspective(glm::radians(90.0f), (float)SHADOW_WIDTH / (float)SHADOW_HEIGHT, near_plane, far_plane);
+	std::vector<glm::mat4> shadowTransforms;
+	shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
+	shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
+	shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f)));
+	shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f)));
+	shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
+	shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
+
+	this->m_shadowBuffer.bind();
+	targetScene->getShadowShader()->use();
+	for (unsigned int i = 0; i < 6; ++i)
+		targetScene->getShadowShader()->setMat4("shadowMatrices[" + std::to_string(i) + "]", shadowTransforms[i]);
+	targetScene->getShadowShader()->setFloat("far_plane", far_plane);
+//	targetScene->getShadowShader()->setVec3("lightPos", lightPos);
+	targetScene->setShadowLightPos(targetScene->getShadowShader());
+	/***	/Point Light Shadow Map Stuff	***/
+	targetScene->renderEntities(targetScene->getShadowShader());
+	this->m_shadowBuffer.unbind();
 }
 // renderQuad() renders a 1x1 XY quad in NDC
 // -----------------------------------------

@@ -38,6 +38,7 @@ private:
 
 	void geometryPass(std::shared_ptr<Scene> targetScene);
 	void lightingPass(std::shared_ptr<Scene> targetScene);
+	void shadowPass(std::shared_ptr<Scene> targetScene);
 };
 
 
