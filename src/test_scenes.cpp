@@ -87,12 +87,11 @@ void setUpTestScene1(std::shared_ptr<Scene> targetScene)
 	targetScene->addEntity(std::make_shared<Entity>(Entity(new Mesh(new Cube, stoneTex), glm::vec3(0,0,20), "cube")));
 
 	targetScene->setEntityScale("cube", glm::vec3(20,20,20));
-	targetScene->addLight(std::make_shared<PointLight>(PointLight("pointLights[0]")));
-//	targetScene->addLight(std::make_shared<DirectionalLight>(DirectionalLight(glm::vec3(1.0f), "dirLights[0]")));
-//	targetScene->toggleLightShadow("dirLights[0]", true);
+	//	targetScene->addLight(std::make_shared<PointLight>(PointLight("pointLights[0]")));
+	targetScene->addLight(std::make_shared<DirectionalLight>(DirectionalLight(glm::vec3(1.0f), "dirLights[0]")));
+	targetScene->toggleLightShadow("dirLights[0]", true);
 //	targetScene->addLight(std::make_shared<SpotLight>(SpotLight("spotLights[0]")));
 //	targetScene->getLightByID("pointLights[0]")->attachToEntity(targetScene->getEntityByID("sphere"), glm::vec3(0,20,0));
-	targetScene->toggleLightShadow("pointLights[0]", true);
 //	targetScene->setEntityScale("sphere", glm::vec3(20,20,20));
 
 }
@@ -101,9 +100,9 @@ void doTestScene1(std::shared_ptr<Scene> targetScene)
 {
 	// Time based variables
 	glm::vec3 lightPos;
-	lightPos.x = sin(glfwGetTime() / 1) * 100.0f;
-	lightPos.z = cos(glfwGetTime() / 1) * 100.0f;
-	lightPos.y = 100.0f;
+	lightPos.x = sin(glfwGetTime() / 10) * 1000.0f;
+	lightPos.z = cos(glfwGetTime() / 10) * 1000.0f;
+	lightPos.y = 100.0 + cos(glfwGetTime()) * 1.0f;
 //
 //	targetScene->setEntityPosition("sphere", lightPos);
 //	if (flashlight)
@@ -115,10 +114,10 @@ void doTestScene1(std::shared_ptr<Scene> targetScene)
 //		targetScene->toggleLight("spotLights[0]", false);
 //	}
 //
-//	targetScene->setLightPosition("spotLights[0]", targetScene->getDefaultCamera()->Position);
+//	targetScene->setLightPosition("spotLights[0]", lightPos);
 //	targetScene->setLightDirection("spotLights[0]", targetScene->getDefaultCamera()->Front);
-	targetScene->setLightPosition("pointLights[0]", lightPos);
-//	targetScene->setLightDirection("dirLights[0]", lightPos);
+//	targetScene->setLightPosition("pointLights[0]", lightPos);
+	targetScene->setLightDirection("dirLights[0]", lightPos);
 }
 
 void setUpTestScene2(void)
