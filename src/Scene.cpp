@@ -34,17 +34,24 @@ Scene::Scene()
 	m_geomPass = Shader("../shaders/g_buffer.vert", "../shaders/g_buffer.frag");
 	m_lightingPass = Shader("../shaders/deferred_shader.vert", "../shaders/deferred_shader.frag");
 	m_shadowShader = Shader("../shaders/point_shadows_depth.vert", "../shaders/point_shadows_depth.frag", "../shaders/point_shadows_depth.geom");
+
+
+	// TODO: Tie this into ifdef for deferred rendering
 	m_lightingPass.use();
 	m_lightingPass.setInt("gPosition", 0);
 	m_lightingPass.setInt("gNormal", 1);
 	m_lightingPass.setInt("gAlbedo", 2);
 	m_lightingPass.setInt("gSpec", 3);
+	m_lightingPass.setInt("depthMap", 4);
 }
 // TODO: Move this when I need to find another place for it
 void Scene::setDepthBuffer(unsigned int depthBuffer)
 {
 	m_defaultShader.use();
 	m_defaultShader.setInt("depthMap", depthBuffer);
+	// TODO: Change this to a number similar to
+	//	glActiveTexture(GL_TEXTURE4);
+	//	glBindTexture(GL_TEXTURE_CUBE_MAP, this->getShadowBufferPtr()->getTextureBuffer());
 }
 
 

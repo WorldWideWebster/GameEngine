@@ -47,7 +47,7 @@ static glm::vec3 lightPos(-5.0f, 1.0f, -1.0f);
 
 void Renderer::render(std::shared_ptr<Scene> targetScene)
 {
-#ifndef DEFERRED_RENDERING
+#ifdef DEFERRED_RENDERING
 	/** 		FORWARD RENDERING			**/
 	// shadow Section
 	float far_plane = 2500.0f;	// TODO: Move this
@@ -68,6 +68,7 @@ void Renderer::render(std::shared_ptr<Scene> targetScene)
 
 #else
 	/** 		DEFERRED RENDERING			**/
+	shadowPass(targetScene);
 	geometryPass(targetScene);
 	lightingPass(targetScene);
 #endif
@@ -106,11 +107,15 @@ void Renderer::geometryPass(std::shared_ptr<Scene> targetScene)
 
 void Renderer::lightingPass(std::shared_ptr<Scene> targetScene)
 {
+	float far_plane = 2500.0f;
 	this->m_frameBuffer.bind();
 	targetScene->getLightingShader()->use();
 	this->m_gBuffer.bindTextures();
-	targetScene->renderLights(targetScene->getLightingShader());
+	glActiveTexture(GL_TEXTURE4);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, this->getShadowBufferPtr()->getTextureBuffer());
 	targetScene->getLightingShader()->setVec3("viewPos", targetScene->getDefaultCamera()->Position);
+	targetScene->getLightingShader()->setFloat("far_plane", far_plane);
+	targetScene->renderLights(targetScene->getLightingShader());
 	renderQuad();
 	this->m_frameBuffer.unbind();
 }

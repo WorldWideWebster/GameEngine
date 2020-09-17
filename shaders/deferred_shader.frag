@@ -7,6 +7,8 @@ uniform sampler2D gPosition;
 uniform sampler2D gNormal;
 uniform sampler2D gAlbedo;
 uniform sampler2D gSpec;
+uniform samplerCube depthMap;
+uniform float far_plane;
 
 
 struct DirLight {
@@ -17,7 +19,7 @@ struct DirLight {
 
 struct PointLight
 {
-//    bool castsShadow;
+    bool castsShadow;
     vec3 position;
     float radius;
     vec3 color;
@@ -28,7 +30,7 @@ struct PointLight
 };
 
 struct SpotLight {
-//    bool castsShadow;
+    bool castsShadow;
     vec3 position;
     vec3 direction;
     float cutOff;
@@ -64,6 +66,50 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir, vec
 
 uniform vec3 viewPos;
 uniform int nrOfLights;
+
+// array of offset direction for sampling
+vec3 gridSamplingDisk[20] = vec3[]
+(
+vec3(1, 1,  1), vec3( 1, -1,  1), vec3(-1, -1,  1), vec3(-1, 1,  1),
+vec3(1, 1, -1), vec3( 1, -1, -1), vec3(-1, -1, -1), vec3(-1, 1, -1),
+vec3(1, 1,  0), vec3( 1, -1,  0), vec3(-1, -1,  0), vec3(-1, 1,  0),
+vec3(1, 0,  1), vec3(-1,  0,  1), vec3( 1,  0, -1), vec3(-1, 0, -1),
+vec3(0, 1,  1), vec3( 0, -1,  1), vec3( 0, -1, -1), vec3( 0, 1, -1)
+);
+
+
+float ShadowCalculation(vec3 fragPos, vec3 lightPosition)
+{
+    // get vector between fragment position and light position
+    vec3 fragToLight = fragPos - lightPosition;
+    // use the fragment to light vector to sample from the depth map
+    // float closestDepth = texture(depthMap, fragToLight).r;
+    // it is currently in linear range between [0,1], let's re-transform it back to original depth value
+    // closestDepth *= far_plane;
+    // now get current linear depth as the length between the fragment and light position
+    float currentDepth = length(fragToLight);
+
+    float shadow = 0.0;
+    float bias = 1.0;
+    int samples = 20;
+    float viewDistance = length(viewPos - fragPos);
+    float diskRadius = (1.0 + (viewDistance / far_plane)) / 25.0;
+    for(int i = 0; i < samples; ++i)
+    {
+        float closestDepth = texture(depthMap, fragToLight + gridSamplingDisk[i] * diskRadius).r;
+        closestDepth *= far_plane;   // undo mapping [0;1]
+        if(currentDepth - bias > closestDepth)
+        shadow += 1.0;
+    }
+    shadow /= float(samples);
+
+    // display closestDepth as debug (to visualize depth cubemap)
+    // FragColor = vec4(vec3(closestDepth / far_plane), 1.0);
+
+    return shadow;
+}
+
+
 void main()
 {
     // retrieve data from gbuffer
@@ -101,9 +147,10 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 fragPos, vec3 viewDir, vec3 
     float spec = pow(max(dot(normal, halfwayDir), 0.0), 32.0);
     vec3 specular = light.color * spec * Specular;
 
-//    float shadow = light.castsShadow ? ShadowCalculation(fs_in.FragPos, light.direction) : 0.0;
+     float shadow = light.castsShadow ? ShadowCalculation(fragPos, light.direction) : 0.0;
 
-    lighting += diffuse + specular;
+//    lighting += (diffuse + specular);
+    lighting += (1.0 - shadow) * (diffuse + specular);
     return lighting;
 }
 
@@ -124,10 +171,11 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir, v
         // attenuation
         float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
         // combine results
-        ////    float shadow = light.castsShadow ? ShadowCalculation(fragPos, light.position) : 0.0;
+         float shadow = light.castsShadow ? ShadowCalculation(fragPos, light.position) : 0.0;
         diffuse *= attenuation;
         specular *= attenuation;
-        lighting += diffuse + specular;
+//        lighting +=  (diffuse + specular);
+        lighting += (1.0 - shadow) * (diffuse + specular);
     }
     return lighting;
 }
@@ -153,7 +201,8 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir, vec
     // combine results
     diffuse *= attenuation;
     specular *= attenuation;
-//    float shadow = light.castsShadow ? ShadowCalculation(fs_in.FragPos, light.position) : 0.0;
+     float shadow = light.castsShadow ? ShadowCalculation(fragPos, light.position) : 0.0;
 
-    return (diffuse + specular) * intensity;
+    return  (diffuse + specular) * intensity;
+    return  (1.0 - shadow) * (diffuse + specular) * intensity;
 }
