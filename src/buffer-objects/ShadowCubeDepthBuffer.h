@@ -46,6 +46,12 @@ public:
 	 * @brief Unbinds the shadow depth buffer so we don't keep writing to it
 	 */
 	void unbind(void);
+
+	/**
+	 * @brief Binds the shadow depth buffer texture ID to a GL_TEXTURE
+	 */
+	void bindDepthMapTexture(void);
+
 	void doDebugDepth(void);
 
 	GLuint *getShadowMap();

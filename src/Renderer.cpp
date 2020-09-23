@@ -111,8 +111,7 @@ void Renderer::lightingPass(std::shared_ptr<Scene> targetScene)
 	this->m_frameBuffer.bind();
 	targetScene->getLightingShader()->use();
 	this->m_gBuffer.bindTextures();
-	glActiveTexture(GL_TEXTURE4);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, this->getShadowBufferPtr()->getTextureBuffer());
+	this->m_shadowBuffer.bindDepthMapTexture();
 	targetScene->getLightingShader()->setVec3("viewPos", targetScene->getDefaultCamera()->Position);
 	targetScene->getLightingShader()->setFloat("far_plane", far_plane);
 	targetScene->renderLights(targetScene->getLightingShader());

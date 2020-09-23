@@ -73,6 +73,12 @@ GLuint ShadowCubeDepthBuffer::getTextureBuffer()
 	return this->m_depthCubeMap;
 }
 
+void ShadowCubeDepthBuffer::bindDepthMapTexture(void)
+{
+	glActiveTexture(GL_TEXTURE4);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, this->m_depthCubeMap);
+}
+
 
 
 
