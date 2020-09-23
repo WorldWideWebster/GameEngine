@@ -86,7 +86,7 @@ unsigned int Renderer::getRenderBufferTexture(void)
 
 unsigned int Renderer::getGBufferTex(void)
 {
-	return this->m_gBuffer.getPosition();
+	return this->m_gBuffer.getNormal();
 }
 unsigned int* Renderer::getRenderBufferTexturePtr(void)
 {

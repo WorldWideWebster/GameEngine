@@ -100,9 +100,9 @@ void doTestScene1(std::shared_ptr<Scene> targetScene)
 {
 	// Time based variables
 	glm::vec3 lightPos;
-	lightPos.x = sin(glfwGetTime() / 10) * 1000.0f;
-	lightPos.z = cos(glfwGetTime() / 10) * 1000.0f;
-	lightPos.y = 100.0 + cos(glfwGetTime()) * 1.0f;
+	lightPos.x = sin(glfwGetTime() / 10) * 500.0f;
+	lightPos.z = cos(glfwGetTime() / 10) * 500.0f;
+	lightPos.y = 50.0 + cos(glfwGetTime()) * 1.0f;
 //
 //	targetScene->setEntityPosition("sphere", lightPos);
 //	if (flashlight)
