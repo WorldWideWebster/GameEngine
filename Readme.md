@@ -1,6 +1,7 @@
-# NEMO ENGINE [Name TBD]
+# GAME ENGINE [Name TBD]
 
-This is a personal openGL rendering project used to learn openGL
+This is a personal openGL rendering and eventually game engine project used to learn openGL. This engine has been 
+build from the ground up, loosely on opengl and game engine tutorials, as well as some personal research.
 
 ## Author
 
@@ -37,3 +38,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 **Templates, ETC:**
 * **Billie Thompson** - *[Readme Template](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2#file-readme-template-md)* - [PurpleBooth](https://github.com/PurpleBooth)
 
+
+**Special Thanks:**
+* David Bedford - for helping me when I was first learning game dev (RIP)
