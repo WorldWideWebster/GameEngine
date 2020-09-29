@@ -10,6 +10,7 @@ UIRenderWindow::UIRenderWindow(Renderer *targetRenderer, std::string Name)
 {
 	this->m_renderer = targetRenderer;
 	this->setName(Name);
+	this->open();
 }
 
 void UIRenderWindow::showRenderBuffer(void)

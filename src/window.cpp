@@ -139,6 +139,12 @@ int Window::shouldClose()
 
 void Window::update()
 {
+    /*
+     *         int display_w, display_h;
+        glfwMakeContextCurrent(window.m_glfwWindow);
+        glfwGetFramebufferSize(window.m_glfwWindow, &display_w, &display_h);
+        glViewport(0, 0, display_w, display_h);
+     */
     swapBuffers();
 }
 

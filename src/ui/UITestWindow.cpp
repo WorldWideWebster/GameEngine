@@ -11,6 +11,7 @@ UITestWindow::UITestWindow(bool *box1, bool *box2, bool *box3, bool *box4)
 	this->show_render_window = box2;
 	this->noise_map_viewer = box3;
 	this->scene_info_viewer = box4;
+	this->open();
 }
 
 void UITestWindow::showWidgets(void)

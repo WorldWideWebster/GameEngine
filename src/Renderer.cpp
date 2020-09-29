@@ -8,7 +8,11 @@
 
 Renderer::Renderer()
 {
-
+	// configure global opengl state
+	// -----------------------------
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);    // build and compile our shader program
 }
 void renderQuad();
 
@@ -116,6 +120,11 @@ void Renderer::lightingPass(std::shared_ptr<Scene> targetScene)
 	targetScene->getLightingShader()->setFloat("far_plane", far_plane);
 	targetScene->renderLights(targetScene->getLightingShader());
 	renderQuad();
+
+	glBindFramebuffer(GL_READ_FRAMEBUFFER, this->m_gBuffer.getID());
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, this->m_frameBuffer.getID()); // write to default framebuffer
+	glBlitFramebuffer(0, 0, SCR_WIDTH, SCR_HEIGHT, 0, 0, SCR_WIDTH, SCR_HEIGHT, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
+
 	this->m_frameBuffer.unbind();
 }
 

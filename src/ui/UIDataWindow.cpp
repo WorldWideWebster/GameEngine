@@ -8,6 +8,7 @@ UIDataWindow::UIDataWindow(std::string targetName, std::shared_ptr<Scene> target
 {
 	this->setName(targetName);
 	this->m_scene = targetScene;
+	this->open();
 }
 
 void UIDataWindow::showWidgets(void)

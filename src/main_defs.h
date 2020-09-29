@@ -33,4 +33,8 @@
 //#define SHADOW_WIDTH  	1024
 //#define SHADOW_HEIGHT   1024
 
+//ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+#define STB_IMAGE_IMPLEMENTATION
+#define IMGUI_IMPL_OPENGL_LOADER_GLAD
+
 #endif //OPENGLSETUP_MAIN_DEFS_H

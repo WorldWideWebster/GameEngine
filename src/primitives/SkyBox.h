@@ -19,6 +19,7 @@ public:
 	void Draw(Shader shader);
 private:
 	Texture m_texture;
+	Shader m_shader;
 	std::shared_ptr<Camera> camera;
 	FrameBuffer *frameBuffer;
 };
