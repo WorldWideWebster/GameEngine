@@ -93,3 +93,8 @@ void Entity::render(Shader *targetShader, unsigned int depthMap)
 	targetShader->setMat4("model", this->model);
 	this->mesh->Draw(*targetShader, depthMap);
 }
+
+Mesh *Entity::getMesh() const
+{
+	return mesh;
+}

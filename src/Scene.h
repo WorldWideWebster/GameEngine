@@ -17,6 +17,8 @@
 #include "lighting/SpotLight.h"
 #include "buffer-objects/FrameBuffer.h"
 #include "shader/shader.h"
+#include "primitives/SkyBox.h"
+
 class Scene
 {
 public:
@@ -53,6 +55,9 @@ public:
 	void setEntityRotationDeg(std::string targetID, float targetRotAngle, glm::vec3 targetRotation);
 	void setEntityScale(std::string targetID, glm::vec3 targetScale);
 
+	void setSkybox(std::shared_ptr<SkyBox> skybox);
+	void renderSkyBox();
+
 	void renderEntities(Shader* shader);
 	void renderLights(Shader* shader);
 	void setShadowLightPos(Shader* shadowShader);
@@ -69,6 +74,7 @@ private:
 	std::vector<std::shared_ptr<Light>> m_lights;
 	std::vector<Camera> m_cameras;
 	std::shared_ptr<Camera> m_default_camera;
+	std::shared_ptr<SkyBox> m_skybox;
 	bool m_active;
 	int m_num_point_lights;
 	int m_num_dir_lights;

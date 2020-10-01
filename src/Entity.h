@@ -22,6 +22,8 @@ public:
 	Entity(std::string ID = "entity_" + std::to_string(EntityNum++));
 	Entity(Mesh *targetMesh, glm::vec3 startPosition = position_home, std::string ID = "entity_" + std::to_string(EntityNum++));
 	void setMesh(Mesh *targetMesh);
+	Mesh *getMesh() const;
+
 	void setPosition(glm::vec3 targetPosition);
 
 	/**
@@ -37,18 +39,20 @@ public:
 	glm::vec3 getScale(void);
 
 	void update();
-	void render(Shader *targetShader);
+	virtual void render(Shader *targetShader);
 	void render(Shader *targetShader, unsigned int depthMap);
 
 	std::string m_ID;
+
 private:
-	Mesh *mesh;
 	glm::vec3 m_position;
 	glm::vec3 m_rotation;
 	glm::vec3 m_scale;
 	float rotAngle;
 	bool needsUpdate;
 	glm::mat4 model;
+	Mesh *mesh;
+
 };
 
 

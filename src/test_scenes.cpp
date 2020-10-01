@@ -6,7 +6,7 @@
 #include "primitives/Sphere.h"
 #include "primitives/Terrain.h"
 #include <GLFW/glfw3.h>
-
+#include "main_defs.h"
 
 
 Texture woodTex;
@@ -50,6 +50,7 @@ void toggleFlashLight(void)
 {
 	flashlight = !flashlight;
 }
+glm::mat4 PROJECTION = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, RENDER_DISTANCE_NEAR, RENDER_DISTANCE_FAR);
 
 void setUpTestScene1(std::shared_ptr<Scene> targetScene)
 {
@@ -62,6 +63,22 @@ void setUpTestScene1(std::shared_ptr<Scene> targetScene)
 //	brickTex.push_back(stonebrickNorm);
 //	brickTex.push_back(blankHeight);
 
+	std::vector<std::string> faces
+	{
+			("../resources/textures/skybox/right.jpg"),
+			("../resources/textures/skybox/left.jpg"),
+			("../resources/textures/skybox/top.jpg"),
+			("../resources/textures/skybox/bottom.jpg"),
+			("../resources/textures/skybox/front.jpg"),
+			("../resources/textures/skybox/back.jpg")
+	};
+
+	Texture cubemap = CubemapTextureFromFile(faces);
+
+	targetScene->setSkybox(std::make_shared<SkyBox>(SkyBox(cubemap,
+			                                       targetScene->getDefaultCamera(),
+												   PROJECTION,
+												   Shader("../shaders/skybox.vert", "../shaders/skybox.frag"))));
 
 	stone = TextureFromFile("stone_antelopeCayon_01_basecolor.jpg", "../resources");
 	stoneNorm = TextureFromFile("stone_antelopeCayon_01_normal.jpg", "../resources", "texture_normal");

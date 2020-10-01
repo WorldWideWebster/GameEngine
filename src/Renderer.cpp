@@ -125,6 +125,8 @@ void Renderer::lightingPass(std::shared_ptr<Scene> targetScene)
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, this->m_frameBuffer.getID()); // write to default framebuffer
 	glBlitFramebuffer(0, 0, SCR_WIDTH, SCR_HEIGHT, 0, 0, SCR_WIDTH, SCR_HEIGHT, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
 
+	targetScene->renderSkyBox();
+
 	this->m_frameBuffer.unbind();
 }
 

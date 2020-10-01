@@ -12,16 +12,18 @@
  * @class SkyBox
  * @brief Entity extension for skybox
  */
-class SkyBox
+class SkyBox : public Entity
 {
 public:
-	SkyBox(Texture texture, std::shared_ptr<Camera> camera, FrameBuffer *frameBuffer);
-	void Draw(Shader shader);
+	SkyBox(Texture texture, std::shared_ptr<Camera> camera, glm::mat4 m_projection, Shader shader);
+	void render(void);
+	void setShader(const Shader &shader);
+
 private:
 	Texture m_texture;
 	Shader m_shader;
 	std::shared_ptr<Camera> camera;
-	FrameBuffer *frameBuffer;
+	glm::mat4 m_projection;
 };
 
 

@@ -45,6 +45,7 @@ public:
 	// WHY: can I not make draw virtual?
     void Draw(Shader shader);
 	void Draw(Shader shader, unsigned int depthMap);
+	void DrawCubeMap(Shader shader);
 	unsigned int getVAO(void);
     unsigned int getDefaultTexture(void);
 private:

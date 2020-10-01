@@ -210,6 +210,16 @@ void Mesh::Draw(Shader shader, unsigned int depthMap)
 	glBindVertexArray(0);
 
 }
+
+void Mesh::DrawCubeMap(Shader shader)
+{
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, textures[0].id);
+	glBindVertexArray(VAO);
+	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+	glBindVertexArray(0);
+}
+
 //FIXME: The crash probably lies here with my crappy pointers
 unsigned int Mesh::getVAO(void)
 {
