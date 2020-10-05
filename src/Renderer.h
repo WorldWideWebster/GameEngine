@@ -36,6 +36,7 @@ private:
 	gBuffer m_gBuffer;
 	ShadowCubeDepthBuffer m_shadowBuffer;
 
+	void blitDepthBuffer(void);
 	void geometryPass(std::shared_ptr<Scene> targetScene);
 	void lightingPass(std::shared_ptr<Scene> targetScene);
 	void shadowPass(std::shared_ptr<Scene> targetScene);

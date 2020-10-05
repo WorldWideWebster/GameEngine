@@ -24,8 +24,20 @@
 class Terrain : public Primitive
 {
 public:
+	/**
+	 * @brief Terrain default constructor. Generates terrain using random perlin noise
+	 */
     Terrain();
-
+    /**
+     * @brief Terrain constructor. Generates terrain using heightmap file
+     * @param heightMapFile string path to file to use as heightmap
+     */
+	Terrain(std::string heightMapFile);
+	/**
+	 * @brief generates vertices for terrain
+	 * @return vertices generate
+	 */
+	Vertex *generateVertices(void);
     void calculateNormals(std::vector< std::vector<unsigned char>> heightMap, Vertex *vertices);
     void calculateIndices(GLuint *indices, int width, int height);
     void setImageAsHeightMap(std::string filename);

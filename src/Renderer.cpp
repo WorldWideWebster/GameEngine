@@ -121,10 +121,7 @@ void Renderer::lightingPass(std::shared_ptr<Scene> targetScene)
 	targetScene->renderLights(targetScene->getLightingShader());
 	renderQuad();
 
-	glBindFramebuffer(GL_READ_FRAMEBUFFER, this->m_gBuffer.getID());
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, this->m_frameBuffer.getID()); // write to default framebuffer
-	glBlitFramebuffer(0, 0, SCR_WIDTH, SCR_HEIGHT, 0, 0, SCR_WIDTH, SCR_HEIGHT, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
-
+	blitDepthBuffer();
 	targetScene->renderSkyBox();
 
 	this->m_frameBuffer.unbind();
@@ -161,6 +158,14 @@ void Renderer::shadowPass(std::shared_ptr<Scene> targetScene)
 	targetScene->renderEntities(targetScene->getShadowShader());
 	this->m_shadowBuffer.unbind();
 }
+
+void Renderer::blitDepthBuffer(void)
+{
+	glBindFramebuffer(GL_READ_FRAMEBUFFER, this->m_gBuffer.getID());
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, this->m_frameBuffer.getID());
+	glBlitFramebuffer(0, 0, SCR_WIDTH, SCR_HEIGHT, 0, 0, SCR_WIDTH, SCR_HEIGHT, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
+}
+
 // renderQuad() renders a 1x1 XY quad in NDC
 // -----------------------------------------
 unsigned int quadVAO = 0;

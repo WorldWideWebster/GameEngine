@@ -8,11 +8,6 @@
 #include "../stb_image.h"
 #include <string>
 
-
-
-
-// TODO: Terrain contains a heightmap, generated off of noisemap
-
 // Default Terrain constructor
 Terrain::Terrain() : Primitive()
 {
@@ -20,41 +15,58 @@ Terrain::Terrain() : Primitive()
     scale = 0.5;
     size = 512*4;
 
-//    std::string filename = "../resources/heightmap.png";
-
-//    setImageAsHeightMap(filename);
-
 	NoiseMap nm;
     setArrayAsHeightMap(nm.getData(), nm.getHeight(), nm.getWidth());
 
-
-    vertex_count = height;
-    int count = vertex_count * vertex_count;
-    Vertex *vertices = new Vertex[count];
-    int vertexPointer = 0;
-    for(int gy=0;gy<vertex_count;gy++)
-    {
-        for(int gx=0;gx<vertex_count;gx++)
-        {
-            // Fill vertices
-            vertices[vertexPointer] =
-                    {glm::vec3(((float)gx/((float)vertex_count - 1) * size), (float)heightMap[gy][gx]*scale, ((float)gy/((float)vertex_count - 1) * size)),
-                     glm::vec3(0, 1, 0),
-                     glm::vec2(gx, gy)};
-            vertexPointer++;
-        }
-    }
+	Vertex *vertices = generateVertices();
 
     calculateNormals(heightMap, vertices);
-    GLuint *indices = new GLuint[6*(vertex_count-1)*(vertex_count-1)];
-    calculateIndices(indices, width, height);
-	unsigned nrOfIndices = 6*(vertex_count-1)*(vertex_count-1);
-
-    unsigned nrOfVertices = (vertex_count)*(vertex_count);
+	GLuint *indices = new GLuint[6*(height-1)*(width-1)];
+	calculateIndices(indices, width, height);
+	unsigned nrOfIndices = 6*(height-1)*(width-1);
+	unsigned nrOfVertices = (height)*(width);
 	ImprovedVertTanCalc(vertices, nrOfVertices, indices, nrOfIndices);
 
 
     this->set(vertices, nrOfVertices, indices, nrOfIndices);
+}
+
+Terrain::Terrain(std::string heightMapFile)
+{
+	setImageAsHeightMap(heightMapFile);
+
+	Vertex *vertices = generateVertices();
+	calculateNormals(heightMap, vertices);
+	GLuint *indices = new GLuint[6*(height-1)*(width-1)];
+	calculateIndices(indices, width, height);
+	unsigned nrOfIndices = 6*(height-1)*(width-1);
+	unsigned nrOfVertices = (height)*(width);
+	ImprovedVertTanCalc(vertices, nrOfVertices, indices, nrOfIndices);
+
+
+	this->set(vertices, nrOfVertices, indices, nrOfIndices);
+}
+
+Vertex* Terrain::generateVertices(void)
+{
+	vertex_count = height;
+	int count = vertex_count * vertex_count;
+
+	Vertex *vertices = new Vertex[count];
+	int vertexPointer = 0;
+	for(int gy=0;gy<vertex_count;gy++)
+	{
+		for(int gx=0;gx<vertex_count;gx++)
+		{
+			// Fill vertices
+			vertices[vertexPointer] =
+					{glm::vec3(((float)gx/((float)vertex_count - 1) * size), (float)heightMap[gy][gx]*scale, ((float)gy/((float)vertex_count - 1) * size)),
+					 glm::vec3(0, 1, 0),
+					 glm::vec2(gx, gy)};
+			vertexPointer++;
+		}
+	}
+	return vertices;
 }
 
 void Terrain::calculateNormals(std::vector< std::vector<unsigned char>> heightMap, Vertex *vertices)

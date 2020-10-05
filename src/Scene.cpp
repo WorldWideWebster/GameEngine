@@ -303,8 +303,6 @@ void Scene::setEntityScale(std::string targetID, glm::vec3 targetScale)
 
 
 
-
-
 std::vector<std::string> Scene::showSceneDetails(void)
 {
 	std::vector<std::string> returnString;
@@ -342,10 +340,12 @@ void Scene::toggleLightShadow(std::string targetID, bool toggle)
 
 void Scene::setSkybox(std::shared_ptr<SkyBox> skybox)
 {
+	this->m_has_skybox = TRUE;
 	this->m_skybox = skybox;
 }
 
 void Scene::renderSkyBox()
 {
-	this->m_skybox->render();
+	if(this->m_has_skybox)
+		this->m_skybox->render();
 }

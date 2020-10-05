@@ -76,6 +76,7 @@ private:
 	std::shared_ptr<Camera> m_default_camera;
 	std::shared_ptr<SkyBox> m_skybox;
 	bool m_active;
+	bool m_has_skybox = FALSE;
 	int m_num_point_lights;
 	int m_num_dir_lights;
 	int m_num_spot_lights;

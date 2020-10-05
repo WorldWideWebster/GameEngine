@@ -16,6 +16,7 @@ class NoiseMap
 {
 public:
 	NoiseMap();
+	NoiseMap(unsigned int height, unsigned int width);
 	NoiseMap(unsigned int type);
 	unsigned char *getData(void);
 	unsigned int getWidth(void);
@@ -24,7 +25,7 @@ public:
 	void reSeed(int seed);
 private:
 	unsigned char *data;
-	unsigned int width, height;
+	unsigned int m_width, m_height;
 	unsigned int texID;
 	void createTexture(void);
 	void doNoise(PerlinNoise pn);
