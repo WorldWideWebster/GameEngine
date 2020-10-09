@@ -34,6 +34,8 @@ void MainWindow::startFrame(void)
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
+	doMenu();
+	doMainMenuBar();
 }
 
 void MainWindow::render(void)
@@ -50,26 +52,29 @@ void MainWindow::shutDown(void)
 	ImGui::DestroyContext();
 }
 
-//static void DoMainMenuBar()
-//{
-//	if (ImGui::BeginMainMenuBar())
-//	{
-//		if (ImGui::BeginMenu("File"))
-//		{
-//			ShowExampleMenuFile();
-//			ImGui::EndMenu();
-//		}
-//		if (ImGui::BeginMenu("Edit"))
-//		{
-//			if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
-//			if (ImGui::MenuItem("Redo", "CTRL+Y", false, false)) {}  // Disabled item
-//			ImGui::Separator();
-//			if (ImGui::MenuItem("Cut", "CTRL+X")) {}
-//			if (ImGui::MenuItem("Copy", "CTRL+C")) {}
-//			if (ImGui::MenuItem("Paste", "CTRL+V")) {}
-//			ImGui::EndMenu();
-//		}
-//		ImGui::EndMainMenuBar();
-//	}
-//}
+void MainWindow::doMenu(void)
+{
+}
+
+void MainWindow::doMainMenuBar()
+{
+	if (ImGui::BeginMainMenuBar())
+	{
+		if (ImGui::BeginMenu("File"))
+		{
+			ImGui::EndMenu();
+		}
+		if (ImGui::BeginMenu("Edit"))
+		{
+			if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
+			if (ImGui::MenuItem("Redo", "CTRL+Y", false, false)) {}  // Disabled item
+			ImGui::Separator();
+			if (ImGui::MenuItem("Cut", "CTRL+X")) {}
+			if (ImGui::MenuItem("Copy", "CTRL+C")) {}
+			if (ImGui::MenuItem("Paste", "CTRL+V")) {}
+			ImGui::EndMenu();
+		}
+		ImGui::EndMainMenuBar();
+	}
+}
 

@@ -6,11 +6,13 @@
 #include <Renderer.h>
 #include "UIRenderWindow.h"
 
-UIRenderWindow::UIRenderWindow(Renderer *targetRenderer, std::string Name)
+UIRenderWindow::UIRenderWindow(Renderer *targetRenderer, std::string Name) : UIWindow()
 {
 	this->m_renderer = targetRenderer;
+	setNoScrollbar(true);
 	this->setName(Name);
 	this->open();
+	m_targetImage = this->m_renderer->getRenderBufferPtr()->getTextureBuffer();
 }
 
 void UIRenderWindow::showRenderBuffer(void)
@@ -22,35 +24,20 @@ void UIRenderWindow::showRenderBuffer(void)
 
 	// Set render window position
 	ImGui::SetWindowPos(this->getName().c_str(), ImVec2(0, 0), ImGuiCond_FirstUseEver);
+
+	// Window for rendering scene
+	ImGui::Image(
+			(void *) (uintptr_t) m_targetImage,
+			ImGui::GetContentRegionAvail(),
+			ImVec2(0, 1), ImVec2(1, 0), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));
 	// Set render window size
 	ImGui::SetWindowSize(this->getName().c_str(), ImVec2(RENDER_WINDOW_DEFAULT_X, RENDER_WINDOW_DEFAULT_Y),
 						 ImGuiCond_FirstUseEver);
-	ImGui::SetNextWindowSize(ImVec2(RENDER_WINDOW_DEFAULT_X, RENDER_WINDOW_DEFAULT_Y), ImGuiCond_FirstUseEver);
-	// Window for rendering scene
-	ImGui::Image(
-			(void *) (uintptr_t) this->m_renderer->getRenderBufferPtr()->getTextureBuffer(),
-			ImVec2(RENDER_WINDOW_DEFAULT_X, RENDER_WINDOW_DEFAULT_Y),
-			ImVec2(0, 1), ImVec2(1, 0), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));
 }
 
 void UIRenderWindow::renderTexture(unsigned int target_texture)
 {
-
-
-//	ImGui::Text("Location: %f %f %f     Direction: %f %f %f", camera.Position.x, camera.Position.y, camera.Position.z,
-//				camera.Front.x, camera.Front.y, camera.Front.z);
-
-	// Set render window position
-	ImGui::SetWindowPos(this->getName().c_str(), ImVec2(0, 0), ImGuiCond_FirstUseEver);
-	// Set render window size
-	ImGui::SetWindowSize(this->getName().c_str(), ImVec2(RENDER_WINDOW_DEFAULT_X, RENDER_WINDOW_DEFAULT_Y),
-						 ImGuiCond_FirstUseEver);
-	ImGui::SetNextWindowSize(ImVec2(RENDER_WINDOW_DEFAULT_X, RENDER_WINDOW_DEFAULT_Y), ImGuiCond_FirstUseEver);
-	// Window for rendering scene
-	ImGui::Image(
-			(void *) (uintptr_t) target_texture,
-			ImVec2(RENDER_WINDOW_DEFAULT_X, RENDER_WINDOW_DEFAULT_Y),
-			ImVec2(0, 1), ImVec2(1, 0), ImColor(255, 255, 255, 255), ImColor(255, 255, 255, 128));
+	m_targetImage = target_texture;
 }
 
 void UIRenderWindow::showWidgets(void)
@@ -93,6 +80,36 @@ void UIRenderWindow::renderTargetImage(unsigned int target_texture)
 	{
 		this->start();
 		renderTexture(target_texture);
+		this->showWidgets();
 		this->stop();
+	}
+}
+
+void UIRenderWindow::showMenuBar(void)
+{
+	if (ImGui::BeginMenuBar())
+	{
+		if (ImGui::BeginMenu("Layer"))
+		{
+
+			if (ImGui::MenuItem("Composite"))
+			{
+				this->m_targetImage = this->m_renderer->getRenderBufferTexture();
+			}
+			if (ImGui::MenuItem("Albedo"))
+			{
+				this->m_targetImage = this->m_renderer->getGBufferAlbedo();
+			}
+			if (ImGui::MenuItem("Normals"))
+			{
+				this->m_targetImage = this->m_renderer->getGBufferNormal();
+			}
+			if (ImGui::MenuItem("Position"))
+			{
+				this->m_targetImage = this->m_renderer->getGBufferPosition();
+			}
+			ImGui::EndMenu();
+		}
+		ImGui::EndMenuBar();
 	}
 }

@@ -26,6 +26,8 @@ public:
 	void render(void);
 	void endFrame(void);
 	void shutDown(void);
+	void doMenu(void);
+	void doMainMenuBar(void);
 private:
 	ImGuiIO &m_io;
 

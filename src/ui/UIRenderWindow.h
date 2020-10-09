@@ -20,9 +20,14 @@ public:
 	virtual void showRenderBuffer(void);
 	virtual void renderTexture(unsigned int target_texture);
 	virtual void showWidgets(void);
+	/**
+	 * @brief Menu bar logic and display for window
+	 */
+	void showMenuBar(void);
 	void renderTargetImage(unsigned int target_texture);
 private:
 	Renderer *m_renderer;
+	GLuint m_targetImage;
 };
 
 

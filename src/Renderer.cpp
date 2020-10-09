@@ -88,9 +88,19 @@ unsigned int Renderer::getRenderBufferTexture(void)
 	return this->m_frameBuffer.getTextureBuffer();
 }
 
-unsigned int Renderer::getGBufferTex(void)
+unsigned int Renderer::getGBufferNormal(void)
 {
 	return this->m_gBuffer.getNormal();
+}
+
+unsigned int Renderer::getGBufferAlbedo(void)
+{
+	return this->m_gBuffer.getAlbedo();
+}
+
+unsigned int Renderer::getGBufferPosition(void)
+{
+	return this->m_gBuffer.getPosition();
 }
 unsigned int* Renderer::getRenderBufferTexturePtr(void)
 {
@@ -165,6 +175,8 @@ void Renderer::blitDepthBuffer(void)
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, this->m_frameBuffer.getID());
 	glBlitFramebuffer(0, 0, SCR_WIDTH, SCR_HEIGHT, 0, 0, SCR_WIDTH, SCR_HEIGHT, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
 }
+
+
 
 // renderQuad() renders a 1x1 XY quad in NDC
 // -----------------------------------------
