@@ -6,8 +6,8 @@
  * MAIN DEFINITIONS FILE - divide as needed
  *
  */
-#ifndef OPENGLSETUP_MAIN_DEFS_H
-#define OPENGLSETUP_MAIN_DEFS_H
+#ifndef GAMEENGINE_MAIN_DEFS_H
+#define GAMEENGINE_MAIN_DEFS_H
 
 
 // Max light definitions - these must remain the same across all files
@@ -37,4 +37,4 @@
 #define STB_IMAGE_IMPLEMENTATION
 #define IMGUI_IMPL_OPENGL_LOADER_GLAD
 
-#endif //OPENGLSETUP_MAIN_DEFS_H
+#endif //GAMEENGINE_MAIN_DEFS_H

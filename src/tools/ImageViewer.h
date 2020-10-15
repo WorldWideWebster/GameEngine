@@ -2,8 +2,8 @@
 // Created by Sean on 7/31/2019.
 //
 
-#ifndef OPENGLSETUP_IMAGEVIEWER_H
-#define OPENGLSETUP_IMAGEVIEWER_H
+#ifndef GAMEENGINE_IMAGEVIEWER_H
+#define GAMEENGINE_IMAGEVIEWER_H
 
 
 class ImageViewer
@@ -12,4 +12,4 @@ class ImageViewer
 };
 
 
-#endif //OPENGLSETUP_IMAGEVIEWER_H
+#endif //GAMEENGINE_IMAGEVIEWER_H

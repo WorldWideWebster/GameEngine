@@ -2,8 +2,8 @@
 // Created by Sean on 4/16/2019.
 //
 
-#ifndef OPENGLSETUP_FRAMEBUFFER_H
-#define OPENGLSETUP_FRAMEBUFFER_H
+#ifndef GAMEENGINE_FRAMEBUFFER_H
+#define GAMEENGINE_FRAMEBUFFER_H
 // OpenGL includes
 #include <glad/glad.h> // holds all OpenGL type declarations
 #include <glm/glm.hpp>
@@ -45,4 +45,4 @@ private:
 };
 
 
-#endif //OPENGLSETUP_FRAMEBUFFER_H
+#endif //GAMEENGINE_FRAMEBUFFER_H

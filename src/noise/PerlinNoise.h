@@ -2,8 +2,8 @@
 // Created by Sean on 5/30/2019.
 //
 
-#ifndef OPENGLSETUP_PERLINNOISE_H
-#define OPENGLSETUP_PERLINNOISE_H
+#ifndef GAMEENGINE_PERLINNOISE_H
+#define GAMEENGINE_PERLINNOISE_H
 
 
 #include <vector>
@@ -35,4 +35,4 @@ private:
 
 
 
-#endif //OPENGLSETUP_PERLINNOISE_H
+#endif //GAMEENGINE_PERLINNOISE_H

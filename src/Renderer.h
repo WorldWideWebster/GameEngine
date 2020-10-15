@@ -2,16 +2,16 @@
 // Created by Sean on 9/10/2019.
 //
 
-#ifndef OPENGLSETUP_RENDERER_H
-#define OPENGLSETUP_RENDERER_H
+#ifndef GAMEENGINE_RENDERER_H
+#define GAMEENGINE_RENDERER_H
 
 #include <memory>
-#include <buffer-objects/gBuffer.h>
 
-#include "Scene.h"
-#include "buffer-objects/ShadowDepthBuffer.h"
-#include "buffer-objects/ShadowCubeDepthBuffer.h"
-#include "buffer-objects/FrameBuffer.h"
+#include <Scene.h>
+#include <buffer-objects/ShadowDepthBuffer.h>
+#include <buffer-objects/ShadowCubeDepthBuffer.h>
+#include <buffer-objects/FrameBuffer.h>
+#include <buffer-objects/gBuffer.h>
 
 class Renderer
 {
@@ -45,4 +45,4 @@ private:
 };
 
 
-#endif //OPENGLSETUP_RENDERER_H
+#endif //GAMEENGINE_RENDERER_H

@@ -2,8 +2,8 @@
 // Created by Sean on 3/6/2019.
 //
 
-#ifndef OPENGLSETUP_LIGHT_H
-#define OPENGLSETUP_LIGHT_H
+#ifndef GAMEENGINE_LIGHT_H
+#define GAMEENGINE_LIGHT_H
 
 #include <memory>
 #include <string>
@@ -72,4 +72,4 @@ private:
 
 
 
-#endif //OPENGLSETUP_LIGHT_H
+#endif //GAMEENGINE_LIGHT_H

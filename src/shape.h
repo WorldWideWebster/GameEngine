@@ -2,8 +2,8 @@
 // Created by Sean on 12/9/2018.
 //
 
-#ifndef OPENGLSETUP_SHAPES_H
-#define OPENGLSETUP_SHAPES_H
+#ifndef GAMEENGINE_SHAPES_H
+#define GAMEENGINE_SHAPES_H
 
 
 class Shape
@@ -12,4 +12,4 @@ class Shape
 };
 
 
-#endif //OPENGLSETUP_SHAPES_H
+#endif //GAMEENGINE_SHAPES_H

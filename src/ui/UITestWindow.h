@@ -2,8 +2,8 @@
 // Created by Sean on 10/3/2019.
 //
 
-#ifndef OPENGLSETUP_UITESTWINDOW_H
-#define OPENGLSETUP_UITESTWINDOW_H
+#ifndef GAMEENGINE_UITESTWINDOW_H
+#define GAMEENGINE_UITESTWINDOW_H
 
 #include "UIWindow.h"
 
@@ -20,4 +20,4 @@ private:
 };
 
 
-#endif //OPENGLSETUP_UITESTWINDOW_H
+#endif //GAMEENGINE_UITESTWINDOW_H

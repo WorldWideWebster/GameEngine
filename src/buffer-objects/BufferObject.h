@@ -2,8 +2,8 @@
 // Created by Sean on 1/6/2020.
 //
 
-#ifndef OPENGLSETUP_BUFFEROBJECT_H
-#define OPENGLSETUP_BUFFEROBJECT_H
+#ifndef GAMEENGINE_BUFFEROBJECT_H
+#define GAMEENGINE_BUFFEROBJECT_H
 // OpenGL includes
 #include <glad/glad.h> // holds all OpenGL type declarations
 #include <glm/glm.hpp>
@@ -29,4 +29,4 @@ public:
 };
 
 
-#endif //OPENGLSETUP_BUFFEROBJECT_H
+#endif //GAMEENGINE_BUFFEROBJECT_H

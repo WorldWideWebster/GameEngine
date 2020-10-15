@@ -2,8 +2,8 @@
 // Created by Sean on 7/11/2019.
 //
 
-#ifndef OPENGLSETUP_SKYBOX_H
-#define OPENGLSETUP_SKYBOX_H
+#ifndef GAMEENGINE_SKYBOX_H
+#define GAMEENGINE_SKYBOX_H
 
 #include <memory>
 #include "../Entity.h"
@@ -27,4 +27,4 @@ private:
 };
 
 
-#endif //OPENGLSETUP_SKYBOX_H
+#endif //GAMEENGINE_SKYBOX_H

@@ -2,8 +2,8 @@
 // Created by Sean on 8/16/2019.
 //
 
-#ifndef OPENGLSETUP_SPOTLIGHT_H
-#define OPENGLSETUP_SPOTLIGHT_H
+#ifndef GAMEENGINE_SPOTLIGHT_H
+#define GAMEENGINE_SPOTLIGHT_H
 
 #include "DirectionalLight.h"
 #include "PointLight.h"
@@ -41,4 +41,4 @@ public:
 };
 
 
-#endif //OPENGLSETUP_SPOTLIGHT_H
+#endif //GAMEENGINE_SPOTLIGHT_H

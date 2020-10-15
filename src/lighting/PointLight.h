@@ -2,8 +2,8 @@
 // Created by Sean on 8/14/2019.
 //
 
-#ifndef OPENGLSETUP_POINTLIGHT_H
-#define OPENGLSETUP_POINTLIGHT_H
+#ifndef GAMEENGINE_POINTLIGHT_H
+#define GAMEENGINE_POINTLIGHT_H
 
 #include "Light.h"
 
@@ -40,4 +40,4 @@ private:
 };
 
 
-#endif //OPENGLSETUP_POINTLIGHT_H
+#endif //GAMEENGINE_POINTLIGHT_H

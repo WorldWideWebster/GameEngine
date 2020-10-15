@@ -2,8 +2,8 @@
 // Created by Sean on 9/13/2019.
 //
 
-#ifndef OPENGLSETUP_UIWINDOW_H
-#define OPENGLSETUP_UIWINDOW_H
+#ifndef GAMEENGINE_UIWINDOW_H
+#define GAMEENGINE_UIWINDOW_H
 #include "../imgui/imgui.h"
 #include "../imgui/imgui_impl_glfw.h"
 #include "../imgui/imgui_impl_opengl3.h"
@@ -122,4 +122,4 @@ private:
 };
 
 
-#endif //OPENGLSETUP_UIWINDOW_H
+#endif //GAMEENGINE_UIWINDOW_H

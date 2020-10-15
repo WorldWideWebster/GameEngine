@@ -2,8 +2,8 @@
 // Created by Sean on 3/12/2019.
 //
 
-#ifndef OPENGLSETUP_PRIMITIVE_H
-#define OPENGLSETUP_PRIMITIVE_H
+#ifndef GAMEENGINE_PRIMITIVE_H
+#define GAMEENGINE_PRIMITIVE_H
 
 // STD Library Includes
 #include <vector>
@@ -154,7 +154,7 @@ public:
 };
 Cube *getUnitCube(void);
 
-#endif //OPENGLSETUP_PRIMITIVE_H
+#endif //GAMEENGINE_PRIMITIVE_H
 
 
 // reference https://github.com/Headturna/OpenGL-C---Tutorials/blob/master/Primitives.h

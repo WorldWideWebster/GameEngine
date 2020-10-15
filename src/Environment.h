@@ -2,8 +2,8 @@
 // Created by Sean on 8/8/2019.
 //
 
-#ifndef OPENGLSETUP_ENVIRONMENT_H
-#define OPENGLSETUP_ENVIRONMENT_H
+#ifndef GAMEENGINE_ENVIRONMENT_H
+#define GAMEENGINE_ENVIRONMENT_H
 
 
 class Environment
@@ -12,4 +12,4 @@ class Environment
 };
 
 
-#endif //OPENGLSETUP_ENVIRONMENT_H
+#endif //GAMEENGINE_ENVIRONMENT_H

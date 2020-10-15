@@ -2,8 +2,8 @@
 // Created by Sean on 4/19/2019.
 //
 
-#ifndef OPENGLSETUP_HEIGHTMAP_H
-#define OPENGLSETUP_HEIGHTMAP_H
+#ifndef GAMEENGINE_HEIGHTMAP_H
+#define GAMEENGINE_HEIGHTMAP_H
 // STD Library Includes
 #include <string>
 #include <vector>
@@ -32,4 +32,4 @@ private:
 };
 
 
-#endif //OPENGLSETUP_HEIGHTMAP_H
+#endif //GAMEENGINE_HEIGHTMAP_H

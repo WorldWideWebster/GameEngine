@@ -2,8 +2,8 @@
 // Created by Sean on 10/18/2018.
 //
 
-#ifndef OPENGLSETUP_MESH_H
-#define OPENGLSETUP_MESH_H
+#ifndef GAMEENGINE_MESH_H
+#define GAMEENGINE_MESH_H
 
 // STD Library Includes
 #include <fstream>
@@ -58,4 +58,4 @@ private:
 };
 
 
-#endif //OPENGLSETUP_MESH_H
+#endif //GAMEENGINE_MESH_H

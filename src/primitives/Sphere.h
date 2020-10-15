@@ -5,8 +5,8 @@
 // used http://www.songho.ca/opengl/gl_sphere.html as a basis
 
 
-#ifndef OPENGLSETUP_SPHERE_H
-#define OPENGLSETUP_SPHERE_H
+#ifndef GAMEENGINE_SPHERE_H
+#define GAMEENGINE_SPHERE_H
 
 #include "Primitive.h"
 
@@ -28,4 +28,4 @@ private:
 };
 
 
-#endif //OPENGLSETUP_SPHERE_H
+#endif //GAMEENGINE_SPHERE_H

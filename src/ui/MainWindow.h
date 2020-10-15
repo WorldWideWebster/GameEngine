@@ -2,8 +2,8 @@
 // Created by Sean on 1/22/2020.
 //
 
-#ifndef OPENGLSETUP_MAINWINDOW_H
-#define OPENGLSETUP_MAINWINDOW_H
+#ifndef GAMEENGINE_MAINWINDOW_H
+#define GAMEENGINE_MAINWINDOW_H
 #include "../imgui/imgui.h"
 #include "../imgui/imgui_impl_glfw.h"
 #include "../imgui/imgui_impl_opengl3.h"
@@ -35,5 +35,5 @@ private:
 };
 
 
-#endif //OPENGLSETUP_MAINWINDOW_H
+#endif //GAMEENGINE_MAINWINDOW_H
 

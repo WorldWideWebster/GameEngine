@@ -2,8 +2,8 @@
 // Created by Sean on 12/9/2018.
 //
 
-#ifndef OPENGLSETUP_RENDERUTILS_H
-#define OPENGLSETUP_RENDERUTILS_H
+#ifndef GAMEENGINE_RENDERUTILS_H
+#define GAMEENGINE_RENDERUTILS_H
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -20,4 +20,4 @@ private:
 };
 
 
-#endif //OPENGLSETUP_RENDERUTILS_H
+#endif //GAMEENGINE_RENDERUTILS_H

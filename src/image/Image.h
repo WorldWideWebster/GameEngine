@@ -2,8 +2,8 @@
 // Created by Sean on 6/11/2019.
 //
 
-#ifndef OPENGLSETUP_IMAGE_H
-#define OPENGLSETUP_IMAGE_H
+#ifndef GAMEENGINE_IMAGE_H
+#define GAMEENGINE_IMAGE_H
 
 /**
  * @brief Image class to serve as a base class for image storage/manipulation
@@ -23,4 +23,4 @@ private:
 };
 
 
-#endif //OPENGLSETUP_IMAGE_H
+#endif //GAMEENGINE_IMAGE_H

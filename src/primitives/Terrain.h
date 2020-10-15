@@ -2,8 +2,8 @@
 // Created by Sean on 4/8/2019.
 //
 
-#ifndef OPENGLSETUP_TERRAIN_H
-#define OPENGLSETUP_TERRAIN_H
+#ifndef GAMEENGINE_TERRAIN_H
+#define GAMEENGINE_TERRAIN_H
 
 // STD Library Includes
 #include <vector>
@@ -55,4 +55,4 @@ private:
 };
 
 
-#endif //OPENGLSETUP_TERRAIN_H
+#endif //GAMEENGINE_TERRAIN_H

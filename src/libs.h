@@ -2,8 +2,8 @@
 // Created by Sean on 3/12/2019.
 //
 
-#ifndef OPENGLSETUP_LIBS_H
-#define OPENGLSETUP_LIBS_H
+#ifndef GAMEENGINE_LIBS_H
+#define GAMEENGINE_LIBS_H
 
 // STD Library Includes
 #include <fstream>
@@ -76,4 +76,4 @@
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
 
-#endif //OPENGLSETUP_LIBS_H
+#endif //GAMEENGINE_LIBS_H

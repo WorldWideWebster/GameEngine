@@ -2,8 +2,8 @@
 // Created by Sean on 8/5/2019.
 //
 
-#ifndef OPENGLSETUP_ENTITY_H
-#define OPENGLSETUP_ENTITY_H
+#ifndef GAMEENGINE_ENTITY_H
+#define GAMEENGINE_ENTITY_H
 #include "mesh.h"
 #include "shader/shader.h"
 #include <memory>
@@ -56,4 +56,4 @@ private:
 };
 
 
-#endif //OPENGLSETUP_ENTITY_H
+#endif //GAMEENGINE_ENTITY_H

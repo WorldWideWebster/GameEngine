@@ -2,8 +2,8 @@
 // Created by Sean on 1/27/2020.
 //
 
-#ifndef OPENGLSETUP_UIDATAWINDOW_H
-#define OPENGLSETUP_UIDATAWINDOW_H
+#ifndef GAMEENGINE_UIDATAWINDOW_H
+#define GAMEENGINE_UIDATAWINDOW_H
 #include "UIWindow.h"
 #include "../Scene.h"
 
@@ -17,4 +17,4 @@ private:
 };
 
 
-#endif //OPENGLSETUP_UIDATAWINDOW_H
+#endif //GAMEENGINE_UIDATAWINDOW_H

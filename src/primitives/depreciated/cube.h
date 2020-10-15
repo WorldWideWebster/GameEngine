@@ -2,8 +2,8 @@
 // Created by Sean on 12/10/2018.
 //
 
-#ifndef OPENGLSETUP_CUBE_H
-#define OPENGLSETUP_CUBE_H
+#ifndef GAMEENGINE_CUBE_H
+#define GAMEENGINE_CUBE_H
 
 #include <vector>
 #include "../../vertex.h"
@@ -272,4 +272,4 @@ private:
 };
 */
 
-#endif //OPENGLSETUP_CUBE_H
+#endif //GAMEENGINE_CUBE_H

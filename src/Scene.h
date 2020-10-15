@@ -2,8 +2,8 @@
 // Created by Sean on 8/8/2019.
 //
 
-#ifndef OPENGLSETUP_SCENE_H
-#define OPENGLSETUP_SCENE_H
+#ifndef GAMEENGINE_SCENE_H
+#define GAMEENGINE_SCENE_H
 #include <vector>
 #include <memory>
 
@@ -88,4 +88,4 @@ private:
 };
 
 
-#endif //OPENGLSETUP_SCENE_H
+#endif //GAMEENGINE_SCENE_H

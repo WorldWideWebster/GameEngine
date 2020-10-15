@@ -2,8 +2,8 @@
 // Created by Sean on 10/19/2018.
 //
 
-#ifndef OPENGLSETUP_MODEL_H
-#define OPENGLSETUP_MODEL_H
+#ifndef GAMEENGINE_MODEL_H
+#define GAMEENGINE_MODEL_H
 
 #include <glad/glad.h> // holds all OpenGL type declarations
 
@@ -55,4 +55,4 @@ private:
 Material loadMaterial(aiMaterial *mat);
 
 
-#endif //OPENGLSETUP_MODEL_H
+#endif //GAMEENGINE_MODEL_H

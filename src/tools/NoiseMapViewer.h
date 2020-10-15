@@ -2,8 +2,8 @@
 // Created by Sean on 1/23/2020.
 //
 
-#ifndef OPENGLSETUP_NOISEMAPVIEWER_H
-#define OPENGLSETUP_NOISEMAPVIEWER_H
+#ifndef GAMEENGINE_NOISEMAPVIEWER_H
+#define GAMEENGINE_NOISEMAPVIEWER_H
 
 
 class NoiseMapViewer
@@ -12,4 +12,4 @@ class NoiseMapViewer
 };
 
 
-#endif //OPENGLSETUP_NOISEMAPVIEWER_H
+#endif //GAMEENGINE_NOISEMAPVIEWER_H

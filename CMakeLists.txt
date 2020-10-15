@@ -28,8 +28,8 @@ set(HEADER_FILES
         src/texture.h
         src/engine.cpp
         src/engine.h
-        src/renderutil.cpp
-        src/renderutil.h
+        src/rendering/renderutil.cpp
+        src/rendering/renderutil.h
         src/shape.cpp
         src/shape.h
         src/main_defs.h
@@ -48,7 +48,7 @@ set(HEADER_FILES
         src/Renderer.h
         src/test_scenes.h
         src/test_scenes.cpp
-        src/tools/NoiseMapViewer.cpp src/tools/NoiseMapViewer.h)
+        src/tools/NoiseMapViewer.cpp src/tools/NoiseMapViewer.h src/tools/ModelViewer.cpp src/tools/ModelViewer.h src/tools/Tool.cpp src/tools/Tool.h)
 
 set(dir ${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${dir}/build)
@@ -95,4 +95,5 @@ target_link_libraries(
         shader
         ui
         buffer_objects
+        tools
         ${dir}/dependencies/libs/libassimpd.dll.a)

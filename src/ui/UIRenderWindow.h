@@ -2,8 +2,8 @@
 // Created by Sean on 9/19/2019.
 //
 
-#ifndef OPENGLSETUP_UIRENDERWINDOW_H
-#define OPENGLSETUP_UIRENDERWINDOW_H
+#ifndef GAMEENGINE_UIRENDERWINDOW_H
+#define GAMEENGINE_UIRENDERWINDOW_H
 
 #include <memory>
 #include "UIWindow.h"
@@ -23,12 +23,12 @@ public:
 	/**
 	 * @brief Menu bar logic and display for window
 	 */
-	void showMenuBar(void);
-	void renderTargetImage(unsigned int target_texture);
+	virtual void showMenuBar(void);
+	virtual void renderTargetImage(unsigned int target_texture);
 private:
 	Renderer *m_renderer;
 	GLuint m_targetImage;
 };
 
 
-#endif //OPENGLSETUP_UIRENDERWINDOW_H
+#endif //GAMEENGINE_UIRENDERWINDOW_H

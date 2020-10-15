@@ -2,8 +2,8 @@
 // Created by Sean on 6/8/2019.
 //
 
-#ifndef OPENGLSETUP_NOISEMAP_H
-#define OPENGLSETUP_NOISEMAP_H
+#ifndef GAMEENGINE_NOISEMAP_H
+#define GAMEENGINE_NOISEMAP_H
 
 #include "PerlinNoise.h"
 enum noiseType
@@ -32,4 +32,4 @@ private:
 };
 
 
-#endif //OPENGLSETUP_NOISEMAP_H
+#endif //GAMEENGINE_NOISEMAP_H

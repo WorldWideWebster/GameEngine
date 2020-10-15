@@ -2,8 +2,8 @@
 // Created by Sean on 11/7/2019.
 //
 
-#ifndef OPENGLSETUP_SHADERLIBRARY_H
-#define OPENGLSETUP_SHADERLIBRARY_H
+#ifndef GAMEENGINE_SHADERLIBRARY_H
+#define GAMEENGINE_SHADERLIBRARY_H
 
 #include <filesystem>
 #include <vector>
@@ -25,4 +25,4 @@ static std::vector<Shader> shaders;
 };
 
 
-#endif //OPENGLSETUP_SHADERLIBRARY_H
+#endif //GAMEENGINE_SHADERLIBRARY_H
