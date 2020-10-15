@@ -3,7 +3,7 @@
 //
 
 #include "Terrain.h"
-#include "../vertex.h"
+#include "vertex.h"
 
 #include "../stb_image.h"
 #include <string>

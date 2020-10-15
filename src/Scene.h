@@ -10,14 +10,14 @@
 #include <glm/ext.hpp>
 
 
-#include "camera.h"
-#include "Entity.h"
-#include "lighting/PointLight.h"
-#include "lighting/DirectionalLight.h"
-#include "lighting/SpotLight.h"
-#include "buffer-objects/FrameBuffer.h"
-#include "shader/shader.h"
-#include "primitives/SkyBox.h"
+#include <rendering/camera.h>
+#include <Entity.h>
+#include <lighting/PointLight.h>
+#include <lighting/DirectionalLight.h>
+#include <lighting/SpotLight.h>
+#include <buffer-objects/FrameBuffer.h>
+#include <shader/shader.h>
+#include <primitives/SkyBox.h>
 
 class Scene
 {

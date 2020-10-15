@@ -4,7 +4,7 @@
 
 #ifndef GAMEENGINE_ENTITY_H
 #define GAMEENGINE_ENTITY_H
-#include "mesh.h"
+#include "rendering/mesh.h"
 #include "shader/shader.h"
 #include <memory>
 

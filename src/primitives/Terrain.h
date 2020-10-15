@@ -14,10 +14,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 // Engine Includes
-#include "../vertex.h"
+#include "vertex.h"
 #include "Primitive.h"
-#include "../texture.h"
-#include "../HeightMap.h"
+#include "image/texture.h"
+#include "image/HeightMap.h"
 
 
 

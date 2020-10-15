@@ -1,5 +1,15 @@
 set(tools_source_files
+        Tool.cpp
         ModelViewer.cpp
-        ModelViewer.h)
+        NoiseMapViewer.cpp
 
-add_library(tools ${tools_source_files})
+        )
+
+set(tools_header_files
+        Tool.h
+        ModelViewer.h
+        NoiseMapViewer.h
+
+        )
+
+add_library(tools ${tools_source_files} ${tools_header_files})

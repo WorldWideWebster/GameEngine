@@ -12,7 +12,7 @@
 #include <glad/glad.h>
 
 // Engine Includes
-#include "../vertex.h"
+#include "vertex.h"
 
 class Primitive
 {

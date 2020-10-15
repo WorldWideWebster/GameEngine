@@ -10,8 +10,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "../shader/shader.h"
-#include "../Entity.h"
+#include "shader/shader.h"
+#include "Entity.h"
 
 
 const glm::vec3 DEFAULT_COLOR (0.5f, 0.5f, 0.5f);

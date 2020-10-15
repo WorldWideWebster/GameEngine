@@ -6,8 +6,8 @@
 #define GAMEENGINE_CUBE_H
 
 #include <vector>
-#include "../../vertex.h"
-#include "../../mesh.h"
+#include "primitives/vertex.h"
+#include "rendering/mesh.h"
 
 
 // set up vertex data and buffer(s)) and configure vertex attributes

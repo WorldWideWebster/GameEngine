@@ -6,7 +6,7 @@
 #define WINDOW_H
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "camera.h"
+#include "rendering/camera.h"
 #include "main_defs.h"
 
 #include <iostream>

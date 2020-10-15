@@ -2,7 +2,7 @@
 // Created by Sean on 9/10/2019.
 //
 
-#include <Renderer.h>
+#include <rendering/Renderer.h>
 #include <main_defs.h>
 #include <GLFW/glfw3.h>
 

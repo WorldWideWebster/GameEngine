@@ -26,19 +26,19 @@
 
 /************** Engine Includes *****************/
 /** Main **/
-#include "camera.h"
+#include "rendering/camera.h"
 #include "main_defs.h"
-#include "mesh.h"
-#include "model.h"
+#include "rendering/mesh.h"
+#include "rendering/model.h"
 #include "Scene.h"
 #include <shader/shader.h>
-#include "texture.h"
-#include "vertex.h"
-#include "vertices.h"
+#include "image/texture.h"
+#include "primitives/vertex.h"
+#include "primitives/vertices.h"
 #include "window.h"
 #include "test_scenes.h"
 #include "Entity.h"
-#include "Renderer.h"
+#include "rendering/Renderer.h"
 
 /** Buffer Objects **/
 #include "buffer-objects/FrameBuffer.h"

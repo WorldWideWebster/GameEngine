@@ -11,11 +11,11 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "image/Image.h"
+#include <image/Image.h>
 
 #include <iostream>
 #include <vector>
-#include "noise/NoiseMap.h"
+#include <noise/NoiseMap.h>
 
 // TODO: add width/height to struct
 /*

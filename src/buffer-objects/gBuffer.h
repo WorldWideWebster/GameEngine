@@ -9,7 +9,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "BufferObject.h"
+#include <buffer-objects/BufferObject.h>
 
 /**
  * @brief Class to hold frame buffer objects and related functions

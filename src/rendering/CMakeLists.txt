@@ -1,5 +1,19 @@
 set(rendering_source_files
         renderutil.cpp
-        renderutil.h)
+        Lighting.cpp
+        mesh.cpp
+        model.cpp
+        camera.cpp
+        Renderer.cpp
+        )
 
-add_library(rendering ${rendering_source_files})
+set(rendering_header_files
+        renderutil.h
+        Lighting.h
+        mesh.h
+        model.h
+        camera.h
+        Renderer.h
+        )
+
+add_library(rendering ${rendering_header_files} ${rendering_source_files})

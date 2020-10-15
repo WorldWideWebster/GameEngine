@@ -2,7 +2,7 @@
 // Created by Sean on 11/17/2018.
 //
 
-#include "texture.h"
+#include <image/texture.h>
 #include "stb_image.h"
 
 // utility function for loading a 2D texture from file
