@@ -4,8 +4,9 @@
 
 #ifndef GAMEENGINE_ENTITY_H
 #define GAMEENGINE_ENTITY_H
-#include "rendering/mesh.h"
-#include "shader/shader.h"
+#include <rendering/mesh.h>
+#include <rendering/model.h>
+#include <shader/shader.h>
 #include <memory>
 
 
@@ -21,8 +22,9 @@ class Entity
 public:
 	Entity(std::string ID = "entity_" + std::to_string(EntityNum++));
 	Entity(Mesh *targetMesh, glm::vec3 startPosition = position_home, std::string ID = "entity_" + std::to_string(EntityNum++));
-	void setMesh(Mesh *targetMesh);
-	Mesh *getMesh() const;
+	Entity(Model *targetModel, glm::vec3 startPosition = position_home, std::string ID = "entity_" + std::to_string(EntityNum++));
+	void setModel(Model *targetModel);
+	Model getModel() const;
 
 	void setPosition(glm::vec3 targetPosition);
 
@@ -50,9 +52,8 @@ private:
 	glm::vec3 m_scale;
 	float rotAngle;
 	bool needsUpdate;
-	glm::mat4 model;
-	Mesh *mesh;
-
+	Model m_model;
+	glm::mat4 m_transform;
 };
 
 

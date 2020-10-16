@@ -11,7 +11,7 @@ SkyBox::SkyBox(Texture texture, std::shared_ptr<Camera> camera, glm::mat4 m_proj
 	this->m_texture = texture;
 	this->camera = camera;
 	this->m_projection = m_projection;
-	this->setMesh(new Mesh(new Cube, texture));
+	this->setModel(new Model(new Mesh(new Cube, texture)));
 	this->m_shader = shader;
 }
 
@@ -26,7 +26,7 @@ void SkyBox::render(void)
 	this->m_shader.setMat4("projection", m_projection);
 
 	// Draw Mesh
-	this->getMesh()->DrawCubeMap(this->m_shader);
+	this->getModel().meshes[0].DrawCubeMap(this->m_shader);
 	glDepthFunc(GL_LESS); // set depth function back to default
 }
 

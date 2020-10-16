@@ -4,8 +4,8 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
-#include "model.h"
-#include "stb_image.h"
+#include <rendering//model.h>
+#include <stb_image.h>
 
 
 Model::Model(char *path)
@@ -13,10 +13,24 @@ Model::Model(char *path)
     loadModel(path);
 }
 
+Model::Model(Mesh *targetMesh) : meshes(std::vector<Mesh>({*targetMesh}))
+{
+}
+
+Model::Model(std::vector<Mesh> meshVector) : meshes(meshVector)
+{
+}
+
 void Model::Draw(Shader shader)
 {
     for(unsigned int i = 0; i < meshes.size(); i++)
         meshes[i].Draw(shader);
+}
+
+void Model::Draw(Shader shader, unsigned int depthMap)
+{
+    for(unsigned int i = 0; i < meshes.size(); i++)
+        meshes[i].Draw(shader, depthMap);
 }
 
 

@@ -12,17 +12,23 @@ Entity::Entity(std::string ID)
 	setScale(scale_unity);
 	setRotation(rotAngle_zeo, rotation_home);
 }
-Entity::Entity(Mesh *targetMesh, glm::vec3 startPosition, std::string ID)
+Entity::Entity(Mesh *targetMesh, glm::vec3 startPosition, std::string ID) : m_model(targetMesh)
 {
 	setID(ID);
-	setMesh(targetMesh);
 	setPosition(startPosition);
 	setScale(scale_unity);
 	setRotation(rotAngle_zeo, rotation_home);
 }
-void Entity::setMesh(Mesh *targetMesh)
+Entity::Entity(Model *targetModel, glm::vec3 startPosition, std::string ID) : m_model(*targetModel)
 {
-	this->mesh = targetMesh;
+	setID(ID);
+	setPosition(startPosition);
+	setScale(scale_unity);
+	setRotation(rotAngle_zeo, rotation_home);
+}
+void Entity::setModel(Model *targetModel)
+{
+	this->m_model = *targetModel;
 	needsUpdate = true;
 }
 void Entity::setPosition(glm::vec3 targetPosition)
@@ -64,10 +70,10 @@ void Entity::setID(std::string ID)
 
 void Entity::update()
 {
-	this->model = glm::mat4();
-	this->model = glm::scale(this->model, this->m_scale);
-	this->model = glm::rotate(this->model, this->rotAngle, this->m_rotation);
-	this->model = glm::translate(this->model, this->m_position);
+	this->m_transform = glm::mat4();
+	this->m_transform = glm::scale(this->m_transform, this->m_scale);
+	this->m_transform = glm::rotate(this->m_transform, this->rotAngle, this->m_rotation);
+	this->m_transform = glm::translate(this->m_transform, this->m_position);
 }
 
 void Entity::render(Shader *targetShader)
@@ -78,8 +84,8 @@ void Entity::render(Shader *targetShader)
 	}
 	targetShader->use();
 
-	targetShader->setMat4("model", this->model);
-	this->mesh->Draw(*targetShader);
+	targetShader->setMat4("model", this->m_transform);
+	this->m_model.Draw(*targetShader);
 }
 
 void Entity::render(Shader *targetShader, unsigned int depthMap)
@@ -90,11 +96,11 @@ void Entity::render(Shader *targetShader, unsigned int depthMap)
 	}
 	targetShader->use();
 
-	targetShader->setMat4("model", this->model);
-	this->mesh->Draw(*targetShader, depthMap);
+	targetShader->setMat4("model", this->m_transform);
+	this->m_model.Draw(*targetShader, depthMap);
 }
 
-Mesh *Entity::getMesh() const
+Model Entity::getModel() const
 {
-	return mesh;
+	return this->m_model;
 }

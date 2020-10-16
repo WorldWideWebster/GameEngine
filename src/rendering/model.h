@@ -4,22 +4,21 @@
 
 #ifndef GAMEENGINE_MODEL_H
 #define GAMEENGINE_MODEL_H
+#include <string>
+#include <fstream>
+#include <sstream>
+#include <iostream>
+#include <vector>
 
 #include <glad/glad.h> // holds all OpenGL type declarations
-
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-#include "shader/shader.h"
-#include "mesh.h"
-#include <string>
-#include <fstream>
-#include <sstream>
-#include <iostream>
-#include <vector>
+#include <shader/shader.h>
+#include <rendering/mesh.h>
 
 /* Material struct to convert assimp to usable material
  * also allows for loading of models without a texture
@@ -41,8 +40,12 @@ public:
     std::vector<Texture> textures_loaded;
     std::string directory;
     /* Functions */
+    Model(){};
     Model(char *path);
+    Model(Mesh *targetMesh);
+    Model(std::vector<Mesh> meshVector);
     void Draw(Shader shader);
+    void Draw(Shader shader, unsigned int depthMap);
 private:
 
     /* Functions */
