@@ -5,6 +5,57 @@
 #include <image/texture.h>
 #include "stb_image.h"
 
+
+
+Texture::Texture(const char *fileName, const std::string &directory, std::string type, bool gamma)
+{
+	std::string file = std::string(fileName);
+	file = directory + '/' + file;
+
+	this->path = file;
+	this->type = type;	// Default this to diffuse texture
+	glGenTextures(1, &this->id);
+
+
+	unsigned char *data = stbi_load(file.c_str(), &this->width, &this->height, &this->nrComponents, 0);
+	if (data)
+	{
+
+		GLenum format;
+		if (this->nrComponents == 1)
+			format = GL_RED;
+		else if (this->nrComponents == 3)
+			format = GL_RGB;
+		else if (this->nrComponents == 4)
+			format = GL_RGBA;
+		std::cout << this->id << "" << format << std::endl;
+
+		glBindTexture(GL_TEXTURE_2D, this->id);
+		glTexImage2D(GL_TEXTURE_2D, 0, format, this->width, this->height, 0, format, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, format == GL_RGBA ? GL_CLAMP_TO_EDGE : GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, format == GL_RGBA ? GL_CLAMP_TO_EDGE : GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		stbi_image_free(data);
+	}
+	else
+	{
+		std::cout << "Texture failed to load at path: " << fileName << std::endl;
+		stbi_image_free(data);
+	}
+}
+
+
+
+
+
+
+
+
+
 // utility function for loading a 2D texture from file
 // ---------------------------------------------------
 unsigned int loadTexture(char const * path)
@@ -117,18 +168,18 @@ Texture CubemapTextureFromFile(std::vector<std::string> faces)
 	return texture;
 }
 
-Texture TextureFromFile(const char *path, const std::string &directory, std::string type, bool gamma)
+Texture TextureFromFile(const char *fileName, const std::string &directory, std::string type, bool gamma)
 {
-    std::string filename = std::string(path);
-    filename = directory + '/' + filename;
+    std::string file = std::string(fileName);
+	file = directory + '/' + file;
 
     Texture texture;
-    texture.path = filename;
+    texture.path = file;
     texture.type = type;	// Default this to diffuse texture
     glGenTextures(1, &texture.id);
 
 
-    unsigned char *data = stbi_load(filename.c_str(), &texture.width, &texture.height, &texture.nrComponents, 0);
+    unsigned char *data = stbi_load(file.c_str(), &texture.width, &texture.height, &texture.nrComponents, 0);
     if (data)
     {
 
@@ -154,7 +205,7 @@ Texture TextureFromFile(const char *path, const std::string &directory, std::str
     }
     else
     {
-        std::cout << "Texture failed to load at path: " << path << std::endl;
+        std::cout << "Texture failed to load at path: " << fileName << std::endl;
         stbi_image_free(data);
     }
 

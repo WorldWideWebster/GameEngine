@@ -14,9 +14,11 @@ class ModelViewer : public UIRenderWindow
 public:
 	ModelViewer();
 	void setModel(Model *targetModel);
+	void showMenuBar(void);
 private:
 	Renderer m_renderer;
 	Scene m_scene;
+	bool m_skyboxToggle;
 };
 
 

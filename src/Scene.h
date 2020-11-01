@@ -19,7 +19,7 @@
 #include <shader/shader.h>
 #include <primitives/SkyBox.h>
 
-class Scene
+class 															Scene
 {
 public:
 	Scene();
@@ -56,7 +56,9 @@ public:
 	void setEntityScale(std::string targetID, glm::vec3 targetScale);
 
 	void setSkybox(std::shared_ptr<SkyBox> skybox);
+	void toggleSkybox(bool toggle);
 	void renderSkyBox();
+	bool getSkyboxPointer();
 
 	void renderEntities(Shader* shader);
 	void renderLights(Shader* shader);
@@ -84,6 +86,10 @@ private:
 	Shader m_geomPass;
 	Shader m_lightingPass;
 	Shader m_defaultShader;
+
+
+
+	bool m_skybox_enabled;
 	// std::unique_ptr<Camera> m_default_camera;
 };
 

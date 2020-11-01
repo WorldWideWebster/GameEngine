@@ -3,6 +3,7 @@
 //
 
 #include "test_scenes.h"
+#include <image/TextureLibrary.h>
 #include "primitives/Sphere.h"
 #include "primitives/Terrain.h"
 #include <GLFW/glfw3.h>
@@ -20,7 +21,6 @@ Texture brickNorm;
 Texture brickHeight;
 Texture blankHeight;
 
-Texture stone;
 Texture stoneNorm;
 Texture stoneHeight;
 
@@ -62,6 +62,7 @@ void setUpTestScene1(std::shared_ptr<Scene> targetScene)
 //	brickTex.push_back(stonebrick);
 //	brickTex.push_back(stonebrickNorm);
 //	brickTex.push_back(blankHeight);
+	TextureLibraryLocator::getTextureLibrary().load("stone_antelopeCayon_01_basecolor.jpg", "../resources");
 
 	std::vector<std::string> faces
 	{
@@ -80,7 +81,7 @@ void setUpTestScene1(std::shared_ptr<Scene> targetScene)
 												   PROJECTION,
 												   Shader("../shaders/skybox.vert", "../shaders/skybox.frag"))));
 
-	stone = TextureFromFile("stone_antelopeCayon_01_basecolor.jpg", "../resources");
+	Texture stone = *TextureLibraryLocator::getTextureLibrary().getTexture("stone_antelopeCayon_01_basecolor.jpg");
 	stoneNorm = TextureFromFile("stone_antelopeCayon_01_normal.jpg", "../resources", "texture_normal");
 	stoneHeight = TextureFromFile("stone_antelopeCayon_01_height.jpg", "../resources", "texture_height");
 	stoneHeight = TextureFromFile("stone_antelopeCayon_01_metallic.jpg", "../resources", "texture_specular");

@@ -32,7 +32,9 @@
 #include "rendering/model.h"
 #include "Scene.h"
 #include <shader/shader.h>
-#include "image/texture.h"
+#include <image/texture.h>
+#include <image/TextureLibrary.h>
+#include <tools/TextureViewer.h>
 #include "primitives/vertex.h"
 #include "primitives/vertices.h"
 #include "window.h"

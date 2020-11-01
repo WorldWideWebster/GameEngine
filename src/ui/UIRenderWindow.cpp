@@ -13,6 +13,8 @@ UIRenderWindow::UIRenderWindow(Renderer *targetRenderer, std::string Name) : UIW
 	this->setName(Name);
 	this->open();
 	m_targetImage = this->m_renderer->getRenderBufferPtr()->getTextureBuffer();
+	this->m_skyboxToggle = this->m_renderer->getActiveScene()->getSkyboxPointer();
+
 }
 
 void UIRenderWindow::showRenderBuffer(void)
@@ -108,6 +110,15 @@ void UIRenderWindow::showMenuBar(void)
 			{
 				this->m_targetImage = this->m_renderer->getGBufferPosition();
 			}
+			ImGui::EndMenu();
+		}
+		if (ImGui::BeginMenu("Options"))
+		{
+			if (ImGui::MenuItem("Skybox", NULL, &m_skyboxToggle))
+			{
+				this->m_renderer->getActiveScene()->toggleSkybox(m_skyboxToggle);
+			}
+
 			ImGui::EndMenu();
 		}
 		ImGui::EndMenuBar();

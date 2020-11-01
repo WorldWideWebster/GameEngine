@@ -9,7 +9,9 @@ float lastFrame = 0.0f;
 int main()
 {
 	Window window;
-
+	TextureLibrary texLibrary;
+	TextureLibraryLocator::provide(&texLibrary);
+	TextureViewer viewer;
 	// glad: load all OpenGL function pointers
     if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
     {
@@ -78,7 +80,7 @@ int main()
 		{
 			dataWindow.render();
 		}
-
+		viewer.render();
         mainIMGUIWindow.render();
         window.update();
         glfwPollEvents();

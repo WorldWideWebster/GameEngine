@@ -43,6 +43,9 @@ Scene::Scene()
 	m_lightingPass.setInt("gAlbedo", 2);
 	m_lightingPass.setInt("gSpec", 3);
 	m_lightingPass.setInt("depthMap", 4);
+
+	this->m_has_skybox = FALSE;
+	this->m_skybox_enabled = FALSE;
 }
 // TODO: Move this when I need to find another place for it
 void Scene::setDepthBuffer(unsigned int depthBuffer)
@@ -341,11 +344,22 @@ void Scene::toggleLightShadow(std::string targetID, bool toggle)
 void Scene::setSkybox(std::shared_ptr<SkyBox> skybox)
 {
 	this->m_has_skybox = TRUE;
+	this->m_skybox_enabled = TRUE;
 	this->m_skybox = skybox;
 }
 
 void Scene::renderSkyBox()
 {
-	if(this->m_has_skybox)
+	if(this->m_has_skybox && this->m_skybox_enabled)
 		this->m_skybox->render();
+}
+
+void Scene::toggleSkybox(bool toggle)
+{
+	this->m_skybox_enabled = toggle;
+}
+
+bool Scene::getSkyboxPointer()
+{
+	return this->m_skybox_enabled;
 }

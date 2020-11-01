@@ -24,7 +24,10 @@
  * create loaded texture list
  */
 
-struct Texture {
+class Texture {
+public:
+	Texture() {};
+	Texture(const char *fileName, const std::string &directory, std::string type = "texture_diffuse", bool gamma = true);
     unsigned int id;
     std::string type;
     std::string path;
@@ -32,11 +35,11 @@ struct Texture {
     int height;
     int nrComponents;
 };
-
 unsigned int loadTexture(char const * path);
+
 unsigned int loadCubemap(std::vector<std::string> faces);
 Texture CubemapTextureFromFile(std::vector<std::string> faces);
-Texture TextureFromFile(const char *path, const std::string &directory, std::string type = "texture_diffuse", bool gamma = true);
+Texture TextureFromFile(const char *fileName, const std::string &directory, std::string type = "texture_diffuse", bool gamma = true);
 Texture TextureFromImage(Image image);
 Texture TextureFromNoiseMap(NoiseMap nm);
 

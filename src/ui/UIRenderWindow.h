@@ -28,6 +28,8 @@ public:
 private:
 	Renderer *m_renderer;
 	GLuint m_targetImage;
+	bool m_skyboxToggle;
+
 };
 
 
