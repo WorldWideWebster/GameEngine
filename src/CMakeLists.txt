@@ -11,6 +11,7 @@ set(HEADER_FILES
         rendering/model.h
         )
 
+include_directories(${BULLET_ROOT_DIR})
 
 add_subdirectory(imgui)
 add_subdirectory(primitives)
@@ -22,5 +23,3 @@ add_subdirectory(buffer-objects)
 add_subdirectory(rendering)
 add_subdirectory(ui)
 add_subdirectory(tools)
-
-

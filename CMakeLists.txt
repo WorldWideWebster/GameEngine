@@ -40,6 +40,9 @@ include_directories(GLAD/include)
 include_directories(glm/include)
 include_directories(src)
 include_directories(dependencies/include)
+include_directories(bullet3/src)
+include_directories(${dir})
+
 
 file(COPY resources DESTINATION ${dir}/build)
 file(COPY shaders DESTINATION ${dir}/build)
@@ -48,8 +51,13 @@ file(COPY shaders DESTINATION ${dir}/build)
 #Add deps
 add_subdirectory(dependencies)
 add_subdirectory(src)
+add_subdirectory(bullet3)
 
-find_package(BULLET)
+set(BULLET_ROOT ${dir}/bullet3/build) # where to find Bullet
+set(BULLET_INCLUDE_DIR ${dir}/bullet3/src) # where to find Bullet
+set(BULLET_PHYSICS_SOURCE_DIR ${dir}/bullet3) # where to find Bullet
+find_package(BULLET REQUIRED) # find Bullet and fill environment variables
+
 
 add_executable(GameEngine ${SOURCE_FILES} ${HEADER_FILES})
 
@@ -80,9 +88,7 @@ target_link_libraries(
         ui
         tools
         ${dir}/dependencies/libs/libassimpd.dll.a
-        ${dir}/dependencies/libs/libBullet3Collision.a
-        ${dir}/dependencies/libs/libBullet3Common.a
-        ${dir}/dependencies/libs/libBullet3Dynamics.a
-        ${dir}/dependencies/libs/libLinearMath.a
-        )
+        ${BULLET_DYNAMICS_LIBRARY}
+        ${BULLET_COLLISION_LIBRARY}
+        ${BULLET_MATH_LIBRARY})
 
