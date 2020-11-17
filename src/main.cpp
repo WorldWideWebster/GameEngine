@@ -1,6 +1,8 @@
 
 #include "main_defs.h"
 #include "libs.h"
+#include <bullet/btBulletDynamicsCommon.h>
+
 
 // timing
 float deltaTime = 0.0f;    // time between current frame and last frame
@@ -12,6 +14,7 @@ int main()
 	TextureLibrary texLibrary;
 	TextureLibraryLocator::provide(&texLibrary);
 	TextureViewer viewer;
+
 	// glad: load all OpenGL function pointers
     if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
     {
@@ -36,6 +39,9 @@ int main()
 	UIRenderWindow renderWindow(&renderer, "Render Window");
 //	UIRenderWindow testRenderWindow(&renderer, "ShadowMap");
 	UIDataWindow dataWindow("Data Window", renderer.getActiveScene());
+
+	/// Initialize Physics World
+	btBroadphaseInterface* broadphase = new btDbvtBroadphase();
 
 	glDisable( GL_CULL_FACE );
 	UITestWindow *testWindow = new UITestWindow(&show_demo_window, &show_render_window, &noise_map_viewer, &show_scene_window);

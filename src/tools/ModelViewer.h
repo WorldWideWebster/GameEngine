@@ -9,6 +9,9 @@
 #include <rendering/Renderer.h>
 #include <ui/UIRenderWindow.h>
 
+
+// TODO: To fix this class, a lot needs to be done in regards to default settings of scene, shader, and renderer
+
 class ModelViewer : public UIRenderWindow
 {
 public:

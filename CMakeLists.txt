@@ -39,6 +39,7 @@ include_directories(dependencies/GLFW/include)
 include_directories(GLAD/include)
 include_directories(glm/include)
 include_directories(src)
+include_directories(dependencies/include)
 
 file(COPY resources DESTINATION ${dir}/build)
 file(COPY shaders DESTINATION ${dir}/build)
@@ -48,6 +49,7 @@ file(COPY shaders DESTINATION ${dir}/build)
 add_subdirectory(dependencies)
 add_subdirectory(src)
 
+find_package(BULLET)
 
 add_executable(GameEngine ${SOURCE_FILES} ${HEADER_FILES})
 
@@ -77,4 +79,10 @@ target_link_libraries(
         shader
         ui
         tools
-        ${dir}/dependencies/libs/libassimpd.dll.a)
+        ${dir}/dependencies/libs/libassimpd.dll.a
+        ${dir}/dependencies/libs/libBullet3Collision.a
+        ${dir}/dependencies/libs/libBullet3Common.a
+        ${dir}/dependencies/libs/libBullet3Dynamics.a
+        ${dir}/dependencies/libs/libLinearMath.a
+        )
+

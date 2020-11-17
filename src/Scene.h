@@ -26,6 +26,9 @@ public:
 	void setDepthBuffer(unsigned int depthBuffer);
 	void addEntity(std::shared_ptr<Entity> targetEntity);
 	void addLight(std::shared_ptr<Light> targetLight);
+
+	void clear(void);
+
 	void addCamera(void);
 	void setActiveScene(void);
 	void setInactiveScene(void);

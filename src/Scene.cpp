@@ -363,3 +363,8 @@ bool Scene::getSkyboxPointer()
 {
 	return this->m_skybox_enabled;
 }
+
+void Scene::clear(void)
+{
+	this->m_entities.clear();
+}

@@ -3,12 +3,16 @@
 //
 
 #include "ModelViewer.h"
+#include <primitives/Terrain.h>
+#include <image/TextureLibrary.h>
 
-ModelViewer::ModelViewer() : UIRenderWindow(&this->m_renderer, "Model Viewer")
+ModelViewer::ModelViewer() : UIRenderWindow(new Renderer, "Model Viewer")
 {
 	this->m_renderer.addScene(this->m_scene);
 	this->m_skyboxToggle = this->m_scene.getSkyboxPointer();
-
+	this->m_renderer.getActiveScene()->addEntity(std::make_shared<Entity>(Entity(new Mesh(
+			new Terrain(), *TextureLibraryLocator::getTextureLibrary().getTexture("stone_antelopeCayon_01_basecolor.jpg")),
+																				 glm::vec3(-1000.0f, -100, -1000), "terrain")));
 }
 
 void ModelViewer::setModel(Model *targetModel)
@@ -24,6 +28,10 @@ void ModelViewer::showMenuBar(void)
 		{
 			if (ImGui::MenuItem("Terrain"))
 			{
+				this->m_renderer.getActiveScene()->clear();
+				this->m_renderer.getActiveScene()->addEntity(std::make_shared<Entity>(Entity(new Mesh(
+						new Terrain(), *TextureLibraryLocator::getTextureLibrary().getTexture("stone_antelopeCayon_01_basecolor.jpg")),
+								glm::vec3(-1000.0f, -100, -1000), "terrain")));
 			}
 
 			ImGui::EndMenu();
@@ -39,4 +47,5 @@ void ModelViewer::showMenuBar(void)
 			ImGui::EndMenu();
 		}
 		ImGui::EndMenuBar();
-	}}
+	}
+}

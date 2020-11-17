@@ -63,6 +63,8 @@
 #include "noise/NoiseMap.h"
 #include "noise/PerlinNoise.h"
 
+/** Tools **/
+#include <tools/ModelViewer.h>
 
 /** UI Windows **/
 #include "ui/UITestWindow.h"
