@@ -1,0 +1,10 @@
+set(common_source_files
+        window.cpp
+        window.h
+        test_scenes.cpp
+        )
+set(common_header_files
+        main_defs.h
+        libs.h
+        test_scenes.h
+        )

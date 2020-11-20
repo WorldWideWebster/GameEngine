@@ -16,4 +16,11 @@ set(rendering_header_files
         Renderer.h
         )
 
+add_subdirectory(buffer-objects)
+add_subdirectory(primitives)
+add_subdirectory(shader)
+add_subdirectory(lighting)
+add_subdirectory(image)
+
+
 add_library(rendering ${rendering_header_files} ${rendering_source_files})

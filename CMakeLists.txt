@@ -12,21 +12,13 @@ set(SOURCE_FILES
         src/main.cpp
         GLAD/src/glad.c)
 set(HEADER_FILES
-        src/stb_image.h
-        src/window.cpp
-        src/window.h
-        src/engine.cpp
-        src/engine.h
-        src/main_defs.h
-        src/libs.h
-        src/Entity.cpp
-        src/Entity.h
-        src/Scene.cpp
-        src/Scene.h
-        src/Environment.cpp
-        src/Environment.h
-        src/test_scenes.h
-        src/test_scenes.cpp
+        dependencies/include/stb_image.h
+        src/common/window.cpp
+        src/common/window.h
+        src/common/main_defs.h
+        src/common/libs.h
+        src/common/test_scenes.h
+        src/common/test_scenes.cpp
         )
 
 set(dir ${CMAKE_CURRENT_SOURCE_DIR})
@@ -76,6 +68,7 @@ add_custom_command(TARGET GameEngine PRE_BUILD
 #FIXME: There must be a better way to add the assimp library
 target_link_libraries(
         GameEngine
+        engine
         image
         rendering
         glfw

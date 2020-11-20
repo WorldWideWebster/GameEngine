@@ -17,7 +17,7 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-#include <shader/shader.h>
+#include <rendering/shader/shader.h>
 #include <rendering/mesh.h>
 
 /* Material struct to convert assimp to usable material

@@ -1,6 +1,6 @@
 
-#include "main_defs.h"
-#include "libs.h"
+#include "common/main_defs.h"
+#include "common/libs.h"
 #include <bullet3/src/btBulletDynamicsCommon.h>
 
 
@@ -41,7 +41,7 @@ int main()
 	UIDataWindow dataWindow("Data Window", renderer.getActiveScene());
 
 	/// Initialize Physics World
-//	btBroadphaseInterface* broadphase = new btDbvtBroadphase();
+	btBroadphaseInterface* broadphase = new btDbvtBroadphase();
 
 	glDisable( GL_CULL_FACE );
 	UITestWindow *testWindow = new UITestWindow(&show_demo_window, &show_render_window, &noise_map_viewer, &show_scene_window);

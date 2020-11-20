@@ -4,7 +4,7 @@
 
 #ifndef GAMEENGINE_LIGHTING_H
 #define GAMEENGINE_LIGHTING_H
-#include "shader/shader.h"
+#include <rendering/shader/shader.h>
 #include "camera.h"
 
 void doLighting(Shader *shader, Camera camera, glm::vec3 lightPos, bool flashlight);

@@ -3,7 +3,7 @@
 //
 
 #include <rendering/Renderer.h>
-#include <main_defs.h>
+#include <common/main_defs.h>
 #include <GLFW/glfw3.h>
 
 Renderer::Renderer()

@@ -18,10 +18,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 // Engine Includes
-#include "image/texture.h"
-#include "primitives/Primitive.h"
-#include "shader/shader.h"
-#include "primitives/vertex.h"
+#include <rendering/image/texture.h>
+#include <rendering/primitives/Primitive.h>
+#include <rendering/shader/shader.h>
+#include <rendering/primitives/vertex.h>
 
 
 class Mesh {

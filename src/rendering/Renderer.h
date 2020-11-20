@@ -7,11 +7,11 @@
 
 #include <memory>
 
-#include <Scene.h>
-#include <buffer-objects/ShadowDepthBuffer.h>
-#include <buffer-objects/ShadowCubeDepthBuffer.h>
-#include <buffer-objects/FrameBuffer.h>
-#include <buffer-objects/gBuffer.h>
+#include <engine/Scene.h>
+#include <rendering/buffer-objects/ShadowDepthBuffer.h>
+#include <rendering/buffer-objects/ShadowCubeDepthBuffer.h>
+#include <rendering/buffer-objects/FrameBuffer.h>
+#include <rendering/buffer-objects/gBuffer.h>
 
 class Renderer
 {

@@ -4,7 +4,7 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
-#include <rendering//model.h>
+#include <rendering/model.h>
 #include <stb_image.h>
 
 
