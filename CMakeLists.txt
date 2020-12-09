@@ -19,7 +19,7 @@ set(HEADER_FILES
         src/common/libs.h
         src/common/test_scenes.h
         src/common/test_scenes.cpp
-        )
+        src/editor/Editor.cpp src/editor/Editor.h)
 
 set(dir ${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${dir}/build)
@@ -81,7 +81,5 @@ target_link_libraries(
         ui
         tools
         ${dir}/dependencies/libs/libassimpd.dll.a
-        ${BULLET_DYNAMICS_LIBRARY}
-        ${BULLET_COLLISION_LIBRARY}
-        ${BULLET_MATH_LIBRARY})
+        bullet_interface)
 

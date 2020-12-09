@@ -13,5 +13,5 @@ set(engine_header_files
         engine.h
         )
 
-
+add_subdirectory(interfaces)
 add_library(engine ${engine_source_files} ${engine_header_files})

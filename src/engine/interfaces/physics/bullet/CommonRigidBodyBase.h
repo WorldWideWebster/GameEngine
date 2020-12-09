@@ -3,7 +3,7 @@
 #define COMMON_RIGID_BODY_BASE_H
 
 #include <bullet3/src/btBulletDynamicsCommon.h>
-#include <physics/interfaces/bullet/PhysicsInterface.h>
+#include <engine/interfaces/physics/bullet/PhysicsInterface.h>
 #include "CommonGUIHelperInterface.h"
 #include "CommonRenderInterface.h"
 #include "CommonCameraInterface.h"

@@ -1,7 +1,8 @@
 
 #include "common/main_defs.h"
 #include "common/libs.h"
-#include <bullet3/src/btBulletDynamicsCommon.h>
+#include <editor/Editor.h>
+#include <engine/interfaces/physics/bullet/SimplePhysicsIntegration.h>
 
 
 // timing
@@ -14,6 +15,8 @@ int main()
 	TextureLibrary texLibrary;
 	TextureLibraryLocator::provide(&texLibrary);
 	TextureViewer viewer;
+	SimplePhysicsIntegration physicsEngine;
+	Editor engineEditor(&window);
 
 	// glad: load all OpenGL function pointers
     if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
@@ -21,14 +24,8 @@ int main()
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
-	MainWindow mainIMGUIWindow(&window);
 
-
-	bool show_demo_window = true;
-    bool show_render_window = false;
-    bool show_scene_window = true;
-    bool noise_map_viewer = false;
-    bool render_input = true;
+	bool render_input = true;
 
 	 /// Render loop setup
 	Renderer renderer;
@@ -41,17 +38,16 @@ int main()
 	UIDataWindow dataWindow("Data Window", renderer.getActiveScene());
 
 	/// Initialize Physics World
-	btBroadphaseInterface* broadphase = new btDbvtBroadphase();
+	physicsEngine.initPhysics();
 
 	glDisable( GL_CULL_FACE );
-	UITestWindow *testWindow = new UITestWindow(&show_demo_window, &show_render_window, &noise_map_viewer, &show_scene_window);
     while (!window.shouldClose())
     {
 		/******************** PREFRAME LOGIC *********************/
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
-		mainIMGUIWindow.startFrame();
+		engineEditor.startFrame();
 
 		/******************** GAME LOOP *********************/
 		doTestScene1(renderer.getActiveScene());
@@ -78,16 +74,13 @@ int main()
 
 		/******************** WINDOW UPDATES *********************/
 		renderWindow.render();
-		if (show_demo_window)
-		{
-			ImGui::ShowDemoWindow(&show_demo_window);
-		}
-		if (show_scene_window)
-		{
-			dataWindow.render();
-		}
+
+//		if (show_scene_window)
+//		{
+//			dataWindow.render();
+//		}
 		viewer.render();
-        mainIMGUIWindow.render();
+        engineEditor.render();
         window.update();
         glfwPollEvents();
     }
@@ -95,7 +88,7 @@ int main()
     // Cleanup
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
-	mainIMGUIWindow.shutDown();
+	engineEditor.shutDown();
 
     glfwDestroyWindow(window.m_glfwWindow);
     glfwTerminate();

@@ -27,33 +27,20 @@ subject to the following restrictions:
 
 struct PhysicsIntegration : public CommonRigidBodyBase
 {
-	PhysicsIntegration(struct GUIHelperInterface* helper)
-		: CommonRigidBodyBase(helper)
-	{
-	}
+
 	virtual ~PhysicsIntegration() {}
 	virtual void initPhysics();
 	virtual void renderScene();
-	void resetCamera()
-	{
-		float dist = 4;
-		float pitch = -35;
-		float yaw = 52;
-		float targetPos[3] = {0, 0, 0};
-		m_guiHelper->resetCamera(dist, yaw, pitch, targetPos[0], targetPos[1], targetPos[2]);
-	}
 };
 
 void PhysicsIntegration::initPhysics()
 {
-	m_guiHelper->setUpAxis(1);
 
 	createEmptyDynamicsWorld();
 	//m_dynamicsWorld->setGravity(btVector3(0,0,0));
-	m_guiHelper->createPhysicsDebugDrawer(m_dynamicsWorld);
 
-	if (m_dynamicsWorld->getDebugDrawer())
-		m_dynamicsWorld->getDebugDrawer()->setDebugMode(btIDebugDraw::DBG_DrawWireframe + btIDebugDraw::DBG_DrawContactPoints);
+//	if (m_dynamicsWorld->getDebugDrawer())
+//		m_dynamicsWorld->getDebugDrawer()->setDebugMode(btIDebugDraw::DBG_DrawWireframe + btIDebugDraw::DBG_DrawContactPoints);
 
 	///create a few basic rigid bodies
 	btBoxShape* groundShape = createBoxShape(btVector3(btScalar(50.), btScalar(50.), btScalar(50.)));
